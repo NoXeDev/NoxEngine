@@ -1,18 +1,18 @@
 #pragma once
 #include "ShaderProgram.h"
 #include <glm.hpp>
-
 #include "../entities/Camera.h"
 #include "../entities/Light.h"
 #include "../utils/Maths.h"
-class StaticShader:public ShaderProgram
+
+class TerrainShader :public ShaderProgram
 {
 public:
-	StaticShader();
+	TerrainShader();
 	void loadTransformationMatrix(glm::mat4 matrix);
 	void loadProjectionMatrix(glm::mat4 matrix);
-	void loadViewMatrix(Camera *camera);
-	void loadLight(Light *light);
+	void loadViewMatrix(Camera* camera);
+	void loadLight(Light* light);
 	void loadShineVariables(GLfloat damper, GLfloat reflectivity);
 protected:
 	void bindAttributes();

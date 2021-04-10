@@ -41,8 +41,7 @@ int main(){
 	if (!glfwInit()) { return fatalError("[ERROR] - Initialise GLFW failed"); }
 
 	//Window creation
-	std::unique_ptr<DisplayManager> display(new DisplayManager);
-	display->createDisplay();
+	DisplayManager::createDisplay();
 
 	//Init GLEW
 	glewExperimental = GL_TRUE;
@@ -50,7 +49,7 @@ int main(){
 
 	//create loading stuff
 	std::unique_ptr<Loader> loader(new Loader());
-	std::unique_ptr<MasterRenderer> renderer(new MasterRenderer(display.get()));
+	std::unique_ptr<MasterRenderer> renderer(new MasterRenderer());
 
 	//loading files assets (time loading calculation implemented)
 	auto start = std::chrono::high_resolution_clock::now();
@@ -67,9 +66,8 @@ int main(){
 	//create ingame entity from assets
 	std::unique_ptr<TexturedModel> texturedModel(new TexturedModel(model.get(), texture.get()));
 	std::unique_ptr<Entity> entity(new Entity(texturedModel.get(), glm::vec3(0, -5, -20), 0, 0, 0, 1));
-	std::unique_ptr<Entity> entity2(new Entity(texturedModel.get(), glm::vec3(0, -7, -17), 0, 0, 0, 1));
 	std::unique_ptr<Light> light(new Light(glm::vec3(0, 0, 1), glm::vec3(1,1,1)));
-	std::unique_ptr<Camera> camera(new Camera(display.get()));
+	std::unique_ptr<Camera> camera(new Camera());
 
 	while (true)
 	{
@@ -81,21 +79,20 @@ int main(){
 
 		//render stuff
 		renderer->processEntity(entity.get());
-		renderer->processEntity(entity2.get());
 		renderer->render(light.get(), camera.get());
 
 		//update
-		display->updateDisplay();
-		display->showFPS();
+		DisplayManager::updateDisplay();
+		DisplayManager::showFPS();
 
 		//close condition (thread breaker)
-		if (glfwWindowShouldClose(display->window) || glfwGetKey(display->window, GLFW_KEY_ESCAPE)) { break; }
+		if (glfwWindowShouldClose(DisplayManager::getDisplay()) || glfwGetKey(DisplayManager::getDisplay(), GLFW_KEY_ESCAPE)) { break; }
 	}
 
 	//exit stuff
 	renderer->cleanUp();
 	loader->cleanUp();
-	display->closeDisplay();
+	DisplayManager::closeDisplay();
 	glfwTerminate();
 	return EXIT_SUCCESS;
 }

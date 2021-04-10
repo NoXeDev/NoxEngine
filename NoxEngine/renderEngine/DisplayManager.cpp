@@ -7,6 +7,9 @@
 double lastTime;
 int nbFrames;
 
+const GLint WIDTH = 1920, HEIGHT = 1080;
+GLFWwindow* window;
+
 int DisplayManager::createDisplay()
 {
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -16,7 +19,7 @@ int DisplayManager::createDisplay()
 	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 	glfwWindowHint(GLFW_SAMPLES, 4);
 
-	this->window = glfwCreateWindow(this->WIDTH, this->HEIGHT, this->NAME, 
+	window = glfwCreateWindow(WIDTH, HEIGHT, GAME_NAME,
 #if _DEBUG
 		nullptr
 #else
@@ -25,24 +28,29 @@ int DisplayManager::createDisplay()
 		, nullptr);
 
 	int screenWidth, screenHeight;
-	glfwGetFramebufferSize(this->window, &screenWidth, &screenHeight);
+	glfwGetFramebufferSize(window, &screenWidth, &screenHeight);
 	
 
-	if (this->window == nullptr) { return NOXENGINE_FATAL_WINDOW_CREATE; }
+	if (window == nullptr) { return NOXENGINE_FATAL_WINDOW_CREATE; }
 
-	glfwMakeContextCurrent(this->window);
+	glfwMakeContextCurrent(window);
 	glViewport(0, 0, screenWidth, screenHeight);
 	return 0;
 }
 
+GLFWwindow* DisplayManager::getDisplay()
+{
+	return window;
+}
+
 void DisplayManager::updateDisplay()
 {
-	glfwSwapBuffers(this->window);
+	glfwSwapBuffers(window);
 }
 
 void DisplayManager::closeDisplay()
 {
-	glfwDestroyWindow(this->window);
+	glfwDestroyWindow(window);
 }
 
 void DisplayManager::showFPS()
@@ -58,7 +66,7 @@ void DisplayManager::showFPS()
          std::stringstream ss;
          ss << GAME_NAME << " " << GAME_VERSION << " [" << fps << " FPS]";
 
-         glfwSetWindowTitle(this->window, ss.str().c_str());
+         glfwSetWindowTitle(window, ss.str().c_str());
 
          nbFrames = 0;
          lastTime = currentTime;
@@ -68,13 +76,13 @@ void DisplayManager::showFPS()
 int DisplayManager::getWidth()
 {
 	int width;
-	glfwGetWindowSize(this->window, &width, nullptr);
+	glfwGetWindowSize(window, &width, nullptr);
 	return width;
 }
 
 int DisplayManager::getHeight()
 {
 	int height;
-	glfwGetWindowSize(this->window, nullptr, &height);
+	glfwGetWindowSize(window, nullptr, &height);
 	return height;
 }

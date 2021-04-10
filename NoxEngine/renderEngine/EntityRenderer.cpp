@@ -1,4 +1,4 @@
-#include "Renderer.h"
+#include "EntityRenderer.h"
 #include "../entities/Entity.h"
 #include "../shaders/StaticShader.h"
 #include "../utils/Maths.h"
@@ -9,29 +9,15 @@
 #include <gtc/matrix_transform.hpp>
 #include <glfw3.h>
 
-const float FOV = 70;
-const float NEAR_PLANE = 0.1f;
-const float FAR_PLANE = 1000;
-
-Renderer::Renderer(DisplayManager* display, StaticShader *shader)
+EntityRenderer::EntityRenderer(StaticShader *shader, glm::mat4 projectionMatrix)
 {
 	this->shader = shader;
-	glEnable(GL_CULL_FACE);
-	glCullFace(GL_BACK);
-	this->createProjectionMatrix(display);
 	shader->start();
-	shader->loadProjectionMatrix(this->projectionMatrix);
+	shader->loadProjectionMatrix(projectionMatrix);
 	shader->stop();
 }
 
-void Renderer::prepare()
-{
-	glEnable(GL_DEPTH_TEST);
-	glClearColor(0, 0, 0, 1);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-}
-
-void Renderer::render(std::unordered_map<TexturedModel*, std::vector<Entity*>> entities)
+void EntityRenderer::render(std::unordered_map<TexturedModel*, std::vector<Entity*>> entities)
 {
 	for (std::pair<TexturedModel*, std::vector<Entity*>> iter : entities)
 	{
@@ -45,7 +31,7 @@ void Renderer::render(std::unordered_map<TexturedModel*, std::vector<Entity*>> e
 	}
 }
 
-void Renderer::prepareTexturedModel(TexturedModel* model)
+void EntityRenderer::prepareTexturedModel(TexturedModel* model)
 {
 	RawModel rawModel = model->getRawModel();
 	glBindVertexArray(rawModel.getVaoID());
@@ -58,7 +44,7 @@ void Renderer::prepareTexturedModel(TexturedModel* model)
 	glBindTexture(GL_TEXTURE_2D, model->getTexture().getID());
 }
 
-void Renderer::unbindTexturedModel()
+void EntityRenderer::unbindTexturedModel()
 {
 	glDisableVertexAttribArray(0);
 	glDisableVertexAttribArray(1);
@@ -66,14 +52,8 @@ void Renderer::unbindTexturedModel()
 	glBindVertexArray(0);
 }
 
-void Renderer::prepareInstance(Entity* entity)
+void EntityRenderer::prepareInstance(Entity* entity)
 {
 	glm::mat4 transformationMatrix = Maths::createTransformationMatrix(entity->getPosition(), entity->getRotX(), entity->getRotY(), entity->getRotZ(), entity->getScale());
-	shader->loadTransformationMatrix(transformationMatrix);
-}
-
-void Renderer::createProjectionMatrix(DisplayManager* display)
-{
-	float aspectRatio = (float)display->getWidth() / (float)display->getHeight();
-	projectionMatrix = glm::perspective(FOV, aspectRatio, NEAR_PLANE, FAR_PLANE);
+	this->shader->loadTransformationMatrix(transformationMatrix);
 }

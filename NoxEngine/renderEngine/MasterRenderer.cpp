@@ -1,14 +1,21 @@
 #include "MasterRenderer.h"
 
-MasterRenderer::MasterRenderer(DisplayManager* display)
+const float FOV = 70;
+const float NEAR_PLANE = 0.1f;
+const float FAR_PLANE = 1000;
+
+MasterRenderer::MasterRenderer()
 {
+	glEnable(GL_CULL_FACE);
+	glCullFace(GL_BACK);
 	this->shader->create();
-	this->renderer = new Renderer(display, this->shader);
+	this->createProjectionMatrix();
+	this->renderer = new EntityRenderer(this->shader, this->projectionMatrix);
 }
 
 void MasterRenderer::render(Light* sun, Camera* camera)
 {
-	this->renderer->prepare();
+	this->prepare();
 	this->shader->start();
 	this->shader->loadLight(sun);
 	this->shader->loadViewMatrix(camera);
@@ -44,4 +51,17 @@ void MasterRenderer::processEntity(Entity *entity)
 		newBatch.push_back(entity);
 		this->entities.insert({ entityModel, newBatch });
 	}
+}
+
+void MasterRenderer::prepare()
+{
+	glEnable(GL_DEPTH_TEST);
+	glClearColor(0, 0, 0, 1);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+}
+
+void MasterRenderer::createProjectionMatrix()
+{
+	float aspectRatio = (float)DisplayManager::getWidth() / (float)DisplayManager::getHeight();
+	this->projectionMatrix = glm::perspective(FOV, aspectRatio, NEAR_PLANE, FAR_PLANE);
 }

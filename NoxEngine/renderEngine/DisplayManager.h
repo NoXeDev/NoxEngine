@@ -3,15 +3,12 @@
 class DisplayManager
 {
 public:
-	GLFWwindow* window = nullptr;
-	int createDisplay();
-	void updateDisplay();
-	void closeDisplay();
-	void showFPS();
-	int getWidth();
-	int getHeight();
-private:
-	const GLint WIDTH = 1920, HEIGHT = 1080;
-	const char *NAME = "NoxEngine";
+	static int createDisplay();
+	static void updateDisplay();
+	static void closeDisplay();
+	static GLFWwindow* getDisplay();
+	static void showFPS();
+	static int getWidth();
+	static int getHeight();
 };
 

@@ -1,29 +1,24 @@
 #include "Camera.h"
 #include <glfw3.h>
 
-Camera::Camera(DisplayManager* display)
-{
-	this->display = display;
-}
-
 void Camera::move()
 {
-	if (glfwGetKey(this->display->window, GLFW_KEY_W)) {
+	if (glfwGetKey(DisplayManager::getDisplay(), GLFW_KEY_W)) {
 		position.z -= 0.02f;
 	}
-	if (glfwGetKey(this->display->window, GLFW_KEY_D)) {
+	if (glfwGetKey(DisplayManager::getDisplay(), GLFW_KEY_D)) {
 		position.x += 0.02f;
 	}
-	if (glfwGetKey(this->display->window, GLFW_KEY_A)) {
+	if (glfwGetKey(DisplayManager::getDisplay(), GLFW_KEY_A)) {
 		position.x -= 0.02f;
 	}
-	if (glfwGetKey(this->display->window, GLFW_KEY_S)) {
+	if (glfwGetKey(DisplayManager::getDisplay(), GLFW_KEY_S)) {
 		position.z += 0.02f;
 	}
-	if (glfwGetKey(this->display->window, GLFW_KEY_SPACE)) {
+	if (glfwGetKey(DisplayManager::getDisplay(), GLFW_KEY_SPACE)) {
 		position.y += 0.02f;
 	}
-	if (glfwGetKey(this->display->window, GLFW_KEY_LEFT_CONTROL)) {
+	if (glfwGetKey(DisplayManager::getDisplay(), GLFW_KEY_LEFT_CONTROL)) {
 		position.y -= 0.02f;
 	}
 }

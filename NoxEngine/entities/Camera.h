@@ -10,7 +10,6 @@ private:
 	float roll = 0;
 	DisplayManager *display;
 public:
-	Camera(DisplayManager *display);
 	void move();
 	glm::vec3 getPosition();
 	float getPitch();

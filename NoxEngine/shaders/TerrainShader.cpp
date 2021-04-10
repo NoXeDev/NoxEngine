@@ -1,22 +1,21 @@
-#include "StaticShader.h"
+#include "TerrainShader.h"
 
+const char* VERTEX_FILE = "./shaders/terrainVertexShader.glsl";
+const char* FRAGMENT_FILE = "./shaders/terrainFragmentShader.glsl";
 
-const char* VERTEX_FILE = "./shaders/vertexShader.glsl";
-const char* FRAGMENT_FILE = "./shaders/fragmentShader.glsl";
-
-StaticShader::StaticShader() :ShaderProgram(VERTEX_FILE, FRAGMENT_FILE)
+TerrainShader::TerrainShader() :ShaderProgram(VERTEX_FILE, FRAGMENT_FILE)
 {
 
 }
 
-void StaticShader::bindAttributes()
+void TerrainShader::bindAttributes()
 {
 	this->bindAttribute(0, "position");
 	this->bindAttribute(1, "textureCoords");
 	this->bindAttribute(2, "normal");
 }
 
-void StaticShader::getAllUniformLocations()
+void TerrainShader::getAllUniformLocations()
 {
 	this->location_transformationMatrix = this->getUniformLocation("transformationMatrix");
 	this->location_projectionMatrix = this->getUniformLocation("projectionMatrix");
@@ -27,30 +26,30 @@ void StaticShader::getAllUniformLocations()
 	this->location_reflectivity = this->getUniformLocation("reflectivity");
 }
 
-void StaticShader::loadTransformationMatrix(glm::mat4 matrix)
+void TerrainShader::loadTransformationMatrix(glm::mat4 matrix)
 {
 	this->loadMatrix(location_transformationMatrix, matrix);
 }
 
-void StaticShader::loadLight(Light* light)
+void TerrainShader::loadLight(Light* light)
 {
 	this->loadVector(location_lightPosition, light->getPositions());
 	this->loadVector(location_lightColour, light->getColour());
 }
 
-void StaticShader::loadShineVariables(GLfloat damper, GLfloat reflectivity)
+void TerrainShader::loadShineVariables(GLfloat damper, GLfloat reflectivity)
 {
 	this->loadFloat(this->location_shineDamper, damper);
 	this->loadFloat(this->location_reflectivity, reflectivity);
 }
 
 
-void StaticShader::loadProjectionMatrix(glm::mat4 matrix)
+void TerrainShader::loadProjectionMatrix(glm::mat4 matrix)
 {
 	this->loadMatrix(location_projectionMatrix, matrix);
 }
 
-void StaticShader::loadViewMatrix(Camera* camera)
+void TerrainShader::loadViewMatrix(Camera* camera)
 {
 	glm::mat4 viewMatrix = Maths::createViewMatrix(camera);
 	this->loadMatrix(location_viewMatrix, viewMatrix);

@@ -152,6 +152,8 @@
     <ClCompile Include="entities\Light.cpp" />
     <ClCompile Include="renderEngine\MasterRenderer.cpp" />
     <ClCompile Include="renderEngine\NMloader.cpp" />
+    <ClCompile Include="shaders\TerrainShader.cpp" />
+    <ClCompile Include="terrain\Terrain.cpp" />
     <ClCompile Include="utils\Maths.cpp" />
     <ClCompile Include="model\TexturedModel.cpp" />
     <ClCompile Include="textures\ModelTexture.cpp" />
@@ -159,7 +161,7 @@
     <ClCompile Include="model\RawModel.cpp" />
     <ClCompile Include="renderEngine\DisplayManager.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="renderEngine\Renderer.cpp" />
+    <ClCompile Include="renderEngine\EntityRenderer.cpp" />
     <ClCompile Include="shaders\ShaderProgram.cpp" />
     <ClCompile Include="shaders\StaticShader.cpp" />
   </ItemGroup>
@@ -170,18 +172,22 @@
     <ClInclude Include="entities\Light.h" />
     <ClInclude Include="renderEngine\MasterRenderer.h" />
     <ClInclude Include="renderEngine\NMloader.h" />
+    <ClInclude Include="shaders\TerrainShader.h" />
+    <ClInclude Include="terrain\Terrain.h" />
     <ClInclude Include="utils\Maths.h" />
     <ClInclude Include="model\TexturedModel.h" />
     <ClInclude Include="textures\ModelTexture.h" />
     <ClInclude Include="renderEngine\Loader.h" />
     <ClInclude Include="model\RawModel.h" />
     <ClInclude Include="renderEngine\DisplayManager.h" />
-    <ClInclude Include="renderEngine\Renderer.h" />
+    <ClInclude Include="renderEngine\EntityRenderer.h" />
     <ClInclude Include="shaders\ShaderProgram.h" />
     <ClInclude Include="shaders\StaticShader.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders\fragmentShader.glsl" />
+    <None Include="shaders\terrainFragmentShader.glsl" />
+    <None Include="shaders\terrainVertexShader.glsl" />
     <None Include="shaders\vertexShader.glsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

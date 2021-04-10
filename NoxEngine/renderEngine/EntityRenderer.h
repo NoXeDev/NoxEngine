@@ -11,15 +11,12 @@
 #include "../shaders/StaticShader.h"
 #include "../renderEngine/DisplayManager.h"
 
-class Renderer
+class EntityRenderer
 {
 public:
-	Renderer(DisplayManager* display, StaticShader* shader);
-	void prepare();
+	EntityRenderer(StaticShader* shader, glm::mat4 projectionMatrix);
 	void render(std::unordered_map < TexturedModel*, std::vector<Entity*>> entities);
 private:
-	glm::mat4 projectionMatrix;
-	void createProjectionMatrix(DisplayManager *display);
 	StaticShader *shader;
 	void prepareTexturedModel(TexturedModel* model);
 	void unbindTexturedModel();
