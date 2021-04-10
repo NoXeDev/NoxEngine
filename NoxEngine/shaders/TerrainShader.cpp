@@ -1,9 +1,9 @@
 #include "TerrainShader.h"
 
-const char* VERTEX_FILE = "./shaders/terrainVertexShader.glsl";
-const char* FRAGMENT_FILE = "./shaders/terrainFragmentShader.glsl";
+const char* TERRAIN_VERTEX_FILE = "./shaders/terrainVertexShader.glsl";
+const char* TERRAIN_FRAGMENT_FILE = "./shaders/terrainFragmentShader.glsl";
 
-TerrainShader::TerrainShader() :ShaderProgram(VERTEX_FILE, FRAGMENT_FILE)
+TerrainShader::TerrainShader() :ShaderProgram(TERRAIN_VERTEX_FILE, TERRAIN_FRAGMENT_FILE)
 {
 
 }
