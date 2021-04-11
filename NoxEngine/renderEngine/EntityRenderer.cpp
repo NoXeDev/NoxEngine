@@ -21,27 +21,27 @@ void EntityRenderer::render(std::unordered_map<TexturedModel*, std::vector<Entit
 {
 	for (std::pair<TexturedModel*, std::vector<Entity*>> iter : entities)
 	{
-		prepareTexturedModel(iter.first);
+		this->prepareTexturedModel(iter.first);
 		std::vector<Entity*> batch = iter.second;
 		for (Entity* entity : batch) {
-			prepareInstance(entity);
-			glDrawElements(GL_TRIANGLES, iter.first->getRawModel().getVertexCount(), GL_UNSIGNED_INT, 0);
+			this->prepareInstance(entity);
+			glDrawElements(GL_TRIANGLES, iter.first->getRawModel()->getVertexCount(), GL_UNSIGNED_INT, 0);
 		}
-		unbindTexturedModel();
+		this->unbindTexturedModel();
 	}
 }
 
 void EntityRenderer::prepareTexturedModel(TexturedModel* model)
 {
-	RawModel rawModel = model->getRawModel();
-	glBindVertexArray(rawModel.getVaoID());
+	RawModel *rawModel = model->getRawModel();
+	glBindVertexArray(rawModel->getVaoID());
 	glEnableVertexAttribArray(0);
 	glEnableVertexAttribArray(1);
 	glEnableVertexAttribArray(2);
-	ModelTexture texture = model->getTexture();
-	this->shader->loadShineVariables(texture.getShineDamper(), texture.getReflectivity());
+	ModelTexture* texture = model->getTexture();
+	this->shader->loadShineVariables(texture->getShineDamper(), texture->getReflectivity());
 	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, model->getTexture().getID());
+	glBindTexture(GL_TEXTURE_2D, texture->getID());
 }
 
 void EntityRenderer::unbindTexturedModel()

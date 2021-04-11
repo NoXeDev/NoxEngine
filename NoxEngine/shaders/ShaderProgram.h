@@ -1,11 +1,12 @@
 #pragma once
 #include <glew.h>
 #include <glm.hpp>
+#include <string>
 
 class ShaderProgram
 {
 public:
-	ShaderProgram(const char* vertexFile, const char* fragmentFile);
+	ShaderProgram(std::string shaderName);
 	void create();
 	void start();
 	void stop();

@@ -1,4 +1,5 @@
 #include "Terrain.h"
+#include <iostream>
 
 Terrain::Terrain(int gridX, int gridZ, Loader* loader, ModelTexture* texture)
 {
@@ -11,11 +12,12 @@ Terrain::Terrain(int gridX, int gridZ, Loader* loader, ModelTexture* texture)
 
 RawModel* Terrain::generateTerrain(Loader* loader)
 {
-	int count = this->VERTEX_COUNT * this->VERTEX_COUNT;
-	float* vertices = new float[count * 3];
-	float* normals = new float[count * 3];
-	float* textureCoords = new float[count * 2];
-	int* indices = new int[6 * (VERTEX_COUNT - 1) * (VERTEX_COUNT - 1)];
+	const int count = this->VERTEX_COUNT * this->VERTEX_COUNT;
+	std::vector<float> vertices(count * 3);
+	std::vector<float> normals(count * 3);
+	std::vector<float> textureCoords(count * 2);
+	std::vector<int> indices(6 * (VERTEX_COUNT - 1) * (VERTEX_COUNT - 1));
+
 
 	int vertexPointer = 0;
 	for (int i = 0; i < VERTEX_COUNT; i++)
@@ -48,7 +50,8 @@ RawModel* Terrain::generateTerrain(Loader* loader)
 			indices[pointer++] = bottomRight;
 		}
 	}
-	return loader->loadToVAO(vertices, sizeof(*vertices), textureCoords, sizeof(*textureCoords), normals, sizeof(*normals), indices, sizeof(*indices), 6 * (VERTEX_COUNT - 1) * (VERTEX_COUNT - 1));
+	std::cout << vertices.size()*sizeof(float) << std::endl;
+	return loader->loadToVAO(&vertices[0], vertices.size() * sizeof(float), &textureCoords[0], textureCoords.size() * sizeof(float), &normals[0], normals.size() * sizeof(float), &indices[0], indices.size() * sizeof(float), indices.size());
 }
 
 RawModel* Terrain::getModel()

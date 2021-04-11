@@ -13,4 +13,3 @@ private:
 	glm::vec3 positions;
 	glm::vec3 colour;
 };
-

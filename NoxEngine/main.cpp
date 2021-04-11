@@ -65,19 +65,26 @@ int main(){
 
 	//create ingame entity from assets
 	std::unique_ptr<TexturedModel> texturedModel(new TexturedModel(model.get(), texture.get()));
-	std::unique_ptr<Entity> entity(new Entity(texturedModel.get(), glm::vec3(0, -5, -20), 0, 0, 0, 1));
-	std::unique_ptr<Light> light(new Light(glm::vec3(0, 0, 1), glm::vec3(1,1,1)));
-	std::unique_ptr<Camera> camera(new Camera());
+	std::unique_ptr<Entity> entity(new Entity(texturedModel.get(), glm::vec3(100, 0, 100), 0, 0, 0, 1));
+	std::unique_ptr<Light> light(new Light(glm::vec3(2000, 2000, 2000), glm::vec3(1,1,1)));
+	std::unique_ptr<Camera> camera(new Camera(glm::vec3(100, 8, 146)));
+
+	std::unique_ptr<Terrain> terrain(new Terrain(0, 0, loader.get(), new ModelTexture(loader->loadTexture("res/grass.png"))));
+	std::unique_ptr<Terrain> terrain2(new Terrain(1, 0, loader.get(), new ModelTexture(loader->loadTexture("res/grass.png"))));
 
 	while (true)
 	{
 		//Poll Events
 		glfwPollEvents();
 
-		//entity->increaseRotation(0, 1, 0);
+		//entity->increasePosition(0.2f, 0, 0);
 		camera->move();
 
+		std::cout << "x : " << camera->getPosition().x << " y : " << camera->getPosition().y << " z : " << camera->getPosition().z << std::endl;
+
 		//render stuff
+		renderer->processTerrain(terrain.get());
+		renderer->processTerrain(terrain2.get());
 		renderer->processEntity(entity.get());
 		renderer->render(light.get(), camera.get());
 

@@ -1,10 +1,6 @@
 #include "StaticShader.h"
 
-
-const char* VERTEX_FILE = "./shaders/vertexShader.glsl";
-const char* FRAGMENT_FILE = "./shaders/fragmentShader.glsl";
-
-StaticShader::StaticShader() :ShaderProgram(VERTEX_FILE, FRAGMENT_FILE)
+StaticShader::StaticShader() :ShaderProgram("static")
 {
 
 }

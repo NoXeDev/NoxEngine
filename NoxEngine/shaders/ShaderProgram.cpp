@@ -6,12 +6,22 @@
 #include <vector>
 #include <glm.hpp>
 #include <gtc/type_ptr.hpp>
+#include <string>
 
+std::string basePath = "./res/shaders/";
 
-ShaderProgram::ShaderProgram(const char* vertexFile, const char* fragmentFile)
+ShaderProgram::ShaderProgram(std::string shaderName)
 {
-	this->vertexShaderID = this->loadShader(vertexFile, GL_VERTEX_SHADER);
-	this->fragmentShaderID = this->loadShader(fragmentFile, GL_FRAGMENT_SHADER);
+	std::string vertex = basePath + shaderName + ".vshad.glsl";
+	std::string fragment = basePath + shaderName + ".fshad.glsl";
+	std::vector<char> vertexChar(vertex.begin(), vertex.end());
+	std::vector<char> fragmentChar(fragment.begin(), fragment.end());
+
+	vertexChar.push_back('\0');
+	fragmentChar.push_back('\0');
+
+	this->vertexShaderID = this->loadShader(&vertexChar[0], GL_VERTEX_SHADER);
+	this->fragmentShaderID = this->loadShader(&fragmentChar[0], GL_FRAGMENT_SHADER);
 }
 
 void ShaderProgram::create()

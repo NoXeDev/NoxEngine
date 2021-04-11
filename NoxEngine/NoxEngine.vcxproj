@@ -153,6 +153,7 @@
     <ClCompile Include="renderEngine\MasterRenderer.cpp" />
     <ClCompile Include="renderEngine\NMloader.cpp" />
     <ClCompile Include="shaders\TerrainShader.cpp" />
+    <ClCompile Include="renderEngine\TerrainRenderer.cpp" />
     <ClCompile Include="terrain\Terrain.cpp" />
     <ClCompile Include="utils\Maths.cpp" />
     <ClCompile Include="model\TexturedModel.cpp" />
@@ -173,6 +174,7 @@
     <ClInclude Include="renderEngine\MasterRenderer.h" />
     <ClInclude Include="renderEngine\NMloader.h" />
     <ClInclude Include="shaders\TerrainShader.h" />
+    <ClInclude Include="renderEngine\TerrainRenderer.h" />
     <ClInclude Include="terrain\Terrain.h" />
     <ClInclude Include="utils\Maths.h" />
     <ClInclude Include="model\TexturedModel.h" />
@@ -183,12 +185,6 @@
     <ClInclude Include="renderEngine\EntityRenderer.h" />
     <ClInclude Include="shaders\ShaderProgram.h" />
     <ClInclude Include="shaders\StaticShader.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="shaders\fragmentShader.glsl" />
-    <None Include="shaders\terrainFragmentShader.glsl" />
-    <None Include="shaders\terrainVertexShader.glsl" />
-    <None Include="shaders\vertexShader.glsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

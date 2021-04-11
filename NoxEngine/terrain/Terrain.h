@@ -16,12 +16,12 @@ private:
 
 	RawModel* generateTerrain(Loader* loader);
 
+public:
+	Terrain(int gridX, int gridZ, Loader *loader, ModelTexture *texture);
+
 	RawModel* getModel();
 	ModelTexture* getTexture();
 	float getX();
 	float getZ();
-
-public:
-	Terrain(int gridX, int gridZ, Loader *loader, ModelTexture *texture);
 };
 

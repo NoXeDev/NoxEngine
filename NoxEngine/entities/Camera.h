@@ -4,12 +4,13 @@
 class Camera
 {
 private:
-	glm::vec3 position = glm::vec3(0, 0, 0);
+	glm::vec3 positions;
 	float pitch = 0;
 	float yaw = 0;
 	float roll = 0;
 	DisplayManager *display;
 public:
+	Camera(glm::vec3 positions);
 	void move();
 	glm::vec3 getPosition();
 	float getPitch();

@@ -66,6 +66,9 @@
     <ClCompile Include="shaders\TerrainShader.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
+    <ClCompile Include="renderEngine\TerrainRenderer.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="renderEngine\DisplayManager.h">
@@ -119,11 +122,8 @@
     <ClInclude Include="shaders\TerrainShader.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="shaders\vertexShader.glsl" />
-    <None Include="shaders\fragmentShader.glsl" />
-    <None Include="shaders\terrainFragmentShader.glsl" />
-    <None Include="shaders\terrainVertexShader.glsl" />
+    <ClInclude Include="renderEngine\TerrainRenderer.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
