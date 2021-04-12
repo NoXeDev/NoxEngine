@@ -8,7 +8,6 @@ private:
 	float pitch = 0;
 	float yaw = 0;
 	float roll = 0;
-	DisplayManager *display;
 public:
 	Camera(glm::vec3 positions);
 	void move();
