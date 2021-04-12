@@ -53,8 +53,8 @@ int main(){
 
 	//loading files assets (time loading calculation implemented)
 	auto start = std::chrono::high_resolution_clock::now();
-	std::unique_ptr<RawModel> model(NMloader::loadNMmodel("res/dragon.nm", loader.get()));
-	std::unique_ptr<ModelTexture> texture(new ModelTexture(loader->loadTexture("res/stallTexture.png")));
+	std::unique_ptr<RawModel> model(NMloader::loadNMmodel("res/models/dragon.nm", loader.get()));
+	std::unique_ptr<ModelTexture> texture(new ModelTexture(loader->loadTexture("res/materials/stallTexture.png")));
 	auto stop = std::chrono::high_resolution_clock::now();
 	auto duration = std::chrono::duration_cast<std::chrono::microseconds>(stop - start);
 	std::cout << "Loading time : " << (float)duration.count() / 1000000 << "'s" << std::endl;
@@ -65,12 +65,14 @@ int main(){
 
 	//create ingame entity from assets
 	std::unique_ptr<TexturedModel> texturedModel(new TexturedModel(model.get(), texture.get()));
+
 	std::unique_ptr<Entity> entity(new Entity(texturedModel.get(), glm::vec3(100, 0, 100), 0, 0, 0, 1));
+
 	std::unique_ptr<Light> light(new Light(glm::vec3(2000, 2000, 2000), glm::vec3(1,1,1)));
 	std::unique_ptr<Camera> camera(new Camera(glm::vec3(100, 8, 146)));
 
-	std::unique_ptr<Terrain> terrain(new Terrain(0, 0, loader.get(), new ModelTexture(loader->loadTexture("res/grass.png"))));
-	std::unique_ptr<Terrain> terrain2(new Terrain(1, 0, loader.get(), new ModelTexture(loader->loadTexture("res/grass.png"))));
+	std::unique_ptr<Terrain> terrain(new Terrain(0, 0, loader.get(), new ModelTexture(loader->loadTexture("res/materials/grass.png"))));
+	std::unique_ptr<Terrain> terrain2(new Terrain(1, 0, loader.get(), new ModelTexture(loader->loadTexture("res/materials/grass.png"))));
 
 	while (true)
 	{
