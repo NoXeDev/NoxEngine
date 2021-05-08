@@ -19,13 +19,7 @@ int DisplayManager::createDisplay()
 	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 	glfwWindowHint(GLFW_SAMPLES, 4);
 
-	window = glfwCreateWindow(WIDTH, HEIGHT, GAME_NAME,
-#if _DEBUG
-		nullptr
-#else
-		glfwGetPrimaryMonitor()
-#endif
-		, nullptr);
+	window = glfwCreateWindow(WIDTH, HEIGHT, GAME_NAME, nullptr, nullptr);
 
 	int screenWidth, screenHeight;
 	glfwGetFramebufferSize(window, &screenWidth, &screenHeight);

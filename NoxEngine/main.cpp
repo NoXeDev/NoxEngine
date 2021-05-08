@@ -1,12 +1,11 @@
 #include <iostream>
-#include <Windows.h>
-
 
 #include <glew.h>
 #include <glfw3.h>
 #include <array>
 #include <fstream>
 #include <chrono>
+#include <memory>
 
 #include "renderEngine/DisplayManager.h"
 #include "renderEngine/Loader.h"
@@ -19,12 +18,6 @@
 #include "entities/Light.h"
 #include "renderEngine/MasterRenderer.h"
 
-float readfloat(FILE* f) {
-	float v;
-	fread((void*)(&v), sizeof(v), 1, f);
-	return v;
-}
-
 int fatalError(const char* message) {
 	std::cout << message << std::endl;
 	glfwTerminate();
@@ -32,11 +25,7 @@ int fatalError(const char* message) {
 	return EXIT_FAILURE;
 }
 
-#if not _DEBUG
-int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPSTR lpCmdLine, _In_ int nCmdShow) {
-#else
 int main(){
-#endif
 	//Init GLFW 
 	if (!glfwInit()) { return fatalError("[ERROR] - Initialise GLFW failed"); }
 

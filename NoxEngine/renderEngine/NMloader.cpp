@@ -1,6 +1,7 @@
 #include "NMloader.h"
 #include <array>
 #include <glew.h>
+#include <math.h>
 
 const int HEADER_OFFSETS_SIZE = 4;
 std::vector<float> NMloader::readFloatArray(std::ifstream& file, int offsets)
