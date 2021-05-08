@@ -9,7 +9,7 @@ CXXFLAGS := $(INCLUDE) -std=c++17
 CPPFLAGS :=
 LDFLAGS := 
 
-SRCDIR := $(NAME)
+SRCDIR := src
 OBJDIR := out
 DIST := dist
 
