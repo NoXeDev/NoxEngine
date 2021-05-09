@@ -2,6 +2,7 @@
 #include "../entities/Entity.h"
 #include "../shaders/StaticShader.h"
 #include "../utils/Maths.h"
+#include "MasterRenderer.h"
 
 #include <glew.h>
 #include <iostream>
@@ -39,6 +40,11 @@ void EntityRenderer::prepareTexturedModel(TexturedModel* model)
 	glEnableVertexAttribArray(1);
 	glEnableVertexAttribArray(2);
 	ModelTexture* texture = model->getTexture();
+	if(texture->getTransparency())
+	{
+		MasterRenderer::disableCulling();
+	}
+	this->shader->loadFakeLightingVariable(texture->getFakeLighting());
 	this->shader->loadShineVariables(texture->getShineDamper(), texture->getReflectivity());
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, texture->getID());
@@ -46,6 +52,7 @@ void EntityRenderer::prepareTexturedModel(TexturedModel* model)
 
 void EntityRenderer::unbindTexturedModel()
 {
+	MasterRenderer::enableCulling();
 	glDisableVertexAttribArray(0);
 	glDisableVertexAttribArray(1);
 	glDisableVertexAttribArray(2);

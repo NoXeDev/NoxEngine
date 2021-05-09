@@ -52,11 +52,14 @@ prepare:
 	@ cp libs/GLEW/bin/Release/Win32/glew32.dll dist/glew32.dll
 	@ cp libs/GLFW/lib-static-ucrt/glfw3.dll dist/glfw3.dll
 	@ cp libs/SOIL2/lib/soil2.dll dist/soil2.dll
-# copy res folder into dist directory
-	@ cp -r test/res dist/res
-# copy shaders into dist directory
-	@ cp -r $(SRCDIR)/shaders/glsl dist/res/shaders
+# copy res folder into dist directory and root
+	@ cp -r test/res dist/
+	@ cp -r test/res .
+# copy shaders into dist directory and root
+	@ cp -r $(SRCDIR)/shaders/glsl dist/res/
+	@ cp -r $(SRCDIR)/shaders/glsl res/
 
 clean:
 	@ rm -r dist
 	@ rm -r out
+	@ rm -r res

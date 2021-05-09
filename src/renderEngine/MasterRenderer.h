@@ -36,5 +36,7 @@ public:
 	void processEntity(Entity *entity);
 	void processTerrain(Terrain* terrain);
 	void prepare();
+	static void enableCulling();
+	static void disableCulling();
 };
 

@@ -8,7 +8,7 @@
 #include <gtc/type_ptr.hpp>
 #include <string>
 
-std::string basePath = "./res/shaders/";
+std::string basePath = "./res/glsl/";
 
 ShaderProgram::ShaderProgram(std::string shaderName)
 {

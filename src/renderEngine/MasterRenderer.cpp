@@ -6,13 +6,23 @@ const float FAR_PLANE = 1000;
 
 MasterRenderer::MasterRenderer()
 {
-	glEnable(GL_CULL_FACE);
-	glCullFace(GL_BACK);
+	enableCulling();
 	this->shader->create();
 	this->terrainShader->create();
 	this->createProjectionMatrix();
 	this->renderer = new EntityRenderer(this->shader, this->projectionMatrix);
 	this->terrainRenderer = new TerrainRenderer(this->terrainShader, this->projectionMatrix);
+}
+
+void MasterRenderer::enableCulling()
+{
+	glEnable(GL_CULL_FACE);
+	glCullFace(GL_BACK);
+}
+
+void MasterRenderer::disableCulling()
+{
+	glDisable(GL_CULL_FACE);
 }
 
 void MasterRenderer::render(Light* sun, Camera* camera)

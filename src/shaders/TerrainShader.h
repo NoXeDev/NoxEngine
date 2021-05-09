@@ -18,12 +18,12 @@ protected:
 	void bindAttributes();
 	void getAllUniformLocations();
 private:
-	int location_transformationMatrix = NULL;
-	int location_projectionMatrix = NULL;
-	int location_viewMatrix = NULL;
-	int location_lightPosition = NULL;
-	int location_lightColour = NULL;
-	int location_shineDamper = NULL;
-	int location_reflectivity = NULL;
+	int location_transformationMatrix;
+	int location_projectionMatrix;
+	int location_viewMatrix;
+	int location_lightPosition;
+	int location_lightColour;
+	int location_shineDamper;
+	int location_reflectivity;
 };
 

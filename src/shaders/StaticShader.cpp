@@ -21,6 +21,12 @@ void StaticShader::getAllUniformLocations()
 	this->location_lightColour = this->getUniformLocation("lightColour");
 	this->location_shineDamper = this->getUniformLocation("shineDamper");
 	this->location_reflectivity = this->getUniformLocation("reflectivity");
+	this->location_useFakeLighting = this->getUniformLocation("useFakeLighting");
+}
+
+void StaticShader::loadFakeLightingVariable(GLboolean useFake)
+{
+	this->loadBoolean(location_useFakeLighting, useFake);
 }
 
 void StaticShader::loadTransformationMatrix(glm::mat4 matrix)
