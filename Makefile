@@ -11,12 +11,14 @@ ifndef config
   config=debug
 endif
 
+ifeq ($(config),release)
+  LDFLAGS += -Wl,--subsystem,windows
+  CXXFLAGS += -O3
+endif
+
 ifeq ($(config),debug)
   CXXFLAGS += -g
-endif
-CLEAN :=
-ifeq ($(config),release)
-  CLEAN := clean
+  CPPFLAGS += -Ddebug
 endif
 
 SRCDIR := src
@@ -32,7 +34,7 @@ rwildcard=$(foreach d,$(wildcard $(1:=/*)),$(call rwildcard,$d,$2) $(filter $(su
 SRC = $(call rwildcard,$(SRCDIR),*.cpp)          
 OBJS = $(patsubst $(SRCDIR)/%.cpp, $(OBJDIR)/%.o, $(SRC))
 
-all: $(CLEAN) $(OBJS) link prepare
+all: $(OBJS) link prepare
 
 $(OBJDIR)/%.o: $(SRCDIR)/%.cpp
 	@ echo !==== COMPILING ====!
@@ -42,7 +44,7 @@ $(OBJDIR)/%.o: $(SRCDIR)/%.cpp
 link: 
 	@ echo !==== LINKING ====!
 	@ mkdir -p $(DIST)
-	$(CXX) $(OBJS) $(LIBPATHS) $(LIBS) -o $(DIST)/$(NAME).exe
+	$(CXX) $(OBJS) $(LDFLAGS) $(LIBPATHS) $(LIBS) -o $(DIST)/$(NAME).exe
 
 prepare:
 	@ echo !==== PREPARE DIST ====!
