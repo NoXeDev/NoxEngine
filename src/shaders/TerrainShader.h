@@ -14,6 +14,7 @@ public:
 	void loadViewMatrix(Camera* camera);
 	void loadLight(Light* light);
 	void loadShineVariables(GLfloat damper, GLfloat reflectivity);
+	void loadSkyColour(float r, float g, float b);
 protected:
 	void bindAttributes();
 	void getAllUniformLocations();
@@ -25,5 +26,6 @@ private:
 	int location_lightColour;
 	int location_shineDamper;
 	int location_reflectivity;
+	int location_skyColour;
 };
 

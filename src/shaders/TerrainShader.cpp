@@ -21,6 +21,12 @@ void TerrainShader::getAllUniformLocations()
 	this->location_lightColour = this->getUniformLocation("lightColour");
 	this->location_shineDamper = this->getUniformLocation("shineDamper");
 	this->location_reflectivity = this->getUniformLocation("reflectivity");
+	this->location_skyColour = this->getUniformLocation("skyColour");
+}
+
+void TerrainShader::loadSkyColour(float r, float g, float b)
+{
+	this->loadVector(location_skyColour, glm::vec3(r,g,b));
 }
 
 void TerrainShader::loadTransformationMatrix(glm::mat4 matrix)

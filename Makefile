@@ -1,5 +1,4 @@
 NAME = NoxEngine
-WINDOWSSDK := ${ProgramFiles(x86)}\Microsoft SDKs\Windows\v7.1A\Lib
 
 INCLUDES := libs/GLEW/include/GL libs/GLFW/include/GLFW libs/GLM libs/SOIL2
 INCLUDE	:=	$(foreach dir,$(INCLUDES),-I$(CURDIR)/$(dir))

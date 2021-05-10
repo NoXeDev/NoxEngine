@@ -22,6 +22,12 @@ void StaticShader::getAllUniformLocations()
 	this->location_shineDamper = this->getUniformLocation("shineDamper");
 	this->location_reflectivity = this->getUniformLocation("reflectivity");
 	this->location_useFakeLighting = this->getUniformLocation("useFakeLighting");
+	this->location_skyColour = this->getUniformLocation("skyColour");
+}
+
+void StaticShader::loadSkyColour(float r, float g, float b)
+{
+	this->loadVector(location_skyColour, glm::vec3(r,g,b));
 }
 
 void StaticShader::loadFakeLightingVariable(GLboolean useFake)

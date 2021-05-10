@@ -61,13 +61,20 @@ int main(){
 	std::unique_ptr<TexturedModel> grassTexturedModel(new TexturedModel(grass.get(), grassTexture.get()));
 
 	std::unique_ptr<Entity> entity(new Entity(texturedModel.get(), glm::vec3(100, 0, 100), 0, 0, 0, 1));
-	std::unique_ptr<Entity> grassEntity(new Entity(grassTexturedModel.get(), glm::vec3(200, 0, 200), 0, 0, 0, 1));
+	//std::unique_ptr<Entity> grassEntity(new Entity(grassTexturedModel.get(), glm::vec3(200, 0, 200), 0, 0, 0, 1));
 
 	std::unique_ptr<Light> light(new Light(glm::vec3(2000, 2000, 2000), glm::vec3(1,1,1)));
 	std::unique_ptr<Camera> camera(new Camera(glm::vec3(100, 8, 146)));
 
 	std::unique_ptr<Terrain> terrain(new Terrain(0, 0, loader.get(), new ModelTexture(loader->loadTexture("res/materials/grass.png"))));
 	std::unique_ptr<Terrain> terrain2(new Terrain(1, 0, loader.get(), new ModelTexture(loader->loadTexture("res/materials/grass.png"))));
+
+	//registering random grass into a vector Entity
+	std::vector<std::unique_ptr<Entity>> grassList;
+	for(int i = 0; i < 10; i++)
+	{
+		grassList.push_back(std::unique_ptr<Entity> (new Entity(grassTexturedModel.get(), glm::vec3(110+i*(-3), 0, 110+i*2), 0, 0, 0, 1)));
+	}
 
 	while (true)
 	{
@@ -83,7 +90,10 @@ int main(){
 		renderer->processTerrain(terrain.get());
 		renderer->processTerrain(terrain2.get());
 		renderer->processEntity(entity.get());
-		renderer->processEntity(grassEntity.get());
+		for(int i = 0; i < grassList.size(); i++)
+		{
+			renderer->processEntity(grassList.at(i).get());
+		}
 		renderer->render(light.get(), camera.get());
 
 		//update

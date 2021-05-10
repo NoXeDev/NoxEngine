@@ -4,6 +4,8 @@ const float FOV = 70;
 const float NEAR_PLANE = 0.1f;
 const float FAR_PLANE = 1000;
 
+const glm::vec3 SKYRGB = glm::vec3(0.5f, 0.5f, 0.5f);
+
 MasterRenderer::MasterRenderer()
 {
 	enableCulling();
@@ -30,6 +32,7 @@ void MasterRenderer::render(Light* sun, Camera* camera)
 	this->prepare();
 	//rendering entities
 	this->shader->start();
+	this->shader->loadSkyColour(SKYRGB.x, SKYRGB.y, SKYRGB.z);
 	this->shader->loadLight(sun);
 	this->shader->loadViewMatrix(camera);
 
@@ -39,6 +42,7 @@ void MasterRenderer::render(Light* sun, Camera* camera)
 
 	//rendering terrains
 	this->terrainShader->start();
+	this->terrainShader->loadSkyColour(SKYRGB.x, SKYRGB.y, SKYRGB.z);
 	this->terrainShader->loadLight(sun);
 	this->terrainShader->loadViewMatrix(camera);
 
@@ -86,7 +90,7 @@ void MasterRenderer::processTerrain(Terrain* terrain)
 void MasterRenderer::prepare()
 {
 	glEnable(GL_DEPTH_TEST);
-	glClearColor(0, 0, 0, 1);
+	glClearColor(SKYRGB.x, SKYRGB.y, SKYRGB.z, 1);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 

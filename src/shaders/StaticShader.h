@@ -15,6 +15,7 @@ public:
 	void loadLight(Light *light);
 	void loadShineVariables(GLfloat damper, GLfloat reflectivity);
 	void loadFakeLightingVariable(GLboolean useFake);
+	void loadSkyColour(float r, float g, float b);
 protected:
 	void bindAttributes();
 	void getAllUniformLocations();
@@ -27,5 +28,6 @@ private:
 	int location_shineDamper;
 	int location_reflectivity;
 	int location_useFakeLighting;
+	int location_skyColour;
 };
 
