@@ -42,9 +42,8 @@ int main(){
 
 	//loading files assets (time loading calculation implemented)
 	auto start = std::chrono::high_resolution_clock::now();
-	std::unique_ptr<RawModel> model(NMloader::loadNMmodel("res/models/dragon.nm", loader.get()).at(0));
-	std::unique_ptr<RawModel> grass(NMloader::loadNMmodel("res/models/grass.nm", loader.get()).at(0));
-	std::unique_ptr<RawModel> squareModel(NMloader::loadNMmodel("res/models/square.nm", loader.get()).at(0));
+	std::unique_ptr<RawModel> model(NMloader::loadNMmodel("res/models/dragon.nm", loader.get()));
+	std::unique_ptr<RawModel> grass(NMloader::loadNMmodel("res/models/grass.nm", loader.get()));
 	std::unique_ptr<ModelTexture> texture(new ModelTexture(loader->loadTexture("res/materials/stallTexture.png")));
 	std::unique_ptr<ModelTexture> grassTexture(new ModelTexture(loader->loadTexture("res/materials/grassTexture.png")));
 	auto stop = std::chrono::high_resolution_clock::now();
@@ -60,13 +59,12 @@ int main(){
 	//create ingame entity from assets
 	std::unique_ptr<TexturedModel> texturedModel(new TexturedModel(model.get(), texture.get()));
 	std::unique_ptr<TexturedModel> grassTexturedModel(new TexturedModel(grass.get(), grassTexture.get()));
-	std::unique_ptr<TexturedModel> squareTextured(new TexturedModel(squareModel.get(), texture.get()));
 
 	std::unique_ptr<Entity> entity(new Entity(texturedModel.get(), glm::vec3(500, 0, 500), 0, 0, 0, 1));
 	//std::unique_ptr<Entity> grassEntity(new Entity(grassTexturedModel.get(), glm::vec3(200, 0, 200), 0, 0, 0, 1));
 
 	std::unique_ptr<Light> light(new Light(glm::vec3(2000, 2000, 2000), glm::vec3(1,1,1)));
-	std::unique_ptr<Camera> camera(new Camera(glm::vec3(500, 8, 550)));
+	std::unique_ptr<Camera> camera(new Camera(glm::vec3(100, 8, 146)));
 
 	std::unique_ptr<Terrain> terrain(new Terrain(0, 0, loader.get(), new ModelTexture(loader->loadTexture("res/materials/grass.png"))));
 	std::unique_ptr<Terrain> terrain2(new Terrain(1, 0, loader.get(), new ModelTexture(loader->loadTexture("res/materials/grass.png"))));
@@ -75,7 +73,7 @@ int main(){
 	std::vector<std::unique_ptr<Entity>> grassList;
 	for(int i = 0; i < 10; i++)
 	{
-		grassList.push_back(std::unique_ptr<Entity> (new Entity(grassTexturedModel.get(), glm::vec3(510+i*(-3), 0, 510+i*2), 0, 0, 0, 1)));
+		grassList.push_back(std::unique_ptr<Entity> (new Entity(grassTexturedModel.get(), glm::vec3(110+i*(-3), 0, 110+i*2), 0, 0, 0, 1)));
 	}
 
 	while (true)
@@ -86,7 +84,7 @@ int main(){
 		//entity->increasePosition(0.2f, 0, 0);
 		camera->move();
 
-		std::cout << "x : " << camera->getPosition().x << " y : " << camera->getPosition().y << " z : " << camera->getPosition().z << std::endl;
+		//std::cout << "x : " << camera->getPosition().x << " y : " << camera->getPosition().y << " z : " << camera->getPosition().z << std::endl;
 
 		//render stuff
 		renderer->processTerrain(terrain.get());
