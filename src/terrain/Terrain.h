@@ -2,6 +2,8 @@
 #include "../model/RawModel.h"
 #include "../textures/ModelTexture.h"
 #include "../renderEngine/Loader.h"
+#include "../textures/TerrainTexture.h"
+#include "../textures/TerrainTexturePack.h"
 class Terrain
 {
 private:
@@ -12,15 +14,17 @@ private:
 	float z;
 
 	RawModel *model;
-	ModelTexture *texture;
+	TerrainTexturePack *texturePack;
+	TerrainTexture *blendMap;
 
 	RawModel* generateTerrain(Loader* loader);
 
 public:
-	Terrain(int gridX, int gridZ, Loader *loader, ModelTexture *texture);
+	Terrain(int gridX, int gridZ, Loader *loader, TerrainTexturePack *texturePack, TerrainTexture *blendMap);
 
 	RawModel* getModel();
-	ModelTexture* getTexture();
+	TerrainTexturePack* getTexturePack();
+	TerrainTexture* getBlendMap();
 	float getX();
 	float getZ();
 };

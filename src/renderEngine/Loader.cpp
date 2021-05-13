@@ -41,7 +41,7 @@ int Loader::loadTexture(const char* filename)
 
 	unsigned char *texture = SOIL_load_image(filename, &width, &height, 0, SOIL_LOAD_RGBA);
 	if (texture == nullptr) {
-		std::cout << "Texture loading fatal error : " << filename << std::endl;
+		std::cout << "Texture loading fatal error : " << SOIL_last_result() << filename << std::endl;
 		exit(NOXENGINE_TEXTURE_LOAD_FAILED);
 	}
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture);

@@ -63,12 +63,19 @@ int main(){
 	std::unique_ptr<Entity> entity(new Entity(texturedModel.get(), glm::vec3(500, 0, 500), 0, 0, 0, 1));
 	//std::unique_ptr<Entity> grassEntity(new Entity(grassTexturedModel.get(), glm::vec3(200, 0, 200), 0, 0, 0, 1));
 
-	std::unique_ptr<Light> light(new Light(glm::vec3(2000, 2000, 2000), glm::vec3(1,1,1)));
+	std::unique_ptr<Light> light(new Light(glm::vec3(20000, 40000, 20000), glm::vec3(1,1,1)));
 	std::unique_ptr<Camera> camera(new Camera(glm::vec3(500, 8, 550)));
 
-	std::unique_ptr<Terrain> terrain(new Terrain(0, 0, loader.get(), new ModelTexture(loader->loadTexture("res/materials/grass.png"))));
-	std::unique_ptr<Terrain> terrain2(new Terrain(1, 0, loader.get(), new ModelTexture(loader->loadTexture("res/materials/grass.png"))));
+	std::unique_ptr<TerrainTexture> backgroundTexture(new TerrainTexture(loader->loadTexture("res/materials/grass.png")));
+	std::unique_ptr<TerrainTexture> rTexture(new TerrainTexture(loader->loadTexture("res/materials/dirt.png")));
+	std::unique_ptr<TerrainTexture> gTexture(new TerrainTexture(loader->loadTexture("res/materials/grassFlowers.png")));
+	std::unique_ptr<TerrainTexture> bTexture(new TerrainTexture(loader->loadTexture("res/materials/path.png")));
 
+	std::unique_ptr<TerrainTexturePack> texturePack(new TerrainTexturePack(backgroundTexture.get(), rTexture.get(), gTexture.get(), bTexture.get()));
+	std::unique_ptr<TerrainTexture> blendMap(new TerrainTexture(loader->loadTexture("res/materials/blendMap.png")));
+
+	std::unique_ptr<Terrain> terrain(new Terrain(0, 0, loader.get(), texturePack.get(), blendMap.get()));
+	std::unique_ptr<Terrain> terrain2(new Terrain(1, 0, loader.get(), texturePack.get(), blendMap.get()));
 	//registering random grass into a vector Entity
 	std::vector<std::unique_ptr<Entity>> grassList;
 	for(int i = 0; i < 10; i++)

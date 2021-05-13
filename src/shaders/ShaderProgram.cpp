@@ -70,6 +70,11 @@ void ShaderProgram::loadFloat(GLint location, GLfloat value)
 	glUniform1f(location, value);
 }
 
+void ShaderProgram::loadInt(GLint location, GLfloat value)
+{
+	glUniform1i(location, value);
+}
+
 void ShaderProgram::loadVector(GLint location, glm::vec3 vector)
 {
 	glUniform3f(location, vector.x, vector.y, vector.z);

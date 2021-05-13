@@ -15,6 +15,7 @@ public:
 	void loadLight(Light* light);
 	void loadShineVariables(GLfloat damper, GLfloat reflectivity);
 	void loadSkyColour(float r, float g, float b);
+	void connectTextureUnits();
 protected:
 	void bindAttributes();
 	void getAllUniformLocations();
@@ -27,5 +28,10 @@ private:
 	int location_shineDamper;
 	int location_reflectivity;
 	int location_skyColour;
+	int location_backgroundTexture;
+	int location_rTexture;
+	int location_gTexture;
+	int location_bTexture;
+	int location_blendMap;
 };
 

@@ -1,4 +1,5 @@
 #include "TerrainShader.h"
+#include <iostream>
 
 TerrainShader::TerrainShader() :ShaderProgram("terrain")
 {
@@ -22,6 +23,20 @@ void TerrainShader::getAllUniformLocations()
 	this->location_shineDamper = this->getUniformLocation("shineDamper");
 	this->location_reflectivity = this->getUniformLocation("reflectivity");
 	this->location_skyColour = this->getUniformLocation("skyColour");
+	this->location_backgroundTexture = this->getUniformLocation("backgroundTexture");
+	this->location_rTexture = this->getUniformLocation("rTexture");
+	this->location_gTexture = this->getUniformLocation("gTexture");
+	this->location_bTexture = this->getUniformLocation("bTexture");
+	this->location_blendMap = this->getUniformLocation("blendMap");
+}
+
+void TerrainShader::connectTextureUnits()
+{
+	this->loadInt(location_backgroundTexture, 0);
+	this->loadInt(location_rTexture, 1);
+	this->loadInt(location_gTexture, 2);
+	this->loadInt(location_bTexture, 3);
+	this->loadInt(location_blendMap, 4);
 }
 
 void TerrainShader::loadSkyColour(float r, float g, float b)

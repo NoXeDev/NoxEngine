@@ -1,10 +1,12 @@
 #include "TerrainRenderer.h"
+#include <iostream>
 
 TerrainRenderer::TerrainRenderer(TerrainShader* shader, glm::mat4 projectionMatrix)
 {
 	this->shader = shader;
 	shader->start();
 	shader->loadProjectionMatrix(projectionMatrix);
+	shader->connectTextureUnits();
 	shader->stop();
 }
 
@@ -26,10 +28,23 @@ void TerrainRenderer::prepareTerrrain(Terrain* terrain)
 	glEnableVertexAttribArray(0);
 	glEnableVertexAttribArray(1);
 	glEnableVertexAttribArray(2);
-	ModelTexture* texture = terrain->getTexture();
-	this->shader->loadShineVariables(texture->getShineDamper(), texture->getReflectivity());
+	this->bindTextures(terrain);
+	this->shader->loadShineVariables(1, 0);
+}
+
+void TerrainRenderer::bindTextures(Terrain* terrain)
+{
+	TerrainTexturePack *texturePack = terrain->getTexturePack();
 	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, texture->getID());
+	glBindTexture(GL_TEXTURE_2D, texturePack->getBackgroundTexture()->getTextureID());
+	glActiveTexture(GL_TEXTURE1);
+	glBindTexture(GL_TEXTURE_2D, texturePack->getRTexture()->getTextureID());
+	glActiveTexture(GL_TEXTURE2);
+	glBindTexture(GL_TEXTURE_2D, texturePack->getGTexture()->getTextureID());
+	glActiveTexture(GL_TEXTURE3);
+	glBindTexture(GL_TEXTURE_2D, texturePack->getBTexture()->getTextureID());
+	glActiveTexture(GL_TEXTURE4);
+	glBindTexture(GL_TEXTURE_2D, terrain->getBlendMap()->getTextureID());
 }
 
 void TerrainRenderer::unbindTexturedModel()

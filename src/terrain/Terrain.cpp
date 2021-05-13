@@ -1,9 +1,10 @@
 #include "Terrain.h"
 #include <iostream>
 
-Terrain::Terrain(int gridX, int gridZ, Loader* loader, ModelTexture* texture)
+Terrain::Terrain(int gridX, int gridZ, Loader* loader, TerrainTexturePack *texturePack, TerrainTexture *blendMap)
 {
-	this->texture = texture;
+	this->texturePack = texturePack;
+	this->blendMap = blendMap;
 	this->x = gridX * this->SIZE;
 	this->z = gridZ * this->SIZE;
 
@@ -50,7 +51,6 @@ RawModel* Terrain::generateTerrain(Loader* loader)
 			indices[pointer++] = bottomRight;
 		}
 	}
-	std::cout << vertices.size()*sizeof(float) << std::endl;
 	return loader->loadToVAO(&vertices[0], vertices.size() * sizeof(float), &textureCoords[0], textureCoords.size() * sizeof(float), &normals[0], normals.size() * sizeof(float), &indices[0], indices.size() * sizeof(float), indices.size());
 }
 
@@ -59,9 +59,14 @@ RawModel* Terrain::getModel()
 	return this->model;
 }
 
-ModelTexture* Terrain::getTexture()
+TerrainTexturePack* Terrain::getTexturePack()
 {
-	return this->texture;
+	return this->texturePack;
+}
+
+TerrainTexture* Terrain::getBlendMap()
+{
+	return this->blendMap;
 }
 
 float Terrain::getX()

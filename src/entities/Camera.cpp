@@ -26,6 +26,22 @@ void Camera::move()
 	if (glfwGetKey(DisplayManager::getDisplay(), GLFW_KEY_LEFT_CONTROL)) {
 		positions.y -= 0.5f;
 	}
+
+	if (glfwGetKey(DisplayManager::getDisplay(), GLFW_KEY_LEFT)) {
+		rotation.y -= 1;
+	}
+
+	if (glfwGetKey(DisplayManager::getDisplay(), GLFW_KEY_RIGHT)) {
+		rotation.y += 1;
+	}
+
+	if (glfwGetKey(DisplayManager::getDisplay(), GLFW_KEY_UP)) {
+		rotation.x -= 1;
+	}
+
+	if (glfwGetKey(DisplayManager::getDisplay(), GLFW_KEY_DOWN)) {
+		rotation.x += 1;
+	}
 }
 
 glm::vec3 Camera::getPosition()
@@ -33,17 +49,7 @@ glm::vec3 Camera::getPosition()
 	return this->positions;
 }
 
-float Camera::getPitch()
+glm::vec3 Camera::getRotation()
 {
-	return this->pitch;
-}
-
-float Camera::getYaw()
-{
-	return this->yaw;
-}
-
-float Camera::getRoll()
-{
-	return this->roll;
+	return this->rotation;
 }

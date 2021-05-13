@@ -15,9 +15,9 @@ glm::mat4 Maths::createTransformationMatrix(glm::vec3 translation, float rx, flo
 glm::mat4 Maths::createViewMatrix(Camera* camera)
 {
 	glm::mat4 matrix = glm::mat4(1.0f);
-	matrix = glm::rotate(matrix, glm::radians(camera->getPitch()), glm::vec3(1, 0, 0));
-	matrix = glm::rotate(matrix, glm::radians(camera->getYaw()), glm::vec3(0, 1, 0));
-	matrix = glm::rotate(matrix, glm::radians(camera->getRoll()), glm::vec3(0, 0, 1));
+	matrix = glm::rotate(matrix, glm::radians(camera->getRotation().x), glm::vec3(1, 0, 0));
+	matrix = glm::rotate(matrix, glm::radians(camera->getRotation().y), glm::vec3(0, 1, 0));
+	matrix = glm::rotate(matrix, glm::radians(camera->getRotation().z), glm::vec3(0, 0, 1));
 	glm::vec3 cameraPos = camera->getPosition();
 	glm::vec3 negativeCameraPos = glm::vec3(-cameraPos.x, -cameraPos.y, -cameraPos.z);
 	matrix = glm::translate(matrix, negativeCameraPos);

@@ -22,6 +22,7 @@ protected:
 	int getUniformLocation(const char* uniformName);
 	virtual void getAllUniformLocations() = 0;
 	void loadFloat(GLint location, GLfloat value);
+	void loadInt(GLint location, GLfloat value);
 	void loadVector(GLint location, glm::vec3 vector);
 	void loadBoolean(GLint location, bool value);
 	void loadMatrix(GLint location, glm::mat4 matrix);

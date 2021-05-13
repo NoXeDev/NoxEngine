@@ -5,15 +5,11 @@ class Camera
 {
 private:
 	glm::vec3 positions;
-	float pitch = 0;
-	float yaw = 0;
-	float roll = 0;
+	glm::vec3 rotation = glm::vec3(0, 0, 0);
 public:
 	Camera(glm::vec3 positions);
 	void move();
 	glm::vec3 getPosition();
-	float getPitch();
-	float getYaw();
-	float getRoll();
+	glm::vec3 getRotation();
 };
 
