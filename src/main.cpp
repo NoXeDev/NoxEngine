@@ -44,6 +44,7 @@ int main(){
 	auto start = std::chrono::high_resolution_clock::now();
 	std::unique_ptr<RawModel> model(NMloader::loadNMmodel("res/models/dragon.nm", loader.get()).at(0));
 	std::unique_ptr<RawModel> grass(NMloader::loadNMmodel("res/models/grass.nm", loader.get()).at(0));
+	std::unique_ptr<RawModel> squareModel(NMloader::loadNMmodel("res/models/square.nm", loader.get()).at(0));
 	std::unique_ptr<ModelTexture> texture(new ModelTexture(loader->loadTexture("res/materials/stallTexture.png")));
 	std::unique_ptr<ModelTexture> grassTexture(new ModelTexture(loader->loadTexture("res/materials/grassTexture.png")));
 	auto stop = std::chrono::high_resolution_clock::now();
@@ -59,6 +60,7 @@ int main(){
 	//create ingame entity from assets
 	std::unique_ptr<TexturedModel> texturedModel(new TexturedModel(model.get(), texture.get()));
 	std::unique_ptr<TexturedModel> grassTexturedModel(new TexturedModel(grass.get(), grassTexture.get()));
+	std::unique_ptr<TexturedModel> squareTextured(new TexturedModel(squareModel.get(), texture.get()));
 
 	std::unique_ptr<Entity> entity(new Entity(texturedModel.get(), glm::vec3(500, 0, 500), 0, 0, 0, 1));
 	//std::unique_ptr<Entity> grassEntity(new Entity(grassTexturedModel.get(), glm::vec3(200, 0, 200), 0, 0, 0, 1));

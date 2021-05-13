@@ -9,9 +9,10 @@ class NMloader
 private:
 	static std::vector<float> readFloatArray(std::ifstream& file, int offsets);
 	static std::vector<int> readIntArray(std::ifstream& file, int offsets);
-	static std::vector<int> parseHeaders(std::ifstream& file);
+	static std::vector<int> parseModelHeaders(std::ifstream& file);
+	static std::vector<int> parseNoxModelHeaders(std::ifstream& file);
 
 public:
-	static RawModel* loadNMmodel(const char* filePath, Loader *loader);
+	static std::vector<RawModel*> loadNMmodel(const char* filePath, Loader *loader);
 };
 
