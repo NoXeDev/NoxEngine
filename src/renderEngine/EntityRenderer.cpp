@@ -61,6 +61,6 @@ void EntityRenderer::unbindTexturedModel()
 
 void EntityRenderer::prepareInstance(Entity* entity)
 {
-	glm::mat4 transformationMatrix = Maths::createTransformationMatrix(entity->getPosition(), entity->getRotX(), entity->getRotY(), entity->getRotZ(), entity->getScale());
+	glm::mat4 transformationMatrix = Maths::createTransformationMatrix(entity->getPosition(), entity->getRotation(), entity->getScale());
 	this->shader->loadTransformationMatrix(transformationMatrix);
 }

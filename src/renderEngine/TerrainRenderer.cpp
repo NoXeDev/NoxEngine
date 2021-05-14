@@ -57,6 +57,6 @@ void TerrainRenderer::unbindTexturedModel()
 
 void TerrainRenderer::loadModelMatrix(Terrain* terrain)
 {
-	glm::mat4 transformationMatrix = Maths::createTransformationMatrix(glm::vec3(terrain->getX(), 0, terrain->getZ()), 0, 0, 0, 1);
+	glm::mat4 transformationMatrix = Maths::createTransformationMatrix(glm::vec3(terrain->getX(), 0, terrain->getZ()), glm::vec3(0,0,0), 1);
 	this->shader->loadTransformationMatrix(transformationMatrix);
 }

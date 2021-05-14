@@ -10,6 +10,8 @@ public:
 	Camera(glm::vec3 positions);
 	void move();
 	glm::vec3 getPosition();
+	void setPosition(glm::vec3 position);
+	void setRotation(glm::vec3 rotation);
 	glm::vec3 getRotation();
 };
 

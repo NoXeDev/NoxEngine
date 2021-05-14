@@ -6,24 +6,20 @@ class Entity
 private:
 	TexturedModel* model;
 	glm::vec3 position;
-	float rotX, rotY, rotZ;
+	glm::vec3 rotation;
 	float scale;
 
 public:
-	Entity(TexturedModel* model, glm::vec3 position, float rotX, float rotY, float rotZ, float scale);
+	Entity(TexturedModel* model, glm::vec3 position, glm::vec3 rotation, float scale);
 
 	//getters and setters
-
+	glm::vec3* getPositionPTR();
 	TexturedModel* getModel();
 	void setModel(TexturedModel* model);
 	glm::vec3 getPosition();
 	void setPosition(glm::vec3 position);
-	float getRotX();
-	void setRotX(float rotX);
-	float getRotY();
-	void setRotY(float rotY);
-	float getRotZ();
-	void setRotZ(float rotZ);
+	glm::vec3 getRotation();
+	void setRotation(glm::vec3 rotation);
 	float getScale();
 	void setScale(float scale);
 
