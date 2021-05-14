@@ -105,7 +105,6 @@ int main(){
 
 		//update
 		DisplayManager::updateDisplay();
-		DisplayManager::showFPS();
 
 		//close condition (thread breaker)
 		if (glfwWindowShouldClose(DisplayManager::getDisplay()) || glfwGetKey(DisplayManager::getDisplay(), GLFW_KEY_ESCAPE)) { break; }
