@@ -61,11 +61,15 @@ int main(){
 	std::unique_ptr<TexturedModel> texturedModel(new TexturedModel(model.get(), texture.get()));
 	std::unique_ptr<TexturedModel> grassTexturedModel(new TexturedModel(grass.get(), grassTexture.get()));
 
+	std::unique_ptr<Camera> camera(new Camera());
+	std::unique_ptr<Player> player(new Player(texturedModel.get(), glm::vec3(500, 0, 400), glm::vec3(0, 0, 0), 1));
+
+	player->attachCameraToPlayer(camera.get());
+
 	std::unique_ptr<Entity> entity(new Entity(texturedModel.get(), glm::vec3(500, 0, 500), glm::vec3(0, 0, 0), 1));
 	//std::unique_ptr<Entity> grassEntity(new Entity(grassTexturedModel.get(), glm::vec3(200, 0, 200), 0, 0, 0, 1));
 
 	std::unique_ptr<Light> light(new Light(glm::vec3(20000, 40000, 20000), glm::vec3(1,1,1)));
-	std::unique_ptr<Camera> camera(new Camera(glm::vec3(500, 8, 550)));
 
 	std::unique_ptr<TerrainTexture> backgroundTexture(new TerrainTexture(loader->loadTexture("res/materials/grass.png")));
 	std::unique_ptr<TerrainTexture> rTexture(new TerrainTexture(loader->loadTexture("res/materials/dirt.png")));
@@ -84,24 +88,21 @@ int main(){
 		grassList.push_back(std::unique_ptr<Entity> (new Entity(grassTexturedModel.get(), glm::vec3(510+i*(-3), 0, 510+i*2), glm::vec3(0, 0, 0), 1)));
 	}
 
-	std::unique_ptr<Player> player(new Player(texturedModel.get(), glm::vec3(500, 0, 400), glm::vec3(0, 0, 0), 1));
-
 	while (true)
 	{
 		//Poll Events
 		glfwPollEvents();
 
 		//entity->increasePosition(0, 0, 0.2f);
-		camera->move();
 		player->move();
 
-		std::cout << "x : " << player->getPosition().x << " y : " << player->getPosition().y << " z : " << player->getPosition().z << std::endl;
+		//std::cout << "x : " << player->getPosition().x << " y : " << player->getPosition().y << " z : " << player->getPosition().z << std::endl;
 
 		//render stuff
 		renderer->processTerrain(terrain.get());
 		renderer->processTerrain(terrain2.get());
 		renderer->processEntity(entity.get());
-		renderer->processEntity(player.get());
+		//renderer->processEntity(player.get());
 		for(int i = 0; i < grassList.size(); i++)
 		{
 			renderer->processEntity(grassList.at(i).get());

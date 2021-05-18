@@ -3,6 +3,7 @@
 #include <sstream>
 
 #include "../common/const.h"
+#include "../utils/Mouse.h"
 
 double FPSlastTime;
 int nbFrames;
@@ -29,6 +30,8 @@ int DisplayManager::createDisplay()
 	glfwGetPrimaryMonitor()
 	#endif
 	, nullptr);
+
+	Mouse::Init(window);
 
 	int screenWidth, screenHeight;
 	glfwGetFramebufferSize(window, &screenWidth, &screenHeight);

@@ -1,15 +1,11 @@
 #pragma once
 #include "Entity.h"
 #include <glfw3.h>
+#include "Camera.h"
 #include "../renderEngine/DisplayManager.h"
 #include <glm.hpp>
 
 class Player:public Entity{
-    public:
-        Player(TexturedModel* model, glm::vec3 position, glm::vec3 rotation, float scale);
-        void move();
-        void checkInputs();
-
     private:
         const float RUN_SPEED = 20;
         const float TURN_SPEED = 160;
@@ -22,5 +18,15 @@ class Player:public Entity{
 
         bool isInAir = false;
 
+        Camera* camera = nullptr;
+        bool hasCamera = false;
+
         void jump();
+
+    public:
+        Player(TexturedModel* model, glm::vec3 position, glm::vec3 rotation, float scale);
+        void move();
+        void checkInputs();
+
+        void attachCameraToPlayer(Camera* camera);
 };
