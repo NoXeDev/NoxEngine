@@ -8,12 +8,13 @@
 class Player:public Entity{
     private:
         const float RUN_SPEED = 20;
-        const float TURN_SPEED = 160;
         const float GRAVITY = -50;
         const float JUMP_POWER = 30;
         const float TERRAIN_HEIGHT = 0;
+
+        float DIRECTION_VECTOR = 0;
+
         float currentSpeed = 0;
-        float currentTurnSpeed = 0;
         float upwardsSpeed = 0;
 
         bool isInAir = false;

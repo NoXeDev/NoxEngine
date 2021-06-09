@@ -3,7 +3,7 @@
 #include <glm.hpp>
 class Entity
 {
-private:
+protected:
 	TexturedModel* model;
 	glm::vec3 position;
 	glm::vec3 rotation;

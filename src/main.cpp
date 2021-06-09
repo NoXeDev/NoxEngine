@@ -63,6 +63,7 @@ int main(){
 
 	std::unique_ptr<Camera> camera(new Camera());
 	std::unique_ptr<Player> player(new Player(texturedModel.get(), glm::vec3(500, 0, 400), glm::vec3(0, 0, 0), 1));
+	std::unique_ptr<Entity> entity2(new Entity(texturedModel.get(), glm::vec3(500, 0, 395), glm::vec3(0, 0, 0), 1));
 
 	player->attachCameraToPlayer(camera.get());
 
@@ -102,7 +103,7 @@ int main(){
 		renderer->processTerrain(terrain.get());
 		renderer->processTerrain(terrain2.get());
 		renderer->processEntity(entity.get());
-		//renderer->processEntity(player.get());
+		renderer->processEntity(entity2.get());
 		for(int i = 0; i < grassList.size(); i++)
 		{
 			renderer->processEntity(grassList.at(i).get());

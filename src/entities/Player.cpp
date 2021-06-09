@@ -9,12 +9,13 @@ void Player::move()
     if(this->hasCamera || this->camera != nullptr){
         this->checkInputs();
         this->camera->move(this->getPosition());
-        std::cout << this->camera->getRotation().y << std::endl;
-        //this->increaseRotation(0, this->currentTurnSpeed * DisplayManager::getFrameTimeSeconds(), 0);
+        std::cout << this->getRotation().y;
+        this->rotation.y = - this->camera->getRotation().y;
         float distance = this->currentSpeed * DisplayManager::getFrameTimeSeconds();
-        float dx = (float) (distance * glm::sin(glm::radians(this->camera->getRotation().y)));
-        float dz = (float) (distance * glm::cos(glm::radians(this->camera->getRotation().y)));
+        float dx = (float) (distance * glm::sin(glm::radians(this->camera->getRotation().y + this->DIRECTION_VECTOR)));
+        float dz = (float) (distance * -glm::cos(glm::radians(this->camera->getRotation().y + this->DIRECTION_VECTOR)));
         this->increasePosition(dx, 0, dz);
+
         this->upwardsSpeed += this->GRAVITY * DisplayManager::getFrameTimeSeconds();
         this->increasePosition(0, upwardsSpeed * DisplayManager::getFrameTimeSeconds(), 0);
         if(this->getPosition().y < this->TERRAIN_HEIGHT)
@@ -44,12 +45,16 @@ void Player::checkInputs()
         this->currentSpeed = 0;
     }
 
+    if (glfwGetKey(DisplayManager::getDisplay(), GLFW_KEY_LEFT_SHIFT)){
+        this->currentSpeed += 30.0f;
+    }
+
     if (glfwGetKey(DisplayManager::getDisplay(), GLFW_KEY_D)) {
-		this->currentTurnSpeed = -this->TURN_SPEED;
+		this->DIRECTION_VECTOR = 90.0f;
 	}else if (glfwGetKey(DisplayManager::getDisplay(), GLFW_KEY_A)) {
-		this->currentTurnSpeed = this->TURN_SPEED;
+		this->DIRECTION_VECTOR = -90.0f;
 	}else {
-        this->currentTurnSpeed = 0;
+        this->DIRECTION_VECTOR = 0;
     }
 
     if (glfwGetKey(DisplayManager::getDisplay(), GLFW_KEY_SPACE)) {
