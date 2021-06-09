@@ -47,6 +47,10 @@ int Loader::loadTexture(const char* filename)
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture);
 	glGenerateMipmap(GL_TEXTURE_2D);
 	SOIL_free_image_data(texture);
+
+	glGenerateMipmap(GL_TEXTURE_2D);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_LOD_BIAS, -0.4f);
 	
 	//unbind texture
 	glBindTexture(GL_TEXTURE_2D, 0);
