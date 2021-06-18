@@ -57,35 +57,39 @@ int main(){
 	grassTexture->setTransparency(true);
 	grassTexture->setFakeLighting(true);
 
-	//create ingame entity from assets
-	std::unique_ptr<TexturedModel> texturedModel(new TexturedModel(model.get(), texture.get()));
-	std::unique_ptr<TexturedModel> grassTexturedModel(new TexturedModel(grass.get(), grassTexture.get()));
-
-	std::unique_ptr<Camera> camera(new Camera());
-	std::unique_ptr<Player> player(new Player(texturedModel.get(), glm::vec3(500, 0, 400), glm::vec3(0, 0, 0), 1));
-	std::unique_ptr<Entity> entity2(new Entity(texturedModel.get(), glm::vec3(500, 0, 395), glm::vec3(0, 0, 0), 1));
-
-	player->attachCameraToPlayer(camera.get());
-
-	std::unique_ptr<Entity> entity(new Entity(texturedModel.get(), glm::vec3(500, 0, 500), glm::vec3(0, 0, 0), 1));
-	//std::unique_ptr<Entity> grassEntity(new Entity(grassTexturedModel.get(), glm::vec3(200, 0, 200), 0, 0, 0, 1));
-
-	std::unique_ptr<Light> light(new Light(glm::vec3(20000, 40000, 20000), glm::vec3(1,1,1)));
-
 	std::unique_ptr<TerrainTexture> backgroundTexture(new TerrainTexture(loader->loadTexture("res/materials/grass.png")));
 	std::unique_ptr<TerrainTexture> rTexture(new TerrainTexture(loader->loadTexture("res/materials/dirt.png")));
 	std::unique_ptr<TerrainTexture> gTexture(new TerrainTexture(loader->loadTexture("res/materials/grassFlowers.png")));
 	std::unique_ptr<TerrainTexture> bTexture(new TerrainTexture(loader->loadTexture("res/materials/path.png")));
 
-	std::unique_ptr<TerrainTexturePack> texturePack(new TerrainTexturePack(backgroundTexture.get(), rTexture.get(), gTexture.get(), bTexture.get()));
 	std::unique_ptr<TerrainTexture> blendMap(new TerrainTexture(loader->loadTexture("res/materials/blendMap.png")));
 
+	//create ingame entity from assets
+	std::unique_ptr<TexturedModel> texturedModel(new TexturedModel(model.get(), texture.get()));
+	std::unique_ptr<TexturedModel> grassTexturedModel(new TexturedModel(grass.get(), grassTexture.get()));
+
+	std::unique_ptr<Camera> camera(new Camera());
+	std::unique_ptr<TerrainTexturePack> texturePack(new TerrainTexturePack(backgroundTexture.get(), rTexture.get(), gTexture.get(), bTexture.get()));
 	std::unique_ptr<Terrain> terrain(new Terrain(0, 0, loader.get(), texturePack.get(), blendMap.get(), "res/materials/heightmap.png"));
+
+
+	std::unique_ptr<Player> player(new Player(texturedModel.get(), glm::vec3(500, terrain->getHeightOfTerrain(500, 400), 400), glm::vec3(0, 0, 0), 1));
+	std::unique_ptr<Entity> entity2(new Entity(texturedModel.get(), glm::vec3(500, terrain->getHeightOfTerrain(500, 395), 395), glm::vec3(0, 0, 0), 1));
+
+	player->attachCameraToPlayer(camera.get());
+
+	std::unique_ptr<Entity> entity(new Entity(texturedModel.get(), glm::vec3(500, terrain->getHeightOfTerrain(500, 500), 500), glm::vec3(0, 0, 0), 1));
+	//std::unique_ptr<Entity> grassEntity(new Entity(grassTexturedModel.get(), glm::vec3(200, 0, 200), 0, 0, 0, 1));
+
+	std::unique_ptr<Light> light(new Light(glm::vec3(20000, 40000, 20000), glm::vec3(1,1,1)));
 	//registering random grass into a vector Entity
 	std::vector<std::unique_ptr<Entity>> grassList;
 	for(int i = 0; i < 10; i++)
 	{
-		grassList.push_back(std::unique_ptr<Entity> (new Entity(grassTexturedModel.get(), glm::vec3(510+i*(-3), 0, 510+i*2), glm::vec3(0, 0, 0), 1)));
+		float x = 510+i*(-3);
+		float z = 510+i*2;
+		float y = terrain->getHeightOfTerrain(x, z);
+		grassList.push_back(std::unique_ptr<Entity> (new Entity(grassTexturedModel.get(), glm::vec3(x, y, z), glm::vec3(0, 0, 0), 1)));
 	}
 
 	while (true)

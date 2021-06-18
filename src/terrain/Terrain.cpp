@@ -2,6 +2,7 @@
 #include "../utils/Maths.h"
 #include <iostream>
 #include <SOIL2.h>
+#include <math.h>
 
 Terrain::Terrain(int gridX, int gridZ, Loader* loader, TerrainTexturePack *texturePack, TerrainTexture *blendMap, const char *heightMap)
 {
@@ -77,8 +78,8 @@ float Terrain::getHeightOfTerrain(float worldX, float worldZ)
 	if(gridX >= this->heights.size() - 1 || gridZ >= this->heights.size() - 1 || gridX < 0 || gridZ < 0){
 		return 0;
 	}
-	float xCoord = ((int)terrainX % (int)gridSquareSize)/gridSquareSize;
-	float zCoord = ((int)terrainZ % (int)gridSquareSize)/gridSquareSize;
+	float xCoord = fmod(terrainX, gridSquareSize)/gridSquareSize;
+	float zCoord = fmod(terrainZ, gridSquareSize)/gridSquareSize;
 	float answer;
 	if(xCoord <= (1-zCoord)){
 		answer = Maths::barryCentric(glm::vec3(0, this->heights[gridX][gridZ], 0), glm::vec3(1, this->heights[gridX + 1][gridZ], 0), 
