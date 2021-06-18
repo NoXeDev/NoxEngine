@@ -18,6 +18,8 @@ RawModel* Terrain::generateTerrain(Loader* loader, const char *heightMap)
 
 	unsigned char *heightMapBuff = SOIL_load_image(heightMap, &this->heightMapWidth, &this->heightMapHeight, 0, SOIL_LOAD_RGBA);
 	int VERTEX_COUNT = this->heightMapHeight;
+	//allocate vector memory for heights
+	std::vector<std::vector<float>> heights(VERTEX_COUNT, std::vector<float>(VERTEX_COUNT));
 
 	const int count = VERTEX_COUNT * VERTEX_COUNT;
 	std::vector<float> vertices(count * 3);
@@ -59,6 +61,7 @@ RawModel* Terrain::generateTerrain(Loader* loader, const char *heightMap)
 			indices[pointer++] = bottomRight;
 		}
 	}
+	SOIL_free_image_data(heightMapBuff);
 	return loader->loadToVAO(&vertices[0], vertices.size() * sizeof(float), &textureCoords[0], textureCoords.size() * sizeof(float), &normals[0], normals.size() * sizeof(float), &indices[0], indices.size() * sizeof(float), indices.size());
 }
 
