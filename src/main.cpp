@@ -94,7 +94,7 @@ int main(){
 		glfwPollEvents();
 
 		//entity->increasePosition(0, 0, 0.2f);
-		player->move();
+		player->move(terrain.get());
 
 		//std::cout << "x : " << player->getPosition().x << " y : " << player->getPosition().y << " z : " << player->getPosition().z << std::endl;
 

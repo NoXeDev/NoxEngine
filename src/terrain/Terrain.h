@@ -16,6 +16,7 @@ private:
 
 	float x;
 	float z;
+	std::vector<std::vector<float>> heights;
 
 	RawModel *model;
 	TerrainTexturePack *texturePack;
@@ -33,5 +34,6 @@ public:
 	TerrainTexture* getBlendMap();
 	float getX();
 	float getZ();
+	float getHeightOfTerrain(float worldX, float worldZ);
 };
 

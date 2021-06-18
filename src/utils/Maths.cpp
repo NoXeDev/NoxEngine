@@ -1,6 +1,14 @@
 #include "Maths.h"
 #include <gtc/matrix_transform.hpp>
 
+float Maths::barryCentric(glm::vec3 p1, glm::vec3 p2, glm::vec3 p3, glm::vec2 pos) {
+	float det = (p2.z - p3.z) * (p1.x - p3.x) + (p3.x - p2.x) * (p1.z - p3.z);
+	float l1 = ((p2.z - p3.z) * (pos.x - p3.x) + (p3.x - p2.x) * (pos.y - p3.z)) / det;
+	float l2 = ((p3.z - p1.z) * (pos.x - p3.x) + (p1.x - p3.x) * (pos.y - p3.z)) / det;
+	float l3 = 1.0f - l1 - l2;
+	return l1 * p1.y + l2 * p2.y + l3 * p3.y;
+}
+
 glm::mat4 Maths::createTransformationMatrix(glm::vec3 translation, glm::vec3 rotation, float scale)
 {
 	glm::mat4 matrix = glm::mat4(1.0f);

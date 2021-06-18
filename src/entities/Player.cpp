@@ -4,7 +4,7 @@
 
 Player::Player(TexturedModel* model, glm::vec3 position, glm::vec3 rotation, float scale): Entity(model, position, rotation, scale){}
 
-void Player::move()
+void Player::move(Terrain *terrain)
 {
     if(this->hasCamera || this->camera != nullptr){
         this->checkInputs();
@@ -18,11 +18,12 @@ void Player::move()
 
         this->upwardsSpeed += this->GRAVITY * DisplayManager::getFrameTimeSeconds();
         this->increasePosition(0, upwardsSpeed * DisplayManager::getFrameTimeSeconds(), 0);
-        if(this->getPosition().y < this->TERRAIN_HEIGHT)
+        float terrainHeight = terrain->getHeightOfTerrain(this->getPosition().x, this->getPosition().z);
+        if(this->getPosition().y < terrainHeight)
         {
             this->upwardsSpeed = 0;
             this->isInAir = false;
-            this->getPositionPTR()->y = TERRAIN_HEIGHT;
+            this->getPositionPTR()->y = terrainHeight;
         }
     }
 }

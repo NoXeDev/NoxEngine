@@ -2,6 +2,7 @@
 #include "Entity.h"
 #include <glfw3.h>
 #include "Camera.h"
+#include "../terrain/Terrain.h"
 #include "../renderEngine/DisplayManager.h"
 #include <glm.hpp>
 
@@ -26,7 +27,7 @@ class Player:public Entity{
 
     public:
         Player(TexturedModel* model, glm::vec3 position, glm::vec3 rotation, float scale);
-        void move();
+        void move(Terrain *terrain);
         void checkInputs();
 
         void attachCameraToPlayer(Camera* camera);

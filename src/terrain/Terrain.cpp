@@ -1,4 +1,5 @@
 #include "Terrain.h"
+#include "../utils/Maths.h"
 #include <iostream>
 #include <SOIL2.h>
 
@@ -19,7 +20,7 @@ RawModel* Terrain::generateTerrain(Loader* loader, const char *heightMap)
 	unsigned char *heightMapBuff = SOIL_load_image(heightMap, &this->heightMapWidth, &this->heightMapHeight, 0, SOIL_LOAD_RGBA);
 	int VERTEX_COUNT = this->heightMapHeight;
 	//allocate vector memory for heights
-	std::vector<std::vector<float>> heights(VERTEX_COUNT, std::vector<float>(VERTEX_COUNT));
+	this->heights = std::vector<std::vector<float>>(VERTEX_COUNT, std::vector<float>(VERTEX_COUNT));
 
 	const int count = VERTEX_COUNT * VERTEX_COUNT;
 	std::vector<float> vertices(count * 3);
@@ -34,8 +35,9 @@ RawModel* Terrain::generateTerrain(Loader* loader, const char *heightMap)
 		for (int j = 0; j < VERTEX_COUNT; j++)
 		{
 			vertices[vertexPointer * 3] = (float)j / ((float)VERTEX_COUNT - 1) * SIZE;
-			vertices[vertexPointer * 3 + 1] = this->getHeight(j, i, heightMapBuff);
-			std::cout << this->getHeight(j, i, heightMapBuff) << std::endl;
+			float height = this->getHeight(j, i, heightMapBuff);
+			this->heights[j][i] = height;
+			vertices[vertexPointer * 3 + 1] = height;
 			vertices[vertexPointer * 3 + 2] = (float)i / ((float)VERTEX_COUNT - 1) * SIZE;
 			glm::vec3 normal = this->calculateNormal(j, i, heightMapBuff);
 			normals[vertexPointer * 3] = normal.x;
@@ -63,6 +65,30 @@ RawModel* Terrain::generateTerrain(Loader* loader, const char *heightMap)
 	}
 	SOIL_free_image_data(heightMapBuff);
 	return loader->loadToVAO(&vertices[0], vertices.size() * sizeof(float), &textureCoords[0], textureCoords.size() * sizeof(float), &normals[0], normals.size() * sizeof(float), &indices[0], indices.size() * sizeof(float), indices.size());
+}
+
+float Terrain::getHeightOfTerrain(float worldX, float worldZ)
+{
+	float terrainX = worldX - this->x;
+	float terrainZ = worldZ - this->z;
+	float gridSquareSize = this->SIZE / ((float)this->heights.size() - 1);
+	int gridX = (int) glm::floor(terrainX / gridSquareSize);
+	int gridZ = (int) glm::floor(terrainZ / gridSquareSize);
+	if(gridX >= this->heights.size() - 1 || gridZ >= this->heights.size() - 1 || gridX < 0 || gridZ < 0){
+		return 0;
+	}
+	float xCoord = ((int)terrainX % (int)gridSquareSize)/gridSquareSize;
+	float zCoord = ((int)terrainZ % (int)gridSquareSize)/gridSquareSize;
+	float answer;
+	if(xCoord <= (1-zCoord)){
+		answer = Maths::barryCentric(glm::vec3(0, this->heights[gridX][gridZ], 0), glm::vec3(1, this->heights[gridX + 1][gridZ], 0), 
+		glm::vec3(0, this->heights[gridX][gridZ + 1], 1), glm::vec2(xCoord, zCoord));
+
+	}else {
+		answer = Maths::barryCentric(glm::vec3(1, this->heights[gridX + 1][gridZ], 0), glm::vec3(1, this->heights[gridX + 1][gridZ + 1], 1), 
+		glm::vec3(0, this->heights[gridX][gridZ + 1], 1), glm::vec2(xCoord, zCoord));
+	}
+	return answer;
 }
 
 RawModel* Terrain::getModel()
