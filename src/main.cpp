@@ -80,8 +80,8 @@ int main(){
 	std::unique_ptr<TerrainTexturePack> texturePack(new TerrainTexturePack(backgroundTexture.get(), rTexture.get(), gTexture.get(), bTexture.get()));
 	std::unique_ptr<TerrainTexture> blendMap(new TerrainTexture(loader->loadTexture("res/materials/blendMap.png")));
 
-	std::unique_ptr<Terrain> terrain(new Terrain(0, 0, loader.get(), texturePack.get(), blendMap.get()));
-	std::unique_ptr<Terrain> terrain2(new Terrain(1, 0, loader.get(), texturePack.get(), blendMap.get()));
+	std::unique_ptr<Terrain> terrain(new Terrain(0, 0, loader.get(), texturePack.get(), blendMap.get(), "res/materials/heightmap.png"));
+	std::unique_ptr<Terrain> terrain2(new Terrain(1, 0, loader.get(), texturePack.get(), blendMap.get(), "res/materials/heightmap.png"));
 	//registering random grass into a vector Entity
 	std::vector<std::unique_ptr<Entity>> grassList;
 	for(int i = 0; i < 10; i++)

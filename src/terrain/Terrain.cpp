@@ -1,19 +1,25 @@
 #include "Terrain.h"
 #include <iostream>
+#include <SOIL2.h>
 
-Terrain::Terrain(int gridX, int gridZ, Loader* loader, TerrainTexturePack *texturePack, TerrainTexture *blendMap)
+Terrain::Terrain(int gridX, int gridZ, Loader* loader, TerrainTexturePack *texturePack, TerrainTexture *blendMap, const char *heightMap)
 {
 	this->texturePack = texturePack;
 	this->blendMap = blendMap;
 	this->x = gridX * this->SIZE;
 	this->z = gridZ * this->SIZE;
 
-	this->model = generateTerrain(loader);
+	this->model = generateTerrain(loader, heightMap);
 }
 
-RawModel* Terrain::generateTerrain(Loader* loader)
+RawModel* Terrain::generateTerrain(Loader* loader, const char *heightMap)
 {
-	const int count = this->VERTEX_COUNT * this->VERTEX_COUNT;
+	// Loading Height map but not with the loadTexture function. We are going to load image raw buffer
+
+	unsigned char *heightMapBuff = SOIL_load_image(heightMap, &this->heightMapWidth, &this->heightMapHeight, 0, SOIL_LOAD_RGBA);
+	int VERTEX_COUNT = this->heightMapHeight;
+
+	const int count = VERTEX_COUNT * VERTEX_COUNT;
 	std::vector<float> vertices(count * 3);
 	std::vector<float> normals(count * 3);
 	std::vector<float> textureCoords(count * 2);
@@ -26,11 +32,13 @@ RawModel* Terrain::generateTerrain(Loader* loader)
 		for (int j = 0; j < VERTEX_COUNT; j++)
 		{
 			vertices[vertexPointer * 3] = (float)j / ((float)VERTEX_COUNT - 1) * SIZE;
-			vertices[vertexPointer * 3 + 1] = 0;
+			vertices[vertexPointer * 3 + 1] = this->getHeight(j, i, heightMapBuff);
+			std::cout << this->getHeight(j, i, heightMapBuff) << std::endl;
 			vertices[vertexPointer * 3 + 2] = (float)i / ((float)VERTEX_COUNT - 1) * SIZE;
-			normals[vertexPointer * 3] = 0;
-			normals[vertexPointer * 3 + 1] = 1;
-			normals[vertexPointer * 3 + 2] = 0;
+			glm::vec3 normal = this->calculateNormal(j, i, heightMapBuff);
+			normals[vertexPointer * 3] = normal.x;
+			normals[vertexPointer * 3 + 1] = normal.y;
+			normals[vertexPointer * 3 + 2] = normal.z;
 			textureCoords[vertexPointer * 2] = (float)j / ((float)VERTEX_COUNT - 1);
 			textureCoords[vertexPointer * 2 + 1] = (float)i / ((float)VERTEX_COUNT - 1);
 			vertexPointer++;
@@ -77,4 +85,33 @@ float Terrain::getX()
 float Terrain::getZ()
 {
 	return this->z;
+}
+
+float Terrain::getHeight(int x, int z, unsigned char * buffer)
+{
+	if(x<0 || x>=this->heightMapHeight || z<0 || z>=this->heightMapHeight){
+		return 0;
+	}
+
+	GLsizei index = 4 * (z * this->heightMapWidth + x);
+
+	//this line is returning a binary integer value from each color
+	float RGB = (static_cast<int>(buffer[index + 3]) << 24) | (static_cast<int>(buffer[index + 0]) << 16) | (static_cast<int>(buffer[index + 1]) << 8) | (static_cast<int>(buffer[index + 2]) << 0);
+	/////////////////////////////////////////////
+	RGB += MAX_PIXEL_COLOUR/2.0f;
+	RGB /= MAX_PIXEL_COLOUR/2.0f;
+	RGB *= MAX_HEIGHT;
+	return RGB;
+}
+
+glm::vec3 Terrain::calculateNormal(int x, int z, unsigned char * buffer)
+{
+	float heightL = this->getHeight(x-1, z, buffer);
+	float heightR = this->getHeight(x+1, z, buffer);
+	float heightD = this->getHeight(x, z-1, buffer);
+	float heightU = this->getHeight(x, z+1, buffer);
+
+	glm::vec3 normal = glm::vec3(heightL-heightR, 2.0f, heightD - heightU);
+	normal = glm::normalize(normal);
+	return normal;
 }
