@@ -78,7 +78,7 @@ async function build(){
     }
     console.log("[*] - Building with make")
 
-    let make = ""
+    let make = "all"
     if(process.argv[3]){
         make = process.argv[3]
     }
