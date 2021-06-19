@@ -8,3 +8,11 @@
 /out
 /dist
 /res
+
+#libs ====
+libs
+
+#devtools ====
+node_modules
+!devtools/bin/*.exe
+package-lock.json

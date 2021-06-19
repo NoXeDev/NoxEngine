@@ -1,0 +1,21 @@
+{
+  "name": "noxprojectconstructor",
+  "version": "1.0.0",
+  "description": "This tool is downloading libs and is helping to dev NoxEngine",
+  "main": "index.js",
+  "bin": "index.js",
+  "scripts": {
+    "build": "pkg . --output ../bin/nxp"
+  },
+  "author": "NoXeDev",
+  "license": "ISC",
+  "devDependencies": {
+    "pkg": "^5.2.1"
+  },
+  "dependencies": {
+    "download": "^6.2.5",
+    "folder-hash": "^4.0.1",
+    "fs": "*",
+    "path": "^0.12.7"
+  }
+}
