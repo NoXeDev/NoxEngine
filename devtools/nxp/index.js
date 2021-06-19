@@ -62,15 +62,15 @@ async function build(){
     let foldersChecksum = await checksumLibs()
     let checksumOriginal = await require(path.join(NoxEnginePath, "libs", "checksum.json"))
 
-    let filesLibs = await fs.promises.readdir(path.join(NoxEnginePath, "libs"))
     let corruptedFiles = false
-    filesLibs.forEach((file) => {
-        if(file !== "checksum.json"){
-            if(foldersChecksum[file] !== checksumOriginal[file]){
+
+    for(hash in checksumOriginal){
+        if(hash !== "checksum.json"){
+            if(foldersChecksum[hash] !== checksumOriginal[hash]){
                 corruptedFiles = true
             }
         }
-    })
+    }
 
     if(corruptedFiles){
         console.log("[*] - Libs files are corrupted... Reload project ...")
