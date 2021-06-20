@@ -14,6 +14,11 @@ if(!fs.existsSync(NoxEnginePath + "nxp.json"))
     process.exit(1)
 }
 
+if(process.argv[2] == undefined){
+    console.log("Help (< > : optionnal arguments) :\n\n- build < make target / config=release (specify for make we need a release) >\n- reload < IDE (specify we just want reload IDE config)>\n")
+    process.exit(0)
+}
+
 console.log("[*] - Fetching nxp.json")
 const nxpcfg = require(NoxEnginePath + "nxp.json")
 
