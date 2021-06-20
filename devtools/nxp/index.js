@@ -2,12 +2,10 @@ const fs = require("fs")
 const download = require("download")
 const path = require("path")
 const child = require("child_process")
-const { hashElement } = require("folder-hash");
+const { hashElement } = require("folder-hash")
 
-console.log("[*] - NoxProject Loader starting build")
-
+console.log("[*] - NoxProject Loader starting")
 let NoxEnginePath = process.cwd().split("NoxEngine")[0].concat("NoxEngine\\")
-
 if(!fs.existsSync(NoxEnginePath + "nxp.json"))
 {
     console.log("[X] - nxp.json not found")

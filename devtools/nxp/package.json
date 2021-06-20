@@ -2,8 +2,8 @@
   "name": "noxprojectconstructor",
   "version": "1.0.0",
   "description": "This tool is downloading libs and is helping to dev NoxEngine",
-  "main": "index.js",
-  "bin": "index.js",
+  "main": "binNodeLoader.js",
+  "bin": "binNodeLoader.js",
   "scripts": {
     "build": "pkg . --output ../bin/nxp"
   },
