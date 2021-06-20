@@ -28,7 +28,11 @@ if(process.arch !== "x64"){
 }
 
 if(process.argv[2] == "reload"){
-    libsDownload()
+    if(process.argv[3] == "IDE"){
+        deployIDEconf()
+    }else {
+        libsDownload()
+    }
 }
 
 if(process.argv[2] == "build"){
@@ -157,6 +161,11 @@ async function libsDownload() {
     let checksumJson = await checksumLibs()
     await fs.promises.writeFile(path.join(NoxEnginePath, "libs", "checksum.json"), JSON.stringify(checksumJson, 1, 1))
 
+    await deployIDEconf()
+}
+
+async function deployIDEconf()
+{
     if(nxpcfg["IDE-debug-cfg"]){
         console.log("[*] - Config detected for some IDE. Deployement ...")
         for(i = 0 ; i < nxpcfg["IDE-debug-cfg"].length ; i++){
