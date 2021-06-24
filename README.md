@@ -17,7 +17,7 @@ NoxModel is a basic binary file, contains `floats and int values`. The engine us
 NXP
 =====
 
-`NXP` is a devtool making a layer between the user and the compiler `Make`. He dowload libs, and recompile it when needed. He will also deploy a preconfigured config for some IDE. Only vs-code is supported for the moment.
+`NXP` is a devtool making a layer between the user and the compiler `MSBuild`. He dowload libs, and recompile it when needed. He will also deploy a preconfigured config for some IDE. Only vs-code is supported for the moment.
 
 How to build ?
 =====
