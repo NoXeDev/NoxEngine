@@ -3,24 +3,14 @@
     "configurations": [
         {
             "name": "(gdb) NoxEngine",
-            "type": "cppdbg",
+            "type": "cppvsdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/dist/NoxEngine.exe",
+            "program": "${workspaceFolder}/dist/Debug/Engine.exe",
             "args": [],
             "stopAtEntry": false,
-            "cwd": "${workspaceFolder}",
+            "cwd": "${workspaceFolder}/dist/Debug/",
             "environment": [],
-            "externalConsole": false,
-            "MIMode": "gdb",
-            "miDebuggerPath": "gdb",
-            "preLaunchTask": "make",
-            "setupCommands": [
-                {
-                    "description": "pretty gdb printing",
-                    "text": "-enable-pretty-printing",
-                    "ignoreFailures": true
-                }
-            ]
+            "preLaunchTask": "build"
         }
     ]
 }

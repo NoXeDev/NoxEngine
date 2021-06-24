@@ -1,70 +1,94 @@
-ifndef NAME
-  NAME=Unamed
-endif
-
-INCLUDES := libs/GLEW/include/GL libs/GLFW/include/GLFW libs/GLM/glm libs/SOIL2/src/SOIL2
-INCLUDE	:=	$(foreach dir,$(INCLUDES),-I$(CURDIR)/$(dir))
-
-CXXFLAGS := $(INCLUDE) -std=c++17 -m64
-CPPFLAGS :=
-LDFLAGS := -m64
-
-ifndef config
-  config=debug
-endif
-
-ifeq ($(config),release)
-  LDFLAGS += -Wl,--subsystem,windows
-  CXXFLAGS += -O3
-endif
-
-ifeq ($(config),debug)
-  CXXFLAGS += -g
-  CPPFLAGS += -Ddebug
-endif
-
-SRCDIR := src
-OBJDIR := out
-DIST := dist
-
-LIBS	:=	-lglew32 -lglfw3dll -lopengl32 -lsoil2
-
-LIBPATHS	:=	-Llibs/GLEW/lib/Release/x64 -Llibs/GLFW/lib-static-ucrt -Llibs/SOIL2/lib/windows
-
-rwildcard=$(foreach d,$(wildcard $(1:=/*)),$(call rwildcard,$d,$2) $(filter $(subst *,%,$2),$d))
-
-SRC = $(call rwildcard,$(SRCDIR),*.cpp)          
-OBJS = $(patsubst $(SRCDIR)/%.cpp, $(OBJDIR)/%.o, $(SRC))
-
-all: $(OBJS) link prepare
-
-$(OBJDIR)/%.o: $(SRCDIR)/%.cpp
-	@ echo !==== COMPILING ====!
-	@ mkdir -p $(@D)
-	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c $^ -o $@
-
-link: 
-	@ echo !==== LINKING ====!
-	@ mkdir -p $(DIST)
-	$(CXX) $(OBJS) $(LDFLAGS) $(LIBPATHS) $(LIBS) -o $(DIST)/$(NAME).exe
-
-prepare:
-	@ echo !==== PREPARE DIST ====!
-	@ mkdir -p $(DIST)
-# copy dll in dist directory
-	@ cp libs/GLEW/bin/Release/x64/glew32.dll dist/glew32.dll
-	@ cp libs/GLFW/lib-static-ucrt/glfw3.dll dist/glfw3.dll
-	@ cp libs/SOIL2/lib/windows/soil2.dll dist/soil2.dll
-	@ cp mingwdll/libgcc_s_seh-1.dll dist/libgcc_s_seh-1.dll
-	@ cp mingwdll/libstdc++-6.dll dist/libstdc++-6.dll
-# copy res folder into dist directory and root
-	@ cp -r test/res dist/
-	@ cp -r test/res .
-# copy shaders into dist directory and root
-	@ cp -r $(SRCDIR)/shaders/glsl dist/res/
-	@ cp -r $(SRCDIR)/shaders/glsl res/
-
-clean:
-	@ rm -r dist
-	@ rm -r out
-	@ rm -r res
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.default.props" />
+  <PropertyGroup>
+    <ConfigurationType>Application</ConfigurationType>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+    <PostBuildEventUseInBuild>true</PostBuildEventUseInBuild>
+  </PropertyGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>15.0</VCProjectVersion>
+    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <IntDir>.\out\Debug\</IntDir>
+    <OutDir>.\dist\Debug\</OutDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <IntDir>.\out\Release\</IntDir>
+    <OutDir>.\dist\Release\</OutDir>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <LinkIncremental>false</LinkIncremental>
+    <DebugSymbols>false</DebugSymbols>
+    <DebugType>None</DebugType>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(MSBuildProjectDirectory)\libs\GLEW\include\GL\;$(MSBuildProjectDirectory)\libs\GLFW\include\GLFW\;$(MSBuildProjectDirectory)\libs\GLM\glm;$(MSBuildProjectDirectory)\libs\SOIL2\src\SOIL2\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <AdditionalLibraryDirectories>$(MSBuildProjectDirectory)\libs\GLEW\lib\Release\x64\;$(MSBuildProjectDirectory)\libs\GLFW\lib-vc2017\;$(MSBuildProjectDirectory)\libs\SOIL2\lib\windows\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>opengl32.lib;glew32.lib;glfw3dll.lib;soil2.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+    <PostBuildEvent>
+      <Message>Execute PostBuild script</Message>
+      <Command>./devtools/scripts/postbuild.bat $(configuration)</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="src/*.cpp" />
+    <ClCompile Include="src/*/*.cpp" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Targets" />
+</Project>

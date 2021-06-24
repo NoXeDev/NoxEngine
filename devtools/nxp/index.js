@@ -6,6 +6,11 @@ const { hashElement } = require("folder-hash")
 
 console.log("[*] - NoxProject Loader starting")
 let NoxEnginePath = process.cwd().split("NoxEngine")[0].concat("NoxEngine\\")
+let MSBuildPath = path.join(process.env["programfiles(x86)"], "Microsoft Visual Studio", "2017", "Community", "MSBuild", "15.0", "Bin", "MSBuild.exe")
+if(!fs.existsSync(MSBuildPath)){
+    console.log("[*] - MSbuild is not installed on your computer.")
+}
+
 if(!fs.existsSync(NoxEnginePath + "nxp.json"))
 {
     console.log("[X] - nxp.json not found")
@@ -57,11 +62,9 @@ async function copyDir(src, dest) {
 }
 
 async function build(){
-    if(!fs.existsSync(path.join(NoxEnginePath, "libs"))){
-        if(!fs.existsSync(path.join(NoxEnginePath, "libs", "checksum.json"))){
-            console.log("[*] - Libs missing... Reload...")
-            await libsDownload()
-        }
+    if(!fs.existsSync(path.join(NoxEnginePath, "libs")) || !fs.existsSync(path.join(NoxEnginePath, "libs", "checksum.json"))){
+        console.log("[*] - Libs missing... Reload...")
+        await libsDownload()
     }
 
     console.log("[*] - Checking libs integrity")
@@ -83,22 +86,24 @@ async function build(){
         console.log("[*] - Libs files are corrupted... Reload project ...")
         await libsDownload()
     }
-    console.log("[*] - Building with make")
+    console.log("[*] - Building with MSBuild")
 
-    let make = "all"
+    let config = "Debug"
     if(process.argv[3]){
-        make = process.argv[3]
-    }
-
-    let config = "debug"
-    if(process.argv[4]){
-        config = process.argv[4]
+        config = process.argv[3]
     }
     await new Promise((res) => {
-        child.spawn("make", ["-f", "Engine.nxp", make, "NAME="+nxpcfg["name"], "config="+config], {cwd:NoxEnginePath})
-        .stdout.on("data", (data) => console.log("[*] - MAKE : " + data.toString().replace("\n", ""))).on("end", () => res()).on("error", (err) => {
-            throw new Error("[-] - Build error : "+err)
+        let makeProcess = child.spawn(MSBuildPath, ["./Engine.nxp", "/p:configuration="+config, "/p:platform=x64"], {cwd:NoxEnginePath}).on("close", (code) => {
+            if(code !== 0){
+                console.log("[-] - Build Error, disconnect ...")
+                process.exit(1)
+            }else {
+                res()
+            }
         })
+
+        makeProcess.stdout.on("data", (data) => console.log("[*] - MSBUILD : " + data.toString().replace("\n", "")))
+        makeProcess.stderr.on("data", (data) => console.log("[*] - MSBUILD ERROR : " + data.toString().replace("\n", "")))
     })
 
     console.log("[*] - Builded !")
@@ -155,7 +160,7 @@ async function libsDownload() {
             console.log("[*] - Launch script for rebuild : " + nxpcfg["need-rebuild"][i])
             let libscriptsPath = path.join(NoxEnginePath, "devtools", "scripts", "nxp", "libs-scripts")
             let rebuilder = await require(path.join(libscriptsPath, nxpcfg["need-rebuild"][i] + ".js"))
-            await rebuilder(download, NoxEnginePath)
+            await rebuilder(download, NoxEnginePath, MSBuildPath)
             console.log("[*] - "+nxpcfg["need-rebuild"][i]+" Rebuild Succes !")
         }
     }

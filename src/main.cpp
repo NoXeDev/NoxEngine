@@ -1,4 +1,7 @@
 #include <iostream>
+#ifndef _DEBUG
+#include <Windows.h>
+#endif
 
 #include <glew.h>
 #include <glfw3.h>
@@ -25,8 +28,11 @@ int fatalError(const char* message) {
 
 	return EXIT_FAILURE;
 }
-
+#ifndef _DEBUG
+int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PWSTR pCmdLine, int nCmdShow){
+#else
 int main(){
+#endif
 	//Init GLFW 
 	if (!glfwInit()) { return fatalError("[ERROR] - Initialise GLFW failed"); }
 

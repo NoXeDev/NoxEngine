@@ -8,6 +8,8 @@
 /out
 /dist
 /res
+#This line is only for keep the old makefile for the engine safe
+OldEngine.nxp
 
 #libs ====
 libs

@@ -24,7 +24,7 @@ int DisplayManager::createDisplay()
 	glfwWindowHint(GLFW_SAMPLES, 4);
 
 	window = glfwCreateWindow(WIDTH, HEIGHT, GAME_NAME, 
-	#ifdef debug
+	#ifdef _DEBUG
 	nullptr
 	#else
 	glfwGetPrimaryMonitor()
