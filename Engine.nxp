@@ -90,5 +90,11 @@
     <ClCompile Include="src/*.cpp" />
     <ClCompile Include="src/*/*.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="src/NoxEngine.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="src/NoxEngine.ico" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Targets" />
 </Project>

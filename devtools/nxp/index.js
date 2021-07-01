@@ -6,9 +6,37 @@ const { hashElement } = require("folder-hash")
 
 console.log("[*] - NoxProject Loader starting")
 let NoxEnginePath = process.cwd().split("NoxEngine")[0].concat("NoxEngine\\")
-let MSBuildPath = path.join(process.env["programfiles(x86)"], "Microsoft Visual Studio", "2017", "Community", "MSBuild", "15.0", "Bin", "MSBuild.exe")
-if(!fs.existsSync(MSBuildPath)){
-    console.log("[*] - MSbuild is not installed on your computer.")
+let MSBuildPath = path.join(process.env["programfiles(x86)"], "Microsoft Visual Studio", "2017", "BuildTools", "MSBuild", "15.0", "Bin", "MSBuild.exe")
+
+async function MSBuildInstall()
+{
+    console.log("[*] - Installing Chocolatey...")
+    await new Promise((res) => {
+        child.spawn('powershell', ["-Command", `& {Start-Process Powershell.exe -Wait -Verb RunAs -ArgumentList "Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))"}`, "-Wait"])
+        .on("close", (code) => {
+            if(code !== 0){
+                console.log("[*] - Failed to install chocolatey, disconnect...")
+                process.exit(1)
+            }else {
+                res()
+            }
+        })
+    })
+
+    let ChocoPath = path.join(process.env["ProgramData"], "chocolatey", "choco.exe")
+
+    console.log("[*] - Installing VS2017 BuildTool...")
+    await new Promise((res) => {
+        child.spawn('powershell', ["-Command", `& {Start-Process Powershell.exe -Wait -Verb RunAs -ArgumentList "${ChocoPath} install visualstudio2017buildtools -y;${ChocoPath} install visualstudio2017-workload-vctools -y"}`, "-Wait"])
+        .on("close", (code) => {
+            if(code !== 0){
+                console.log("[*] - Failed to install VS2017 BuildTool, disconnect...")
+                process.exit(1)
+            }else {
+                res()
+            }
+        })
+    })
 }
 
 if(!fs.existsSync(NoxEnginePath + "nxp.json"))
@@ -38,7 +66,10 @@ if(process.arch !== "x64"){
 if(process.argv[2] == "reload"){
     if(process.argv[3] == "IDE"){
         deployIDEconf()
-    }else {
+    }else if(process.argv[3] == "msbuild"){
+        MSBuildInstall()
+    }
+    else {
         libsDownload()
     }
 }
@@ -62,6 +93,11 @@ async function copyDir(src, dest) {
 }
 
 async function build(){
+    if(!fs.existsSync(MSBuildPath)){
+        console.log("[*] - MSbuild is not installed on your computer... Installing...")
+        await MSBuildInstall()
+    }
+
     if(!fs.existsSync(path.join(NoxEnginePath, "libs")) || !fs.existsSync(path.join(NoxEnginePath, "libs", "checksum.json"))){
         console.log("[*] - Libs missing... Reload...")
         await libsDownload()
@@ -136,6 +172,11 @@ async function checksumLibs(){
 }
 
 async function libsDownload() {
+    if(!fs.existsSync(MSBuildPath)){
+        console.log("[*] - MSbuild is not installed on your computer... Installing...")
+        await MSBuildInstall()
+    }
+
     if(fs.existsSync(path.join(NoxEnginePath, "libs"))){
         await fs.promises.rm(path.join(NoxEnginePath, "libs"), { recursive: true })
     }
