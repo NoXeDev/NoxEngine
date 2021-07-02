@@ -1,4 +1,5 @@
-# NoxEngine
+![Banner](src/banner.png?raw=true)
+=====
 
 ![License](https://img.shields.io/apm/l/vim-mode)
 
