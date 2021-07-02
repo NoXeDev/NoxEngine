@@ -24,7 +24,7 @@ module.exports = function(download, NoxEnginePath, MSbuildPath) {
             
             await new Promise((res) => {
                 console.log("[*] - SOIL2 compilation ...")
-                child.spawn(MSbuildPath, ["./soil2-static-lib.vcxproj", "/p:configuration=Release", "/p:platform=x64"], {
+                let build = child.spawn(MSbuildPath, ["./soil2-static-lib.vcxproj", "/p:configuration=Release", "/p:platform=x64", "/p:WindowsTargetPlatformVersion=10.0.17763.0"], {
                     cwd:NoxEnginePath+"libs\\"+"SOIL2\\"+"make\\"+"windows\\"
                 }).on("close", (code) => {
                     if(code !== 0){
@@ -34,6 +34,8 @@ module.exports = function(download, NoxEnginePath, MSbuildPath) {
                         res()
                     }
                 })
+                build.stderr.on("data", (data) => {console.log("[-] - ERROR : " + data.toString().replace("\n", ""))})
+                build.stdout.on("data", (data) => {console.log("[*] - PREMAKE 5 : " + data.toString().replace("\n", ""))})
             })
 
             res()

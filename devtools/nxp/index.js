@@ -27,7 +27,7 @@ async function MSBuildInstall()
 
     console.log("[*] - Installing VS2017 BuildTool...")
     await new Promise((res) => {
-        child.spawn('powershell', ["-Command", `& {Start-Process Powershell.exe -Wait -Verb RunAs -ArgumentList "${ChocoPath} install visualstudio2017buildtools -y;${ChocoPath} install visualstudio2017-workload-vctools -y"}`, "-Wait"])
+        child.spawn('powershell', ["-Command", `& {Start-Process Powershell.exe -Wait -Verb RunAs -ArgumentList "${ChocoPath} install visualstudio2017buildtools -y;${ChocoPath} install visualstudio2017-workload-vctools -y;${ChocoPath} install windows-sdk-10-version-1809-all -y"}`, "-Wait"])
         .on("close", (code) => {
             if(code !== 0){
                 console.log("[*] - Failed to install VS2017 BuildTool, disconnect...")
