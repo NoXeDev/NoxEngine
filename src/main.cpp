@@ -21,6 +21,8 @@
 #include "entities/Light.h"
 #include "renderEngine/MasterRenderer.h"
 #include "entities/Player.h"
+#include "guis/GuiTexture.h"
+#include "guis/GuiRenderer.h"
 
 int fatalError(const char* message) {
 	std::cout << message << std::endl;
@@ -97,7 +99,10 @@ int main(){
 		float y = terrain->getHeightOfTerrain(x, z);
 		grassList.push_back(std::unique_ptr<Entity> (new Entity(grassTexturedModel.get(), glm::vec3(x, y, z), glm::vec3(0, 0, 0), 1)));
 	}
-
+	//create guis vector for rendering (empty)
+	std::vector<GuiTexture*> guis;
+	std::unique_ptr<GuiRenderer> guiRenderer(new GuiRenderer(loader.get()));
+	
 	while (true)
 	{
 		//Poll Events
@@ -117,6 +122,8 @@ int main(){
 			renderer->processEntity(grassList.at(i).get());
 		}
 		renderer->render(light.get(), camera.get());
+		//guis render
+		guiRenderer->render(guis);
 
 		//update
 		DisplayManager::updateDisplay();
@@ -128,6 +135,7 @@ int main(){
 	//exit stuff
 	renderer->cleanUp();
 	loader->cleanUp();
+	guiRenderer->cleanUp();
 	DisplayManager::closeDisplay();
 	glfwTerminate();
 	return EXIT_SUCCESS;

@@ -25,6 +25,14 @@ RawModel* Loader::loadToVAO(
 	return new RawModel(vaoID, indicesCount);
 }
 
+RawModel* Loader::loadToVAO(GLfloat positions[], GLsizeiptr size, int positionsLength)
+{
+	GLint vaoID = createVAO();
+	this->storeDataInAttributeList(0, 2, positions, size);
+	unbindVAO();
+	return new RawModel(vaoID, positionsLength/2);
+}
+
 int Loader::loadTexture(const char* filename)
 {
 	GLuint textureID;

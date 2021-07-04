@@ -23,6 +23,7 @@ public:
 		GLfloat normals[], GLsizei normalsSize,
 		GLint indices[], GLsizeiptr indicesSize, GLsizeiptr indicesCount
 	);
+	RawModel* loadToVAO(GLfloat positions[], GLsizeiptr size, int positionsLength);
 	void cleanUp();
 	int loadTexture(const char* filename);
 };
