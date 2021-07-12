@@ -35,7 +35,7 @@ module.exports = function(download, NoxEnginePath, MSbuildPath) {
                     }
                 })
                 build.stderr.on("data", (data) => {console.log("[-] - ERROR : " + data.toString().replace("\n", ""))})
-                build.stdout.on("data", (data) => {console.log("[*] - PREMAKE 5 : " + data.toString().replace("\n", ""))})
+                build.stdout.on("data", (data) => {console.log("[*] - MSBUILD : " + data.toString().replace("\n", ""))})
             })
 
             res()

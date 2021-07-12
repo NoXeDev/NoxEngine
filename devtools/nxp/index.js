@@ -78,6 +78,10 @@ if(process.argv[2] == "build"){
     build()
 }
 
+if(process.argv[2] == "msbuild"){
+    MSBuildInstall()
+}
+
 async function copyDir(src, dest) {
     await fs.promises.mkdir(dest, { recursive: true });
     let entries = await fs.promises.readdir(src, { withFileTypes: true });
