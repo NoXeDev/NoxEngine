@@ -8,7 +8,6 @@
 double FPSlastTime;
 int nbFrames;
 
-const GLint WIDTH = 1920, HEIGHT = 1080;
 GLFWwindow* window;
 
 double lastFrameTime;
@@ -23,15 +22,21 @@ int DisplayManager::createDisplay()
 	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 	glfwWindowHint(GLFW_SAMPLES, 4);
 
+	GLFWmonitor* primaryMonitor = glfwGetPrimaryMonitor();
+	const GLFWvidmode* vidMode = glfwGetVideoMode(primaryMonitor);
+	const GLint WIDTH = vidMode->width, HEIGHT = vidMode->height;
+
 	window = glfwCreateWindow(WIDTH, HEIGHT, GAME_NAME, 
 	#ifdef _DEBUG
 	nullptr
 	#else
-	glfwGetPrimaryMonitor()
+	primaryMonitor
 	#endif
 	, nullptr);
 
 	Mouse::Init(window);
+
+	std::cout << WIDTH << " " << HEIGHT << std::endl;
 
 	int screenWidth, screenHeight;
 	glfwGetFramebufferSize(window, &screenWidth, &screenHeight);

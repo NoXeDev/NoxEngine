@@ -46,7 +46,7 @@ if(!fs.existsSync(NoxEnginePath + "nxp.json"))
 }
 
 if(process.argv[2] == undefined){
-    console.log("Help (< > : optionnal arguments) :\n\n- build < make target / config=release (specify for make we need a release) >\n- reload < IDE (specify we just want reload IDE config)>\n")
+    console.log("Help (< > : optionnal arguments) :\n\n- build < make target / config=release (specify for make we need a release) >\n- reload < IDE (specify we just want reload IDE config)>\n- clean < all(default) / workspace / IDE / Libs> : clean project")
     process.exit(0)
 }
 
@@ -80,6 +80,28 @@ if(process.argv[2] == "build"){
 
 if(process.argv[2] == "msbuild"){
     MSBuildInstall()
+}
+
+if(process.argv[2] == "clean"){
+    clean(process.argv[3])
+}
+
+async function clean(target){
+    if(target == undefined){
+        target = 'all'
+    }
+    const dirs = await fs.promises.readdir(NoxEnginePath)
+    const targets = {
+        'all': ['out', 'dist', 'libs', '.vscode'],
+        'workspace': ['out', 'dist'],
+        'IDE': ['.vscode'],
+        'libs': ['libs'],
+    }
+    dirs.foreach(async(e) => {
+        if(targets[target].includes(e)){
+            await fs.promises.rm(path.join(NoxEnginePath, e), {recursive: true})
+        }
+    })
 }
 
 async function copyDir(src, dest) {
