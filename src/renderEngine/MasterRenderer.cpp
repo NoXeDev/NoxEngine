@@ -65,10 +65,9 @@ void MasterRenderer::processEntity(Entity *entity)
 {
 	TexturedModel* entityModel = entity->getModel();
 	std::vector<Entity*> *batch;
-	try {
+	if(this->entities.find(entityModel) != this->entities.end()){
 		batch = &this->entities.at(entityModel);
-	}
-	catch(const std::out_of_range& oor){
+	}else {
 		batch = new std::vector<Entity*>{};
 	}
 
