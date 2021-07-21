@@ -5,12 +5,12 @@
 #include <vector>
 #include "../common/types.h"
 
-static std::vector<std::string> *logs;
+static std::vector<Clog> *logs;
 
 class virtualConsole {
     public:
         static void init();
-        static C_RES log(std::string value);
-        static const char* getLastLine();
+        static void log(std::string value);
+        static Clog getLastLog();
         static void free();
 };

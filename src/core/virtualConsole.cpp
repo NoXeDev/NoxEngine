@@ -2,21 +2,28 @@
 
 void virtualConsole::init()
 {
-    logs = new std::vector<std::string>{};
+    logs = new std::vector<Clog>{};
 }
 
-C_RES virtualConsole::log(std::string value)
+void virtualConsole::log(std::string value)
 {
-    logs->push_back(value);
-    std::cout << value.c_str() << std::endl;
-    C_RES res;
-    res.res = true;
-    return res;
+    Clog currentLog;
+    currentLog.message = value;
+    currentLog.type = LOGstdr;
+
+    time_t now = time(0);
+    currentLog.time = localtime(&now);
+
+    logs->push_back(currentLog);
+#ifdef _DEBUG
+    std::cout << "[" << currentLog.time->tm_hour << ":" << currentLog.time->tm_min  << 
+    ":" << currentLog.time->tm_sec << "] - " << currentLog.message.c_str() << std::endl;
+#endif
 }
 
-const char* virtualConsole::getLastLine()
+Clog virtualConsole::getLastLog()
 {
-    return logs->at(logs->size() - 1).c_str();
+    return logs->at(logs->size() - 1);
 }
 
 void virtualConsole::free()
