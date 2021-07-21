@@ -209,16 +209,23 @@ async function libsDownload() {
 
     for(lib in nxpcfg[`libs-${process.platform}`]){
         console.log("[+] - Downloading and extract : " + lib)
-        await download(nxpcfg[`libs-${process.platform}`][lib], path.join(NoxEnginePath, "libs"), {
-            extract: true,
-            map: file => {
-                let splittedname = file.path.split("/")
-                splittedname[0] = lib
-                file.path = splittedname.join("/");
-                return file;
-            }
-        })
-    
+        if(nxpcfg["specific-download"].includes(lib)){
+            console.log(`[*] - Specific download script is specify for ${lib}. Launching...`)
+            let libdownloadPath = path.join(NoxEnginePath, "devtools", "scripts", "nxp", "libs-download")
+            let downloader = await require(path.join(libdownloadPath, lib+".js"))
+            await downloader(download, NoxEnginePath, nxpcfg[`libs-${process.platform}`][lib], fs)
+            console.log(`[*] - ${lib} script download end !`)
+        }else {
+            await download(nxpcfg[`libs-${process.platform}`][lib], path.join(NoxEnginePath, "libs"), {
+                extract: true,
+                map: file => {
+                    let splittedname = file.path.split("/")
+                    splittedname[0] = lib
+                    file.path = splittedname.join("/");
+                    return file;
+                }
+            })
+        }    
     }
 
     if(nxpcfg["need-rebuild"]){
