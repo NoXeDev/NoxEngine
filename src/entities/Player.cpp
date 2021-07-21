@@ -9,7 +9,6 @@ void Player::move(Terrain *terrain)
     if(this->hasCamera || this->camera != nullptr){
         this->checkInputs();
         this->camera->move(this->getPosition());
-        //std::cout << this->getRotation().y;
         this->rotation.y = - this->camera->getRotation().y;
         float distance = this->currentSpeed * DisplayManager::getFrameTimeSeconds();
         float dx = (float) (distance * glm::sin(glm::radians(this->camera->getRotation().y + this->DIRECTION_VECTOR)));

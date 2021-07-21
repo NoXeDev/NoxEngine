@@ -4,6 +4,7 @@
 
 #include "../common/const.h"
 #include "../utils/Mouse.h"
+#include "../core/virtualConsole.h"
 
 double FPSlastTime;
 int nbFrames;
@@ -36,7 +37,9 @@ int DisplayManager::createDisplay()
 
 	Mouse::Init(window);
 
-	std::cout << WIDTH << " " << HEIGHT << std::endl;
+	std::ostringstream ss;
+	ss << "Screen resolution : " << WIDTH << " x " << HEIGHT;
+	virtualConsole::log(ss.str());
 
 	int screenWidth, screenHeight;
 	glfwGetFramebufferSize(window, &screenWidth, &screenHeight);

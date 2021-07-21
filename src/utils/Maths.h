@@ -8,7 +8,5 @@ public:
 	static glm::mat4 createTransformationMatrix(glm::vec3 translation, glm::vec3 rotation, float scale);
 	static glm::mat4 createTransformationMatrix(glm::vec2 translation, glm::vec2 scale);
 	static glm::mat4 createViewMatrix(Camera* camera);
-private:
-	static void translate2D(glm::mat4 *matrix, glm::vec2 translation);
 };
 

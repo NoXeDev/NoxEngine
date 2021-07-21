@@ -23,9 +23,10 @@
 #include "entities/Player.h"
 #include "guis/GuiTexture.h"
 #include "guis/GuiRenderer.h"
+#include "core/virtualConsole.h"
 
 int fatalError(const char* message) {
-	std::cout << message << std::endl;
+	virtualConsole::log(message);
 	glfwTerminate();
 
 	return EXIT_FAILURE;
@@ -35,6 +36,8 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PWSTR pCmdLine
 #else
 int main(){
 #endif
+	//Init the Virtual console for Handle errors
+	virtualConsole::init();
 	//Init GLFW 
 	if (!glfwInit()) { return fatalError("[ERROR] - Initialise GLFW failed"); }
 
@@ -57,7 +60,9 @@ int main(){
 	std::unique_ptr<ModelTexture> grassTexture(new ModelTexture(loader->loadTexture("res/materials/grassTexture.png")));
 	auto stop = std::chrono::high_resolution_clock::now();
 	auto duration = std::chrono::duration_cast<std::chrono::microseconds>(stop - start);
-	std::cout << "Loading time : " << (float)duration.count() / 1000000 << "'s" << std::endl;
+	std::ostringstream ss;
+	ss << "Loading time : " << (float)duration.count() / 1000000 << "'s";
+	virtualConsole::log(ss.str());
 
 	//set textures varaibles
 	texture->setShineDamper(10);
@@ -137,6 +142,7 @@ int main(){
 	loader->cleanUp();
 	guiRenderer->cleanUp();
 	DisplayManager::closeDisplay();
+	virtualConsole::free();
 	glfwTerminate();
 	return EXIT_SUCCESS;
 }

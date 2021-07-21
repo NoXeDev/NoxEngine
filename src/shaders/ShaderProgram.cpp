@@ -7,6 +7,7 @@
 #include <glm.hpp>
 #include <gtc/type_ptr.hpp>
 #include <string>
+#include "../core/virtualConsole.h"
 
 std::string basePath = "./res/glsl/";
 
@@ -106,7 +107,9 @@ GLuint ShaderProgram::loadShader(const char* file, GLenum type)
 		ShaderStream.close();
 	}
 	else {
-		printf("Impossible to open %s.\n", file);
+		std::ostringstream ss;
+		ss << "Impossible to open " << file << ".";
+		virtualConsole::log(ss.str());
 		exit(NOXENGINE_SHADERS_MISSING);
 	}
 
@@ -123,7 +126,9 @@ GLuint ShaderProgram::loadShader(const char* file, GLenum type)
 	if (InfoLogLength > 0) {
 		std::vector<char> ShaderErrorMessage(InfoLogLength + 1);
 		glGetShaderInfoLog(shaderID, InfoLogLength, NULL, &ShaderErrorMessage[0]);
-		printf("Compiling shader error %s : %s\n", file, &ShaderErrorMessage[0]);
+		std::ostringstream ss;
+		ss << "Compiling shader error " << file << " : " << &ShaderErrorMessage[0];
+		virtualConsole::log(ss.str());
 		exit(NOXENGINE_SHADERS_COMPILATION_ERROR);
 	}
 
