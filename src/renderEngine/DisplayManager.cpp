@@ -5,6 +5,7 @@
 #include "../common/const.h"
 #include "../utils/Mouse.h"
 #include "../core/virtualConsole.h"
+#include "../core/errorHandler.h"
 
 double FPSlastTime;
 int nbFrames;
@@ -14,7 +15,7 @@ GLFWwindow* window;
 double lastFrameTime;
 double delta;
 
-int DisplayManager::createDisplay()
+void DisplayManager::createDisplay()
 {
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
@@ -45,12 +46,11 @@ int DisplayManager::createDisplay()
 	glfwGetFramebufferSize(window, &screenWidth, &screenHeight);
 	
 
-	if (window == nullptr) { return NOXENGINE_FATAL_WINDOW_CREATE; }
+	if (window == nullptr) { errorHandler::fatal("Failed to create window"); }
 
 	glfwMakeContextCurrent(window);
 	glViewport(0, 0, screenWidth, screenHeight);
 	lastFrameTime = getCurrentTime();
-	return 0;
 }
 
 GLFWwindow* DisplayManager::getDisplay()
@@ -69,7 +69,9 @@ void DisplayManager::updateDisplay()
 
 void DisplayManager::closeDisplay()
 {
-	glfwDestroyWindow(window);
+	if(window != nullptr){
+		glfwDestroyWindow(window);
+	}
 }
 
 void DisplayManager::showFPS(double currentTime)

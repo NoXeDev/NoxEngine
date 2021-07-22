@@ -5,11 +5,11 @@ void virtualConsole::init()
     logs = new std::vector<Clog>{};
 }
 
-void virtualConsole::log(std::string value)
+void virtualConsole::log(std::string value, logtype type)
 {
     Clog currentLog;
     currentLog.message = value;
-    currentLog.type = LOGstdr;
+    currentLog.type = type;
 
     time_t now = time(0);
     currentLog.time = localtime(&now);
@@ -28,5 +28,12 @@ Clog virtualConsole::getLastLog()
 
 void virtualConsole::free()
 {
-    delete logs;
+    if(logs != nullptr){
+        delete logs;
+    }
+}
+
+std::vector<Clog> *virtualConsole::getLogs()
+{
+    return logs;
 }

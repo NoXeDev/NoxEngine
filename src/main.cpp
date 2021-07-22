@@ -24,33 +24,34 @@
 #include "guis/GuiTexture.h"
 #include "guis/GuiRenderer.h"
 #include "core/virtualConsole.h"
+#include "core/errorHandler.h"
 
-int fatalError(const char* message) {
-	virtualConsole::log(message);
-	glfwTerminate();
+static Cleaner EngineCleaner;
+void globalCleanUp();
 
-	return EXIT_FAILURE;
-}
 #ifndef _DEBUG
 int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PWSTR pCmdLine, int nCmdShow){
 #else
 int main(){
 #endif
-	//Init the Virtual console for Handle errors
+	//Init the Virtual console and error handler for Handle errors
 	virtualConsole::init();
+	errorHandler::init(&EngineCleaner);
 	//Init GLFW 
-	if (!glfwInit()) { return fatalError("[ERROR] - Initialise GLFW failed"); }
+	if (!glfwInit()) { errorHandler::fatal("[ERROR] - Initialise GLFW failed"); }
 
 	//Window creation
 	DisplayManager::createDisplay();
 
 	//Init GLEW
 	glewExperimental = GL_TRUE;
-	if (glewInit() != GLEW_OK) { return fatalError("[ERROR] - Initialise GLEW failed"); }
+	if (glewInit() != GLEW_OK) { errorHandler::fatal("[ERROR] - Initialise GLEW failed"); }
 
 	//create loading stuff
 	std::unique_ptr<Loader> loader(new Loader());
+	EngineCleaner.loader = loader.get();
 	std::unique_ptr<MasterRenderer> renderer(new MasterRenderer());
+	EngineCleaner.renderer = renderer.get();
 
 	//loading files assets (time loading calculation implemented)
 	auto start = std::chrono::high_resolution_clock::now();
@@ -107,6 +108,9 @@ int main(){
 	//create guis vector for rendering (empty)
 	std::vector<GuiTexture*> guis;
 	std::unique_ptr<GuiRenderer> guiRenderer(new GuiRenderer(loader.get()));
+	EngineCleaner.gui = guiRenderer.get();
+
+	errorHandler::fatal("Testing fatal error");
 	
 	while (true)
 	{
@@ -138,11 +142,16 @@ int main(){
 	}
 
 	//exit stuff
-	renderer->cleanUp();
-	loader->cleanUp();
-	guiRenderer->cleanUp();
+	globalCleanUp();
+	return EXIT_SUCCESS;
+}
+
+void globalCleanUp()
+{
+	EngineCleaner.renderer->cleanUp();
+	EngineCleaner.loader->cleanUp();
+	EngineCleaner.gui->cleanUp();
 	DisplayManager::closeDisplay();
 	virtualConsole::free();
 	glfwTerminate();
-	return EXIT_SUCCESS;
 }

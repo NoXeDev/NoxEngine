@@ -6,7 +6,7 @@
 
 #include "../model/RawModel.h"
 #include "../common/const.h"
-#include "../core/virtualConsole.h"
+#include "../core/errorHandler.h"
 
 using namespace std;
 
@@ -52,8 +52,7 @@ int Loader::loadTexture(const char* filename)
 	if (texture == nullptr) {
 		std::ostringstream ss;
 		ss << "Texture loading fatal error : " << SOIL_last_result() << filename;
-		virtualConsole::log(ss.str());
-		exit(NOXENGINE_TEXTURE_LOAD_FAILED);
+		errorHandler::fatal(ss.str());
 	}
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture);
 	glGenerateMipmap(GL_TEXTURE_2D);

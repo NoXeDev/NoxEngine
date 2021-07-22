@@ -1,9 +1,10 @@
 #pragma once
+#include <glew.h>
 #include <glfw3.h>
 class DisplayManager
 {
 public:
-	static int createDisplay();
+	static void createDisplay();
 	static void updateDisplay();
 	static void closeDisplay();
 	static GLFWwindow* getDisplay();

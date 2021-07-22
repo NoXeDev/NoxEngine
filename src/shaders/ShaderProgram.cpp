@@ -1,5 +1,5 @@
-#include "../common/const.h"
 #include "ShaderProgram.h"
+#include "../common/const.h"
 #include <iostream>
 #include <fstream>
 #include <sstream>
@@ -7,7 +7,7 @@
 #include <glm.hpp>
 #include <gtc/type_ptr.hpp>
 #include <string>
-#include "../core/virtualConsole.h"
+#include "../core/errorHandler.h"
 
 std::string basePath = "./res/glsl/";
 
@@ -109,8 +109,7 @@ GLuint ShaderProgram::loadShader(const char* file, GLenum type)
 	else {
 		std::ostringstream ss;
 		ss << "Impossible to open " << file << ".";
-		virtualConsole::log(ss.str());
-		exit(NOXENGINE_SHADERS_MISSING);
+		errorHandler::fatal(ss.str());
 	}
 
 	GLint Result = GL_FALSE;
@@ -128,8 +127,7 @@ GLuint ShaderProgram::loadShader(const char* file, GLenum type)
 		glGetShaderInfoLog(shaderID, InfoLogLength, NULL, &ShaderErrorMessage[0]);
 		std::ostringstream ss;
 		ss << "Compiling shader error " << file << " : " << &ShaderErrorMessage[0];
-		virtualConsole::log(ss.str());
-		exit(NOXENGINE_SHADERS_COMPILATION_ERROR);
+		errorHandler::fatal(ss.str());
 	}
 
 	return shaderID;
