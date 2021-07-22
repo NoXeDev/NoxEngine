@@ -110,7 +110,7 @@ int main(){
 	std::unique_ptr<GuiRenderer> guiRenderer(new GuiRenderer(loader.get()));
 	EngineCleaner.gui = guiRenderer.get();
 
-	errorHandler::fatal("Testing fatal error");
+	//errorHandler::fatal("Testing fatal error");
 	
 	while (true)
 	{
