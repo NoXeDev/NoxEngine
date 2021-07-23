@@ -11,27 +11,27 @@
 using namespace std;
 
 RawModel* Loader::loadToVAO(
-	GLfloat positions[], GLsizeiptr size, 
-	GLfloat textureCoords[], GLsizei coordsSize,
-	GLfloat normals[], GLsizei normalsSize,
-	GLint indices[], GLsizeiptr indicesSize, GLsizeiptr indicesCount
+	std::vector<GLfloat> *positions,
+	std::vector<GLfloat> *textureCoords,
+	std::vector<GLfloat> *normals,
+	std::vector<GLint> *indices
 )
 {
 	GLuint vaoID = this->createVAO();
-	this->bindIndicesBuffer(indices, indicesSize);
-	this->storeDataInAttributeList(0, 3, positions, size);
-	this->storeDataInAttributeList(1, 2, textureCoords, coordsSize);
-	this->storeDataInAttributeList(2, 3, normals, normalsSize);
+	this->bindIndicesBuffer(indices);
+	this->storeDataInAttributeList(0, 3, positions);
+	this->storeDataInAttributeList(1, 2, textureCoords);
+	this->storeDataInAttributeList(2, 3, normals);
 	this->unbindVAO();
-	return new RawModel(vaoID, indicesCount);
+	return new RawModel(vaoID, indices->size());
 }
 
-RawModel* Loader::loadToVAO(GLfloat positions[], GLsizeiptr size, int positionsLength)
+RawModel* Loader::loadToVAO(std::vector<GLfloat> *positions)
 {
 	GLint vaoID = createVAO();
-	this->storeDataInAttributeList(0, 2, positions, size);
+	this->storeDataInAttributeList(0, 2, positions);
 	unbindVAO();
-	return new RawModel(vaoID, positionsLength/2);
+	return new RawModel(vaoID, positions->size()/2);
 }
 
 int Loader::loadTexture(const char* filename)
@@ -93,24 +93,24 @@ int Loader::createVAO()
 	return vaoID;
 }
 
-void Loader::storeDataInAttributeList(GLuint attributeNumber, GLint coordinateSize, GLfloat data[], GLsizeiptr size)
+void Loader::storeDataInAttributeList(GLuint attributeNumber, GLint coordinateSize, std::vector<GLfloat> *data)
 {
 	GLuint vboID;
 	glGenBuffers(1, &vboID);
 	this->vbos.push_back(vboID);
 	glBindBuffer(GL_ARRAY_BUFFER, vboID);
-	glBufferData(GL_ARRAY_BUFFER, size, data, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, data->size()*sizeof(GLfloat), &data->front(), GL_STATIC_DRAW);
 	glVertexAttribPointer(attributeNumber, coordinateSize, GL_FLOAT, GL_FALSE, 0, (void * )0);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
-void Loader::bindIndicesBuffer(GLint indices[], GLsizeiptr size)
+void Loader::bindIndicesBuffer(std::vector<GLint> *indices)
 {
 	GLuint vboID;
 	glGenBuffers(1, &vboID);
 	this->vbos.push_back(vboID);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vboID);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, size, indices, GL_STATIC_DRAW);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices->size()*sizeof(GLint), &indices->front(), GL_STATIC_DRAW);
 }
 
 void Loader::unbindVAO()

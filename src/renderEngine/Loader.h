@@ -13,17 +13,17 @@ private:
 	vector<GLuint> vbos;
 	vector<GLuint> textures;
 	int createVAO();
-	void storeDataInAttributeList(GLuint attributeNumber, GLint coordinateSize, GLfloat data[], GLsizeiptr size);
+	void storeDataInAttributeList(GLuint attributeNumber, GLint coordinateSize, std::vector<GLfloat> *data);
 	void unbindVAO();
-	void bindIndicesBuffer(GLint indices[], GLsizeiptr size);
+	void bindIndicesBuffer(std::vector<GLint> *indices);
 public:
 	RawModel* loadToVAO(
-		GLfloat positions[], GLsizeiptr size,
-		GLfloat textureCoords[], GLsizei coordsSize,
-		GLfloat normals[], GLsizei normalsSize,
-		GLint indices[], GLsizeiptr indicesSize, GLsizeiptr indicesCount
+		std::vector<GLfloat> *positions,
+		std::vector<GLfloat> *textureCoords,
+		std::vector<GLfloat> *normals,
+		std::vector<GLint> *indices
 	);
-	RawModel* loadToVAO(GLfloat positions[], GLsizeiptr size, int positionsLength);
+	RawModel* loadToVAO(std::vector<GLfloat> *positions);
 	void cleanUp();
 	int loadTexture(const char* filename);
 };

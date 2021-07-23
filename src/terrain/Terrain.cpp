@@ -65,7 +65,7 @@ RawModel* Terrain::generateTerrain(Loader* loader, const char *heightMap)
 		}
 	}
 	SOIL_free_image_data(heightMapBuff);
-	return loader->loadToVAO(&vertices[0], vertices.size() * sizeof(float), &textureCoords[0], textureCoords.size() * sizeof(float), &normals[0], normals.size() * sizeof(float), &indices[0], indices.size() * sizeof(float), indices.size());
+	return loader->loadToVAO(&vertices, &textureCoords, &normals, &indices);
 }
 
 float Terrain::getHeightOfTerrain(float worldX, float worldZ)

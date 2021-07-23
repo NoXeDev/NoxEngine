@@ -64,11 +64,5 @@ RawModel* NMloader::loadNMmodel(const char* filePath, Loader* loader)
 
     file.close();
 
-    GLfloat* vertices = &positions[0];
-    GLint* indicesArray = &indices[0];
-    GLfloat* textureCoords = &UV[0];
-    GLfloat* normalsArray = &normals[0];
-    
-
-    return loader->loadToVAO(vertices, positions.size()*sizeof(GLfloat), textureCoords, UV.size()*sizeof(GLfloat), normalsArray, normals.size()*sizeof(GLfloat), indicesArray, indices.size()*sizeof(GLint), indices.size());
+    return loader->loadToVAO(&positions, &UV, &normals, &indices);
 }

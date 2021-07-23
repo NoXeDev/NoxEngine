@@ -56,6 +56,7 @@ int main(){
 	//loading files assets (time loading calculation implemented)
 	auto start = std::chrono::high_resolution_clock::now();
 	std::unique_ptr<RawModel> model(NMloader::loadNMmodel("res/models/dragon.nm", loader.get()));
+	std::unique_ptr<RawModel> character(NMloader::loadNMmodel("res/models/character.nm", loader.get()));
 	std::unique_ptr<RawModel> grass(NMloader::loadNMmodel("res/models/grass.nm", loader.get()));
 	std::unique_ptr<ModelTexture> texture(new ModelTexture(loader->loadTexture("res/materials/stallTexture.png")));
 	std::unique_ptr<ModelTexture> grassTexture(new ModelTexture(loader->loadTexture("res/materials/grassTexture.png")));
@@ -80,6 +81,7 @@ int main(){
 
 	//create ingame entity from assets
 	std::unique_ptr<TexturedModel> texturedModel(new TexturedModel(model.get(), texture.get()));
+	std::unique_ptr<TexturedModel> characterTextured(new TexturedModel(character.get(), texture.get()));
 	std::unique_ptr<TexturedModel> grassTexturedModel(new TexturedModel(grass.get(), grassTexture.get()));
 
 	std::unique_ptr<Camera> camera(new Camera());
@@ -89,6 +91,7 @@ int main(){
 
 	std::unique_ptr<Player> player(new Player(texturedModel.get(), glm::vec3(500, terrain->getHeightOfTerrain(500, 400), 400), glm::vec3(0, 0, 0), 1));
 	std::unique_ptr<Entity> entity2(new Entity(texturedModel.get(), glm::vec3(500, terrain->getHeightOfTerrain(500, 395), 395), glm::vec3(0, 0, 0), 1));
+	std::unique_ptr<Entity> characterEntity(new Entity(characterTextured.get(), glm::vec3(550, 30, 450), glm::vec3(0, 0, 0), 1));
 
 	player->attachCameraToPlayer(camera.get());
 
@@ -126,6 +129,7 @@ int main(){
 		renderer->processTerrain(terrain.get());
 		renderer->processEntity(entity.get());
 		renderer->processEntity(entity2.get());
+		renderer->processEntity(characterEntity.get());
 		for(int i = 0; i < grassList.size(); i++)
 		{
 			renderer->processEntity(grassList.at(i).get());
