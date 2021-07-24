@@ -113,6 +113,22 @@ int main(){
 	std::unique_ptr<GuiRenderer> guiRenderer(new GuiRenderer(loader.get()));
 	EngineCleaner.gui = guiRenderer.get();
 
+	//create Cvar here
+	int sv_test = 1;
+	Cvar<int> cvar_test("sv_test", &sv_test);
+
+	//print Cvar and create ptr of him
+	virtualConsole::log(std::to_string(*cvar_test.get()).c_str());
+	int *alsoSv_test = virtualConsole::getCvar<int>("sv_test")->get();
+
+	//edit cvar value by ptr
+	*alsoSv_test = 9;
+
+	//printing the new value
+	virtualConsole::log(std::to_string(*cvar_test.get()).c_str());
+
+	//well cvar working ! :)
+
 	//errorHandler::fatal("Testing fatal error");
 	
 	while (true)

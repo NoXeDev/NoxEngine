@@ -28,3 +28,28 @@ struct Cleaner {
     Loader *loader;
     GuiRenderer *gui;
 };
+
+template <typename t>
+class Cvar {
+    public:
+        Cvar(const char* name, t* _ptr){
+            this->name = name;
+            this->_ptr = _ptr;
+            
+            C_RES res = virtualConsole::template registerConVar<t>(this);
+            if(res.res){
+                ostringstream ss;
+                ss << "Cvar registered : " << this->name;
+                virtualConsole::log(ss.str().c_str());
+            }else {
+                ostringstream ss;
+                ss << "Cvar register failed : " << this->name;
+                virtualConsole::log(ss.str().c_str(), LOGerr);
+            }
+        }
+        t* get(){
+            return _ptr;
+        }
+        const char *name;
+        t* _ptr;
+};
