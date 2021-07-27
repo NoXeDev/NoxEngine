@@ -23,10 +23,12 @@ struct Clog {
     std::string message;
 };
 
-struct Cleaner {
+struct API {
     MasterRenderer *renderer;
     Loader *loader;
     GuiRenderer *gui;
+    void(*engineTickCallback)();
+    bool(*engineThreadBreaker)();
 };
 
 template <typename t>
@@ -36,7 +38,32 @@ class Cvar {
             this->name = name;
             this->_ptr = _ptr;
             
-            C_RES res = virtualConsole::template registerConVar<t>(this);
+            C_RES res = virtualConsole::template registerGlobalConVar<t>(this);
+            if(res.res){
+                ostringstream ss;
+                ss << "Cvar registered : " << this->name;
+                virtualConsole::log(ss.str().c_str());
+            }else {
+                ostringstream ss;
+                ss << "Cvar register failed : " << this->name;
+                virtualConsole::log(ss.str().c_str(), LOGerr);
+            }
+        }
+        t* get(){
+            return _ptr;
+        }
+        const char *name;
+        t* _ptr;
+};
+
+template <class c, typename t>
+class Cvar_c {
+    public:
+        Cvar_c(const char* name, t* _ptr, c* contextReference){
+            this->name = name;
+            this->_ptr = _ptr;
+            
+            C_RES res = virtualConsole::template registerConVar<c, t>(this, contextReference);
             if(res.res){
                 ostringstream ss;
                 ss << "Cvar registered : " << this->name;

@@ -6,11 +6,11 @@
 
 
 
-static Cleaner *errCleaner;
+static API *errCleaner;
 
 class errorHandler {
     public:
-        static void init(Cleaner *cleaner);
+        static void init(API *cleaner);
         static void fatal(std::string err);
         static void writelogs();
         static void stdrErr(std::string err);

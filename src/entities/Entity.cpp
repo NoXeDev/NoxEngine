@@ -1,22 +1,17 @@
 #include "Entity.h"
 
-Entity::Entity(TexturedModel* model, glm::vec3 position, glm::vec3 rotation, float scale)
+Entity::Entity(glm::vec3 position, glm::vec3 rotation)
 {
-	this->model = model;
 	this->position = position;
 	this->rotation = rotation;
-	this->scale = scale;
 }
 
-TexturedModel* Entity::getModel()
+/*void Entity::setWorldContext(World *worldContext)
 {
-	return this->model;
-}
-
-void Entity::setModel(TexturedModel* model)
-{
-	this->model = model;
-}
+	this->worldContext->worldEvents->SubscribeEvent("onCreate", std::bind(&Entity::onBegin, this));
+	this->worldContext->worldEvents->SubscribeEvent("onTick", std::bind(&Entity::onTick, this));
+	this->worldContext->worldEvents->SubscribeEvent("onQuit", std::bind(&Entity::onQuit, this));
+}*/
 
 glm::vec3 Entity::getPosition()
 {
@@ -37,17 +32,6 @@ void Entity::setRotation(glm::vec3 rotation)
 {
 	this->rotation = rotation;
 }
-
-float Entity::getScale()
-{
-	return this->scale;
-}
-
-void Entity::setScale(float scale)
-{
-	this->scale = scale;
-}
-
 void Entity::increasePosition(float dx, float dy, float dz)
 {
 	this->position.x += dx;

@@ -26,9 +26,10 @@ class Player:public Entity{
         void jump();
 
     public:
-        Player(TexturedModel* model, glm::vec3 position, glm::vec3 rotation, float scale);
-        void move(Terrain *terrain);
+        Player(glm::vec3 position, glm::vec3 rotation);
+        void move();
         void checkInputs();
 
-        void attachCameraToPlayer(Camera* camera);
+        void attachCameraToPlayer();
+        void onTick();
 };

@@ -9,7 +9,7 @@ GuiRenderer::GuiRenderer(Loader* loader)
     this->shader->create();
 }
 
-void GuiRenderer::render(std::vector<GuiTexture*> guis)
+void GuiRenderer::render(std::vector<GuiTexture*> *guis)
 {
     this->shader->start();
     glBindVertexArray(this->quad->getVaoID());
@@ -17,7 +17,7 @@ void GuiRenderer::render(std::vector<GuiTexture*> guis)
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glDisable(GL_DEPTH_TEST);
-    for(GuiTexture *gui: guis){
+    for(GuiTexture *gui: *guis){
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, gui->getTexture());
 

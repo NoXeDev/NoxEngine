@@ -42,7 +42,7 @@ void StaticShader::loadTransformationMatrix(glm::mat4 matrix)
 
 void StaticShader::loadLight(Light* light)
 {
-	this->loadVector(location_lightPosition, light->getPositions());
+	this->loadVector(location_lightPosition, light->getPosition());
 	this->loadVector(location_lightColour, light->getColour());
 }
 

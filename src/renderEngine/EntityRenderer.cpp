@@ -18,13 +18,13 @@ EntityRenderer::EntityRenderer(StaticShader *shader, glm::mat4 projectionMatrix)
 	shader->stop();
 }
 
-void EntityRenderer::render(std::unordered_map<TexturedModel*, std::vector<Entity*>> entities)
+void EntityRenderer::render(std::unordered_map<TexturedModel*, std::vector<ModelEntity*>> entities)
 {
-	for (std::pair<TexturedModel*, std::vector<Entity*>> iter : entities)
+	for (std::pair<TexturedModel*, std::vector<ModelEntity*>> iter : entities)
 	{
 		this->prepareTexturedModel(iter.first);
-		std::vector<Entity*> batch = iter.second;
-		for (Entity* entity : batch) {
+		std::vector<ModelEntity*> batch = iter.second;
+		for (ModelEntity* entity : batch) {
 			this->prepareInstance(entity);
 			glDrawElements(GL_TRIANGLES, iter.first->getRawModel()->getVertexCount(), GL_UNSIGNED_INT, 0);
 		}
@@ -59,7 +59,7 @@ void EntityRenderer::unbindTexturedModel()
 	glBindVertexArray(0);
 }
 
-void EntityRenderer::prepareInstance(Entity* entity)
+void EntityRenderer::prepareInstance(ModelEntity* entity)
 {
 	glm::mat4 transformationMatrix = Maths::createTransformationMatrix(entity->getPosition(), entity->getRotation(), entity->getScale());
 	this->shader->loadTransformationMatrix(transformationMatrix);
