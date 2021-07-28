@@ -1,19 +1,14 @@
 #pragma once
 #include "../renderEngine/DisplayManager.h"
+#include "Entity.h"
 #include <glm.hpp>
-class Camera
+
+class Camera: public Entity
 {
 private:
-	glm::vec3 positions;
-	glm::vec3 rotation = glm::vec3(0, 0, 0);
-
 	glm::vec3 cameraOffset= glm::vec3(0, 10, 0);
 public:
-	Camera();
+	Camera(WorldApi *worldApi);
 	void move(glm::vec3 positions);
-	glm::vec3 getPosition();
-	void setPosition(glm::vec3 position);
-	void setRotation(glm::vec3 rotation);
-	glm::vec3 getRotation();
 };
 

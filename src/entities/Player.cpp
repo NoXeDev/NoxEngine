@@ -2,11 +2,14 @@
 #include "Camera.h"
 #include <iostream>
 
-Player::Player(TexturedModel* model, glm::vec3 position, glm::vec3 rotation, float scale): Entity(model, position, rotation, scale){}
+Player::Player(WorldApi *worldApi, glm::vec3 position, glm::vec3 rotation): Entity(worldApi, position, rotation){
+    this->worldApi->worldEvents->SubscribeEvent("onTick", std::bind(&Player::move, this));
+}
 
-void Player::move(Terrain *terrain)
+void Player::move()
 {
     if(this->hasCamera || this->camera != nullptr){
+        Terrain *terrain = this->worldApi->terrains->at(0);
         this->checkInputs();
         this->camera->move(this->getPosition());
         this->rotation.y = - this->camera->getRotation().y;
@@ -62,7 +65,7 @@ void Player::checkInputs()
 	}
 }
 
-void Player::attachCameraToPlayer(Camera* camera)
+void Player::attachCameraToPlayer(Camera *camera)
 {
     this->camera = camera;
     this->hasCamera = true;

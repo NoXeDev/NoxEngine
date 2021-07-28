@@ -3,7 +3,7 @@
 #include "EntityRenderer.h"
 #include "DisplayManager.h"
 #include "../model/TexturedModel.h"
-#include "../entities/Entity.h"
+#include "../entities/ModelEntity.h"
 #include "../entities/Light.h"
 #include "../entities/Camera.h"
 #include "../shaders/TerrainShader.h"
@@ -24,7 +24,7 @@ private:
 	TerrainShader* terrainShader = new TerrainShader();
 	TerrainRenderer* terrainRenderer;
 
-	std::unordered_map<TexturedModel*, std::vector<Entity*>> entities;
+	std::unordered_map<TexturedModel*, std::vector<ModelEntity*>> entities;
 	std::vector<Terrain*> terrains;
 	void createProjectionMatrix();
 	glm::mat4 projectionMatrix;
@@ -33,7 +33,7 @@ public:
 	MasterRenderer();
 	void render(Light *sun, Camera *camera);
 	void cleanUp();
-	void processEntity(Entity *entity);
+	void processEntity(ModelEntity *entity);
 	void processTerrain(Terrain* terrain);
 	void prepare();
 	static void enableCulling();

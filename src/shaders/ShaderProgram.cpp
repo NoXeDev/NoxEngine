@@ -13,16 +13,13 @@ std::string basePath = "./res/glsl/";
 
 ShaderProgram::ShaderProgram(std::string shaderName)
 {
-	std::string vertex = basePath + shaderName + ".vshad.glsl";
-	std::string fragment = basePath + shaderName + ".fshad.glsl";
-	std::vector<char> vertexChar(vertex.begin(), vertex.end());
-	std::vector<char> fragmentChar(fragment.begin(), fragment.end());
+	ostringstream vertex;
+	ostringstream fragment;
+	vertex << basePath << shaderName << ".vshad.glsl";
+	fragment << basePath << shaderName << ".fshad.glsl";
 
-	vertexChar.push_back('\0');
-	fragmentChar.push_back('\0');
-
-	this->vertexShaderID = this->loadShader(&vertexChar[0], GL_VERTEX_SHADER);
-	this->fragmentShaderID = this->loadShader(&fragmentChar[0], GL_FRAGMENT_SHADER);
+	this->vertexShaderID = this->loadShader(vertex.str().c_str(), GL_VERTEX_SHADER);
+	this->fragmentShaderID = this->loadShader(fragment.str().c_str(), GL_FRAGMENT_SHADER);
 }
 
 void ShaderProgram::create()

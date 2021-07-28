@@ -61,21 +61,21 @@ void MasterRenderer::cleanUp()
 	this->terrainShader->cleanUp();
 }
 
-void MasterRenderer::processEntity(Entity *entity)
+void MasterRenderer::processEntity(ModelEntity *entity)
 {
 	TexturedModel* entityModel = entity->getModel();
-	std::vector<Entity*> *batch;
+	std::vector<ModelEntity*> *batch;
 	if(this->entities.find(entityModel) != this->entities.end()){
 		batch = &this->entities.at(entityModel);
 	}else {
-		batch = new std::vector<Entity*>{};
+		batch = new std::vector<ModelEntity*>{};
 	}
 
 	if (!batch->empty()) {
 		batch->push_back(entity);
 	}
 	else {
-		std::vector<Entity*> newBatch;
+		std::vector<ModelEntity*> newBatch;
 		newBatch.push_back(entity);
 		this->entities.insert({ entityModel, newBatch });
 	}

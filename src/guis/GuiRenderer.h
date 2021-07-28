@@ -11,6 +11,6 @@ class GuiRenderer {
         GuiShader *shader;
     public:
         GuiRenderer(Loader* loader);
-        void render(std::vector<GuiTexture*> guis);
+        void render(std::vector<GuiTexture*> *guis);
         void cleanUp();
 };

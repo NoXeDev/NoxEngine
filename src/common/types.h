@@ -1,11 +1,8 @@
 #pragma once
 #include <iostream>
 #include <ctime>
-#include "../renderEngine/MasterRenderer.h"
-#include "../renderEngine/Loader.h"
-#include "../guis/GuiRenderer.h"
 
-typedef struct C_RES {
+struct C_RES {
     bool res;
     const char* message;
 };
@@ -23,12 +20,6 @@ struct Clog {
     std::string message;
 };
 
-struct Cleaner {
-    MasterRenderer *renderer;
-    Loader *loader;
-    GuiRenderer *gui;
-};
-
 template <typename t>
 class Cvar {
     public:
@@ -36,8 +27,8 @@ class Cvar {
             this->name = name;
             this->_ptr = _ptr;
             
-            C_RES res = virtualConsole::template registerConVar<t>(this);
-            if(res.res){
+            /*C_RES res = */virtualConsole::template registerGlobalConVar<t>(this);
+            /*if(res.res){
                 ostringstream ss;
                 ss << "Cvar registered : " << this->name;
                 virtualConsole::log(ss.str().c_str());
@@ -45,7 +36,32 @@ class Cvar {
                 ostringstream ss;
                 ss << "Cvar register failed : " << this->name;
                 virtualConsole::log(ss.str().c_str(), LOGerr);
-            }
+            }*/
+        }
+        t* get(){
+            return _ptr;
+        }
+        const char *name;
+        t* _ptr;
+};
+
+template <class c, typename t>
+class Cvar_c {
+    public:
+        Cvar_c(const char* name, t* _ptr, c* contextReference){
+            this->name = name;
+            this->_ptr = _ptr;
+            
+            /*C_RES res = */virtualConsole::template registerConVar<c, t>(this, contextReference);
+            /*if(res.res){
+                ostringstream ss;
+                ss << "Cvar registered : " << this->name;
+                virtualConsole::log(ss.str().c_str());
+            }else {
+                ostringstream ss;
+                ss << "Cvar register failed : " << this->name;
+                virtualConsole::log(ss.str().c_str(), LOGerr);
+            }*/
         }
         t* get(){
             return _ptr;

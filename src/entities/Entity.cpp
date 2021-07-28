@@ -1,21 +1,10 @@
 #include "Entity.h"
 
-Entity::Entity(TexturedModel* model, glm::vec3 position, glm::vec3 rotation, float scale)
+Entity::Entity(WorldApi *worldApi, glm::vec3 position, glm::vec3 rotation)
 {
-	this->model = model;
 	this->position = position;
 	this->rotation = rotation;
-	this->scale = scale;
-}
-
-TexturedModel* Entity::getModel()
-{
-	return this->model;
-}
-
-void Entity::setModel(TexturedModel* model)
-{
-	this->model = model;
+	this->worldApi = worldApi;
 }
 
 glm::vec3 Entity::getPosition()
@@ -37,17 +26,6 @@ void Entity::setRotation(glm::vec3 rotation)
 {
 	this->rotation = rotation;
 }
-
-float Entity::getScale()
-{
-	return this->scale;
-}
-
-void Entity::setScale(float scale)
-{
-	this->scale = scale;
-}
-
 void Entity::increasePosition(float dx, float dy, float dz)
 {
 	this->position.x += dx;

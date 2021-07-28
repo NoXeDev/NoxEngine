@@ -1,27 +1,24 @@
 #pragma once
 #include "../model/TexturedModel.h"
+#include "../core/worldApi.h"
 #include <glm.hpp>
+#include <iostream>
 class Entity
 {
 protected:
-	TexturedModel* model;
 	glm::vec3 position;
 	glm::vec3 rotation;
-	float scale;
+	WorldApi *worldApi;
 
 public:
-	Entity(TexturedModel* model, glm::vec3 position, glm::vec3 rotation, float scale);
+	Entity(WorldApi *worldApi, glm::vec3 position = glm::vec3(0, 0, 0), glm::vec3 rotation = glm::vec3(0, 0, 0));
 
 	//getters and setters
 	glm::vec3* getPositionPTR();
-	TexturedModel* getModel();
-	void setModel(TexturedModel* model);
 	glm::vec3 getPosition();
 	void setPosition(glm::vec3 position);
 	glm::vec3 getRotation();
 	void setRotation(glm::vec3 rotation);
-	float getScale();
-	void setScale(float scale);
 
 	void increasePosition(float dx, float dy, float dz);
 	void increaseRotation(float dx, float dy, float dz);

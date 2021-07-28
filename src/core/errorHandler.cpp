@@ -34,7 +34,7 @@ void errorHandler::fatal(std::string err)
 }
 
 
-void errorHandler::init(Cleaner *cleaner)
+void errorHandler::init(API *cleaner)
 {
     errCleaner = cleaner;
 }
