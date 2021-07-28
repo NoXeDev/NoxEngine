@@ -1,17 +1,11 @@
 #include "Entity.h"
 
-Entity::Entity(glm::vec3 position, glm::vec3 rotation)
+Entity::Entity(WorldApi *worldApi, glm::vec3 position, glm::vec3 rotation)
 {
 	this->position = position;
 	this->rotation = rotation;
+	this->worldApi = worldApi;
 }
-
-/*void Entity::setWorldContext(World *worldContext)
-{
-	this->worldContext->worldEvents->SubscribeEvent("onCreate", std::bind(&Entity::onBegin, this));
-	this->worldContext->worldEvents->SubscribeEvent("onTick", std::bind(&Entity::onTick, this));
-	this->worldContext->worldEvents->SubscribeEvent("onQuit", std::bind(&Entity::onQuit, this));
-}*/
 
 glm::vec3 Entity::getPosition()
 {

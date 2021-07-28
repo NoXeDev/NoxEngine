@@ -1,7 +1,8 @@
 #pragma once
-#include <glew.h>
 #include "../game/PreloadScreenDemo.h"
 #include "cbase_gamemode.h"
+#include "cbase_world.h"
+#include "../common/engineApi.h"
 
 class cgame
 {
@@ -20,6 +21,8 @@ class cgame
             return this->gameEvents;
         }
         void worldRender();
+        gameApi *internalGameApi;
+        virtual void createGameApi() = 0;
     private:
         World *currentWorld;
         cbase_gamemode *currentGamemode;

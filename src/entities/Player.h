@@ -26,10 +26,9 @@ class Player:public Entity{
         void jump();
 
     public:
-        Player(glm::vec3 position, glm::vec3 rotation);
+        Player(WorldApi *worldApi, glm::vec3 position, glm::vec3 rotation);
         void move();
         void checkInputs();
 
-        void attachCameraToPlayer();
-        void onTick();
+        void attachCameraToPlayer(Camera *camera);
 };

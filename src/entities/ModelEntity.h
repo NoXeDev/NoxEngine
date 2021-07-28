@@ -6,7 +6,7 @@ class ModelEntity : public Entity{
         TexturedModel *model;
         float scale;
     public:
-        ModelEntity(TexturedModel *model, glm::vec3 position, glm::vec3 rotation, float scale);
+        ModelEntity(WorldApi *worldApi, TexturedModel *model, glm::vec3 position, glm::vec3 rotation, float scale);
 
         TexturedModel* getModel();
         void setModel(TexturedModel *model);

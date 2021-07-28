@@ -1,6 +1,7 @@
 #include "cbase_world.h"
 
 World::World(const char* name,
+    gameApi *currentGameApi,
     std::vector<Entity*> *entities,
     std::vector<ModelEntity*> *modelEntity,
     std::vector<Terrain*> *terrains,
@@ -9,18 +10,31 @@ World::World(const char* name,
 )
 {
     this->name = name;
+    this->currentGameApi = currentGameApi;
     this->entities = entities;
     this->modelEntity = modelEntity;
     this->terrains = terrains;
     this->lights = lights;
     this->guis = guis;
     this->worldEvents = new EventRegister();
-    this->camera = new Camera(this);
+
+    //create the world api for all entities
+    WorldApi myapi;
+    myapi.currentGameApi = this->currentGameApi;
+    myapi.worldEvents = this->worldEvents;
+    myapi.terrains = this->terrains;
+
+    this->internalWorldApi = &myapi;
+
+    this->camera = new Camera(this->internalWorldApi);
 
     //regestering 3 basic events for the world creation
     this->worldEvents->RegisteringEvent("onCreate");
     this->worldEvents->RegisteringEvent("onTick");
     this->worldEvents->RegisteringEvent("onQuit");
+
+    //apply world api into all entities
+
 }
 
 World::~World()
@@ -42,6 +56,7 @@ World::~World()
     delete this->terrains;
     delete this->lights;
     delete this->camera;
+    delete this->internalWorldApi;
 }
 
 void World::onCreate()
@@ -61,20 +76,8 @@ void World::onQuit()
     this->worldEvents->fire("onQuit");
 }
 
-void World::preloadSeq(cgame *gameContext)
+void World::playerSpawn(Player *player)
 {
-    this->gameContextReference = gameContext;
-    
-    //set world context into all entities
-    for(Entity *entity : *this->entities){
-        entity->setWorldContext(this);
-    }
-    for(ModelEntity *model : *this->modelEntity)
-    {
-        model->setWorldContext(this);
-    }
-    for(Light *light : *this->lights)
-    {
-        light->setWorldContext(this);
-    }
+    this->player = player;
+    this->player->attachCameraToPlayer(this->camera);
 }

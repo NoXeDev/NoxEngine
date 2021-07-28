@@ -4,7 +4,7 @@
 
 class PreloadScreen: public Entity{
     public:
-        PreloadScreen(World *worldContext): Entity()
+        PreloadScreen(WorldApi *worldApi): Entity(worldApi)
         {};
         void onTick()
         {

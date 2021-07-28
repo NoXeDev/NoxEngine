@@ -1,8 +1,8 @@
 #pragma once
+#include "../common/types.h"
 #include <unordered_map>
 #include <functional>
 #include <vector>
-#include "../common/cbase.h"
 
 class EventRegister {
     public:

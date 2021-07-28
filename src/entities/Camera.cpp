@@ -3,7 +3,7 @@
 #include <glfw3.h>
 #include <iostream>
 
-Camera::Camera(World *worldContext): Entity(worldContext)
+Camera::Camera(WorldApi *worldApi): Entity(worldApi)
 {
 	//reset Mouse cursor
 	Mouse::setCursorPositions(glm::vec2(0,0));

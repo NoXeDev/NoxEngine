@@ -9,6 +9,7 @@
 #include <memory>
 
 #include "common/cbase.h"
+#include "common/engineApi.h"
 #include "game/cmain.h"
 
 static API EngineCleaner;

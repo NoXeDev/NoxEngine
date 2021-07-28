@@ -50,10 +50,10 @@ class virtualConsole {
                     this->cvarsTable.insert({classContext, std::unordered_map<const char*, Cvar_c<c, t>*>{cvar->name, cvar}});
                 }
             }catch(...){
-                C_RES res;
-                res.res = false;
-                res.message = "Error registering cvarTable for the specified class"
-                return res;
+                C_RES failedRes;
+                failedRes.res = false;
+                failedRes.message = "Error registering cvarTable for the specified class";
+                return failedRes;
             }
 
             C_RES res;

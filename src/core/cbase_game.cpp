@@ -9,9 +9,9 @@ cgame::cgame(API *engineAPI, cbase_gamemode *startGamemode)
 }
 
 World *cgame::createLoadingWorld(){
-    World *tempWorld = new World("PreLoadingScreen");
-    tempWorld->entities->push_back(new PreloadScreen(tempWorld));
-    tempWorld->preloadSeq(this);
+    World *tempWorld = new World("PreLoadingScreen", this->internalGameApi, nullptr);
+    tempWorld->entities->push_back(new PreloadScreen(this->currentWorld->internalWorldApi));
+    return tempWorld;
 }
 
 void cgame::onBegin()
@@ -35,7 +35,6 @@ void cgame::switchWorld(World *newWorld)
     this->currentWorld->~World();
     delete this->currentWorld;
     this->currentWorld = newWorld;
-    this->currentWorld->preloadSeq(this);
     this->currentWorld->onCreate();
 }
 
@@ -56,4 +55,5 @@ void cgame::worldRender()
 cgame::~cgame()
 {
     delete this->gameEvents;
+    delete this->internalGameApi;
 }

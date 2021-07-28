@@ -1,6 +1,6 @@
 #include "Light.h"
 
-Light::Light(glm::vec3 positions, glm::vec3 rotation, glm::vec3 colour): Entity(positions, rotation)
+Light::Light(WorldApi *worldApi, glm::vec3 positions, glm::vec3 rotation, glm::vec3 colour): Entity(worldApi, positions, rotation)
 {
 	this->colour = colour;
 }

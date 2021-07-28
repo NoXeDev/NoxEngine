@@ -1,7 +1,7 @@
 #include "ModelEntity.h"
 
-ModelEntity::ModelEntity(TexturedModel *model, glm::vec3 position, glm::vec3 rotation, float scale)
-:Entity(position, rotation)
+ModelEntity::ModelEntity(WorldApi *worldApi, TexturedModel *model, glm::vec3 position, glm::vec3 rotation, float scale)
+:Entity(worldApi, position, rotation)
 {
     this->model = model;
     this->scale = scale;
