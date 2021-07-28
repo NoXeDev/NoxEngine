@@ -22,11 +22,11 @@ class World {
         World(
             const char* name,
             gameApi *currentGameApi,
-            std::vector<Entity*> *entities = new std::vector<Entity*>(),
-            std::vector<ModelEntity*> *modelEntity = new std::vector<ModelEntity*>(),
-            std::vector<Terrain*> *terrains = new std::vector<Terrain*>(),
-            std::vector<Light*> *lights = new std::vector<Light*>(),
-            std::vector<GuiTexture*> *guis = new std::vector<GuiTexture*>()
+            std::vector<ModelEntity*> *modelEntity_c = new std::vector<ModelEntity*>(),
+            std::vector<Entity*> *entities_c = new std::vector<Entity*>(),
+            std::vector<Terrain*> *terrains_c = new std::vector<Terrain*>(),
+            std::vector<Light*> *lights_c = new std::vector<Light*>(),
+            std::vector<GuiTexture*> *guis_c = new std::vector<GuiTexture*>()
         );
         ~World();
 

@@ -8,11 +8,9 @@ void cmain(API* engineAPI)
 {
     //creating game Object here
     std::unique_ptr<NoxGame> mygame(new NoxGame(engineAPI));
+	mygame->Init();
 	
     std::unique_ptr<World> myworld(new World("demo", mygame->internalGameApi));
-
-    //No multithreading yet so calling here :)
-    mygame->worldRender();
 
     //loading files assets (time loading calculation implemented)
 	auto start = std::chrono::high_resolution_clock::now();
@@ -65,11 +63,13 @@ void cmain(API* engineAPI)
     std::vector<GuiTexture*> guiTextures = {};
     std::vector<Entity*> worldEntities = {};
 
-    myworld->lights = &worldLights;
-    myworld->terrains = &terrainsWorld;
-    myworld->guis = &guiTextures;
-    myworld->modelEntity = &worldModels;
-    myworld->entities = &worldEntities;
+    *myworld->lights = worldLights;
+    *myworld->terrains = terrainsWorld;
+    *myworld->guis = guiTextures;
+    *myworld->modelEntity = worldModels;
+    *myworld->entities = worldEntities;
+
+	mygame->onBegin();
 
     mygame->switchWorld(myworld.get());
 
@@ -79,9 +79,12 @@ void cmain(API* engineAPI)
     {
         engineAPI->engineTickCallback();
 
+		mygame->onTick();
         mygame->worldRender();
 
         DisplayManager::updateDisplay();
         if(DisplayManager::displayShouldClose() || engineAPI->engineThreadBreaker()){break;};
     }
+
+	mygame->onQuit();
 }

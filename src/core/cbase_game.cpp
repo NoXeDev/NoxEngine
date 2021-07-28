@@ -3,28 +3,28 @@
 cgame::cgame(API *engineAPI, cbase_gamemode *startGamemode)
 {
     this->engineAPI = engineAPI;
-    this->currentWorld = createLoadingWorld();
     this->currentGamemode = startGamemode;
     this->gameEvents = new EventRegister();
 }
 
 World *cgame::createLoadingWorld(){
-    World *tempWorld = new World("PreLoadingScreen", this->internalGameApi, nullptr);
-    tempWorld->entities->push_back(new PreloadScreen(this->currentWorld->internalWorldApi));
+    World *tempWorld = new World("PreLoadingScreen", this->internalGameApi);
+    tempWorld->entities->push_back(new PreloadScreen(tempWorld->internalWorldApi));
     return tempWorld;
 }
 
-void cgame::onBegin()
+void cgame::onBaseBegin()
 {
+    this->currentWorld = createLoadingWorld();
     this->currentWorld->onCreate();
 }
 
-void cgame::onTick()
+void cgame::onBaseTick()
 {
     this->currentWorld->onTick();
 }
 
-void cgame::onQuit()
+void cgame::onBaseQuit()
 {
     this->currentWorld->onQuit();
 }
@@ -32,7 +32,6 @@ void cgame::onQuit()
 void cgame::switchWorld(World *newWorld)
 {
     this->currentWorld->onQuit();
-    this->currentWorld->~World();
     delete this->currentWorld;
     this->currentWorld = newWorld;
     this->currentWorld->onCreate();

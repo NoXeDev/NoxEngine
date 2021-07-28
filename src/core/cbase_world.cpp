@@ -2,29 +2,35 @@
 
 World::World(const char* name,
     gameApi *currentGameApi,
-    std::vector<Entity*> *entities,
-    std::vector<ModelEntity*> *modelEntity,
-    std::vector<Terrain*> *terrains,
-    std::vector<Light*> *lights,
-    std::vector<GuiTexture*> *guis
+    std::vector<ModelEntity*> *modelEntity_c,
+    std::vector<Entity*> *entities_c,
+    std::vector<Terrain*> *terrains_c,
+    std::vector<Light*> *lights_c,
+    std::vector<GuiTexture*> *guis_c
 )
 {
     this->name = name;
     this->currentGameApi = currentGameApi;
-    this->entities = entities;
-    this->modelEntity = modelEntity;
-    this->terrains = terrains;
-    this->lights = lights;
-    this->guis = guis;
+    this->entities = entities_c;
+    this->modelEntity = modelEntity_c;
+    this->terrains = terrains_c;
+    this->lights = lights_c;
+    this->guis = guis_c;
     this->worldEvents = new EventRegister();
 
-    //create the world api for all entities
-    WorldApi myapi;
-    myapi.currentGameApi = this->currentGameApi;
-    myapi.worldEvents = this->worldEvents;
-    myapi.terrains = this->terrains;
+    //for the moment the engine is not able to leave lights empty, he need light
+    if(this->lights->empty())
+    {
+        this->lights->push_back(new Light(internalWorldApi, glm::vec3(0, 0, 0), glm::vec3(0, 0, 0), glm::vec3(0, 0, 0)));
+    }
 
-    this->internalWorldApi = &myapi;
+    //create the world api for all entities
+    WorldApi *myapi = new WorldApi();
+    myapi->currentGameApi = this->currentGameApi;
+    myapi->worldEvents = this->worldEvents;
+    myapi->terrains = this->terrains;
+
+    this->internalWorldApi = myapi;
 
     this->camera = new Camera(this->internalWorldApi);
 
@@ -32,14 +38,12 @@ World::World(const char* name,
     this->worldEvents->RegisteringEvent("onCreate");
     this->worldEvents->RegisteringEvent("onTick");
     this->worldEvents->RegisteringEvent("onQuit");
-
-    //apply world api into all entities
-
 }
 
 World::~World()
 {
-    delete this->worldEvents;
+    // This part is for when the engine will load Entities into Raw Ptr
+    /*delete this->worldEvents;
     for(Entity* entity : *this->entities){
         delete entity;
     }
@@ -56,7 +60,7 @@ World::~World()
     delete this->terrains;
     delete this->lights;
     delete this->camera;
-    delete this->internalWorldApi;
+    delete this->internalWorldApi;*/
 }
 
 void World::onCreate()

@@ -54,6 +54,7 @@ void DisplayManager::createDisplay()
 	//this clear color to black for avoid a white screen (it hurt) when Engine start
 	glClearColor(0, 0, 0, 1);
 	glClear(GL_COLOR_BUFFER_BIT);
+	glfwSwapBuffers(window);
 	
 	lastFrameTime = getCurrentTime();
 }

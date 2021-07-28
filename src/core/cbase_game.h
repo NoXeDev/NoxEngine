@@ -22,15 +22,14 @@ class cgame
         }
         void worldRender();
         gameApi *internalGameApi;
-        virtual void createGameApi() = 0;
+        virtual void Init() = 0;
+        void onBaseBegin();
+        void onBaseTick();
+        void onBaseQuit();
     private:
         World *currentWorld;
         cbase_gamemode *currentGamemode;
         EventRegister *gameEvents;
         World* createLoadingWorld();
         API *engineAPI;
-    protected:
-        virtual void onBegin();
-        virtual void onTick();
-        virtual void onQuit();
 };
