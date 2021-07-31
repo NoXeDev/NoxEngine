@@ -8,7 +8,6 @@ void cmain(API* engineAPI)
 {
     //creating game Object here
     std::unique_ptr<NoxGame> mygame(new NoxGame(engineAPI));
-	mygame->Init();
 	
     std::unique_ptr<World> myworld(new World("demo", mygame->internalGameApi));
 
@@ -47,7 +46,8 @@ void cmain(API* engineAPI)
 	std::unique_ptr<Terrain> terrain(new Terrain(0, 0, engineAPI->loader, texturePack.get(), blendMap.get(), "res/materials/heightmap.png"));
 
 
-	std::unique_ptr<Player> player(new Player(myworld->internalWorldApi, glm::vec3(500, terrain->getHeightOfTerrain(500, 400), 400), glm::vec3(0, 0, 0)));
+	std::unique_ptr<Player> player(new Player(glm::vec3(500, terrain->getHeightOfTerrain(500, 400), 400), glm::vec3(0, 0, 0)));
+	myworld->player = player.get();
 	std::unique_ptr<ModelEntity> entity2(new ModelEntity(myworld->internalWorldApi, texturedModel.get(), glm::vec3(500, terrain->getHeightOfTerrain(500, 395), 395), glm::vec3(0, 0, 0), 1));
 	std::unique_ptr<ModelEntity> characterEntity(new ModelEntity(myworld->internalWorldApi, characterTextured.get(), glm::vec3(550, 30, 450), glm::vec3(0, 0, 0), 1));
 
@@ -69,22 +69,22 @@ void cmain(API* engineAPI)
     *myworld->modelEntity = worldModels;
     *myworld->entities = worldEntities;
 
-	mygame->onBegin();
+	mygame->begin();
 
     mygame->switchWorld(myworld.get());
 
-	myworld->playerSpawn(player.get());
+	myworld->playerSpawn();
 
     while(true)
     {
         engineAPI->engineTickCallback();
 
-		mygame->onTick();
+		mygame->tick();
         mygame->worldRender();
 
         DisplayManager::updateDisplay();
         if(DisplayManager::displayShouldClose() || engineAPI->engineThreadBreaker()){break;};
     }
 
-	mygame->onQuit();
+	mygame->quit();
 }

@@ -22,10 +22,13 @@ class cgame
         }
         void worldRender();
         gameApi *internalGameApi;
-        virtual void Init() = 0;
-        void onBaseBegin();
-        void onBaseTick();
-        void onBaseQuit();
+        void begin();
+        void tick();
+        void quit();
+
+        virtual void onBegin() = 0;
+        virtual void onTick() = 0;
+        virtual void onQuit() = 0;
     private:
         World *currentWorld;
         cbase_gamemode *currentGamemode;

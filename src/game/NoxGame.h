@@ -12,7 +12,6 @@ class NoxGame : public cgame{
     public:
         NoxGame(API *engineAPI);
         void printFromGame(const char *content);
-        void Init();
         void onBegin();
         void onTick();
         void onQuit();

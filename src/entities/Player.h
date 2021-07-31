@@ -26,7 +26,7 @@ class Player:public Entity{
         void jump();
 
     public:
-        Player(WorldApi *worldApi, glm::vec3 position, glm::vec3 rotation);
+        Player(glm::vec3 position, glm::vec3 rotation);
         void move();
         void checkInputs();
 

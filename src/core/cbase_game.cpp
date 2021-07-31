@@ -5,6 +5,11 @@ cgame::cgame(API *engineAPI, cbase_gamemode *startGamemode)
     this->engineAPI = engineAPI;
     this->currentGamemode = startGamemode;
     this->gameEvents = new EventRegister();
+
+    // Self Managing gameApi
+    this->internalGameApi = new gameApi();
+    this->internalGameApi->gameMode = this->currentGamemode;
+    this->internalGameApi->gameRegister = this->gameEvents;
 }
 
 World *cgame::createLoadingWorld(){
@@ -13,19 +18,22 @@ World *cgame::createLoadingWorld(){
     return tempWorld;
 }
 
-void cgame::onBaseBegin()
+void cgame::begin()
 {
+    this->onBegin();
     this->currentWorld = createLoadingWorld();
     this->currentWorld->onCreate();
 }
 
-void cgame::onBaseTick()
+void cgame::tick()
 {
+    this->onTick();
     this->currentWorld->onTick();
 }
 
-void cgame::onBaseQuit()
+void cgame::quit()
 {
+    this->onQuit();
     this->currentWorld->onQuit();
 }
 

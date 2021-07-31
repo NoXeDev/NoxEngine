@@ -19,6 +19,11 @@ void virtualConsole::log(std::string value, logtype type)
     std::cout << "[" << currentLog.time->tm_hour << ":" << currentLog.time->tm_min  << 
     ":" << currentLog.time->tm_sec << "] - " << currentLog.message.c_str() << std::endl;
 #endif
+
+    if(type == LOGfatal)
+    {
+        errorHandler::fatal(value);
+    }
 }
 
 Clog virtualConsole::getLastLog()

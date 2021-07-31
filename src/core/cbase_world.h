@@ -26,11 +26,12 @@ class World {
             std::vector<Entity*> *entities_c = new std::vector<Entity*>(),
             std::vector<Terrain*> *terrains_c = new std::vector<Terrain*>(),
             std::vector<Light*> *lights_c = new std::vector<Light*>(),
-            std::vector<GuiTexture*> *guis_c = new std::vector<GuiTexture*>()
+            std::vector<GuiTexture*> *guis_c = new std::vector<GuiTexture*>(),
+            Player *player = nullptr
         );
         ~World();
 
-        void playerSpawn(Player *player);
+        void playerSpawn();
         void onCreate();
         void onTick();
         void onQuit();

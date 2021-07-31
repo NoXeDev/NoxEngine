@@ -10,5 +10,9 @@ private:
 public:
 	Camera(WorldApi *worldApi);
 	void move(glm::vec3 positions);
+
+	WorldApi *getWorldApi(){
+		return this->worldApi;
+	}
 };
 

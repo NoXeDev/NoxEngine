@@ -2,5 +2,5 @@
 
 cbase_gamemode::cbase_gamemode()
 {
-    
+    // TODO
 }

@@ -7,6 +7,7 @@
 #include <vector>
 #include <typeinfo>
 #include "../common/types.h"
+#include "errorHandler.h"
 
 static std::vector<Clog> *logs;
 

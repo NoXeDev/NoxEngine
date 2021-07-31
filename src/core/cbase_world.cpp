@@ -6,7 +6,8 @@ World::World(const char* name,
     std::vector<Entity*> *entities_c,
     std::vector<Terrain*> *terrains_c,
     std::vector<Light*> *lights_c,
-    std::vector<GuiTexture*> *guis_c
+    std::vector<GuiTexture*> *guis_c,
+    Player *player
 )
 {
     this->name = name;
@@ -16,6 +17,7 @@ World::World(const char* name,
     this->terrains = terrains_c;
     this->lights = lights_c;
     this->guis = guis_c;
+    this->player = player;
     this->worldEvents = new EventRegister();
 
     //for the moment the engine is not able to leave lights empty, he need light
@@ -80,8 +82,12 @@ void World::onQuit()
     this->worldEvents->fire("onQuit");
 }
 
-void World::playerSpawn(Player *player)
+void World::playerSpawn()
 {
-    this->player = player;
-    this->player->attachCameraToPlayer(this->camera);
+    if(this->player == nullptr)
+    {
+        virtualConsole::log("Failed to attach camera to player : player was nullptr", LOGerr);
+    }else {
+        this->player->attachCameraToPlayer(this->camera);
+    }
 }
