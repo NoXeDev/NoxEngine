@@ -1,8 +1,5 @@
 #include <iostream>
-#ifndef _DEBUG
 #include <Windows.h>
-#endif
-
 #include <glew.h>
 #include <glfw3.h>
 #include <chrono>
@@ -17,11 +14,7 @@ void globalCleanUp();
 void engineTick();
 bool engineThreadBreaker();
 
-#ifndef _DEBUG
 int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PWSTR pCmdLine, int nCmdShow){
-#else
-int main(){
-#endif
 	//Init the Virtual console and error handler for Handle errors
 	virtualConsole::init();
 	errorHandler::init(&EngineCleaner);
