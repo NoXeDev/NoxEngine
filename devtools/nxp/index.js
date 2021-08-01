@@ -97,7 +97,7 @@ async function clean(target){
         'IDE': ['.vscode'],
         'libs': ['libs'],
     }
-    dirs.foreach(async(e) => {
+    dirs.forEach(async(e) => {
         if(targets[target].includes(e)){
             await fs.promises.rm(path.join(NoxEnginePath, e), {recursive: true})
         }
