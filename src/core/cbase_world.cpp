@@ -67,7 +67,7 @@ World::~World()
 
 void World::onCreate()
 {
-    virtualConsole::log("World created !");
+    virtualConsole::log("World created !", LOGdebug);
     this->worldEvents->fire("onCreate");
 }
 
@@ -78,7 +78,7 @@ void World::onTick()
 
 void World::onQuit()
 {
-    virtualConsole::log("World Quited !");
+    virtualConsole::log("World Quited !", LOGdebug);
     this->worldEvents->fire("onQuit");
 }
 

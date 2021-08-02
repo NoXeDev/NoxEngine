@@ -14,7 +14,16 @@ void virtualConsole::log(std::string value, logtype type)
     time_t now = time(0);
     currentLog.time = localtime(&now);
 
-    logs->push_back(currentLog);
+    if(type == LOGdebug)
+    {
+        #ifdef _DEBUG
+        logs->push_back(currentLog);
+        #endif
+    }
+    else 
+    {
+        logs->push_back(currentLog);
+    }
 #ifdef _DEBUG
     std::cout << "[" << currentLog.time->tm_hour << ":" << currentLog.time->tm_min  << 
     ":" << currentLog.time->tm_sec << "] - " << currentLog.message.c_str() << std::endl;

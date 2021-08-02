@@ -22,7 +22,7 @@ void cmain(API* engineAPI)
 	auto duration = std::chrono::duration_cast<std::chrono::microseconds>(stop - start);
 	std::ostringstream ss;
 	ss << "Loading time : " << (float)duration.count() / 1000000 << "'s";
-	virtualConsole::log(ss.str());
+	virtualConsole::log(ss.str(), LOGdebug);
 
 	//set textures varaibles
 	texture->setShineDamper(10);

@@ -14,9 +14,6 @@ static std::vector<Clog> *logs;
 template <typename c>
 static std::unordered_map<const char*, Cvar<c>*> cvars;
 
-template <class c, typename t>
-static std::unordered_map<c*, std::unordered_map<const char*, Cvar_c<c, t>*>> cvarsTable;
-
 class virtualConsole {
     public:
         static std::vector<Clog> *getLogs();
@@ -27,36 +24,28 @@ class virtualConsole {
         template <typename t>
         static C_RES registerGlobalConVar(Cvar<t> *cvar)
         {
-            try{
-                cvars<t>.insert({cvar->name, cvar});
-            }catch(...)
+            if(cvars<t>.find(cvar->name) != cvars<t>.end())
             {
+                // Cvar already exist
                 C_RES res;
                 res.res = false;
-                res.message = "Error register cvar";
+                res.retCode = 1;
+                res.message = "Cvar already exist";
                 return res;
             }
-            C_RES res;
-            res.res = true;
-            return res;
-        }
-
-        template <class c, typename t>
-        static C_RES registerConVar(Cvar_c<c, t> *cvar, c *classContext)
-        {
-            try{
-                if(this->cvarsTable.find(classContext) != this->cvarsTable.end()){
-                    this->cvarsTable.at(classContext).insert({cvar->name, cvar});
-                }else {
-                    this->cvarsTable.insert({classContext, std::unordered_map<const char*, Cvar_c<c, t>*>{cvar->name, cvar}});
+            else 
+            {
+                try{
+                    cvars<t>.insert({cvar->name, cvar});
+                }catch(...)
+                {
+                    C_RES res;
+                    res.res = false;
+                    res.retCode = 2;
+                    res.message = "Error register cvar";
+                    return res;
                 }
-            }catch(...){
-                C_RES failedRes;
-                failedRes.res = false;
-                failedRes.message = "Error registering cvarTable for the specified class";
-                return failedRes;
             }
-
             C_RES res;
             res.res = true;
             return res;
@@ -65,12 +54,16 @@ class virtualConsole {
         template <typename r>
         static Cvar<r>* getCvar(const char *name)
         {
-            return cvars<r>.at(name);
-        }
-        template <class c, typename t>
-        static Cvar_c<c, t>* getCvar(const char *name, c *classContext)
-        {
-            return cvarsTable<c, t>.at(classContext).at(name);
+            if(cvars<r>.find(name) != cvars<r>.end())
+            {
+                // Cvar exist
+                return cvars<r>.at(name);
+            }
+            else 
+            {
+                // Cvar doesn't exist
+                return nullptr;
+            }
         }
         static void free();
 };

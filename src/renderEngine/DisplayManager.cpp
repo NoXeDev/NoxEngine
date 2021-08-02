@@ -26,21 +26,21 @@ void DisplayManager::createDisplay()
 
 	GLFWmonitor* primaryMonitor = glfwGetPrimaryMonitor();
 	const GLFWvidmode* vidMode = glfwGetVideoMode(primaryMonitor);
-	const GLint WIDTH = vidMode->width, HEIGHT = vidMode->height;
 
-	window = glfwCreateWindow(WIDTH, HEIGHT, GAME_NAME, 
-	#ifdef _DEBUG
-	nullptr
-	#else
-	primaryMonitor
-	#endif
+	// Cvar DisplayProperties
+	Cvar<int> WIDTH("width", new int(vidMode->width)), HEIGHT("height", new int(vidMode->height));
+	Cvar<bool> isFullScreen("fullscreen", new bool(true));
+	/////////////////////////
+
+	window = glfwCreateWindow(*WIDTH.get(), *HEIGHT.get(), GAME_NAME, 
+	*isFullScreen.get() ? primaryMonitor : nullptr
 	, nullptr);
 
 	Mouse::Init(window);
 
 	std::ostringstream ss;
-	ss << "Screen resolution : " << WIDTH << " x " << HEIGHT;
-	virtualConsole::log(ss.str());
+	ss << "Screen resolution : " << *WIDTH.get() << " x " << *HEIGHT.get();
+	virtualConsole::log(ss.str(), LOGdebug);
 
 	int screenWidth, screenHeight;
 	glfwGetFramebufferSize(window, &screenWidth, &screenHeight);
