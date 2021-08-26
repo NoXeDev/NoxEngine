@@ -55,7 +55,8 @@ void cgame::worldRender()
     {
         this->engineAPI->renderer->processEntity(entity);
     }
-    this->engineAPI->renderer->render(this->currentWorld->lights->at(0), this->currentWorld->camera);
+    virtualConsole::log(std::to_string(this->currentWorld->lights->size()));
+    this->engineAPI->renderer->render(this->currentWorld->lights, this->currentWorld->camera);
     this->engineAPI->gui->render(this->currentWorld->guis);
 }
 

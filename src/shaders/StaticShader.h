@@ -12,7 +12,7 @@ public:
 	void loadTransformationMatrix(glm::mat4 matrix);
 	void loadProjectionMatrix(glm::mat4 matrix);
 	void loadViewMatrix(Camera *camera);
-	void loadLight(Light *light);
+	void loadLights(std::vector<Light*> *lights);
 	void loadShineVariables(GLfloat damper, GLfloat reflectivity);
 	void loadFakeLightingVariable(GLboolean useFake);
 	void loadSkyColour(float r, float g, float b);
@@ -23,8 +23,8 @@ private:
 	int location_transformationMatrix;
 	int location_projectionMatrix;
 	int location_viewMatrix;
-	int location_lightPosition;
-	int location_lightColour;
+	std::vector<int> location_lightPosition;
+	std::vector<int> location_lightColour;
 	int location_shineDamper;
 	int location_reflectivity;
 	int location_useFakeLighting;

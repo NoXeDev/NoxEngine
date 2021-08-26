@@ -1,5 +1,9 @@
 #include "StaticShader.h"
 
+#ifndef MAX_LIGHTS
+#define MAX_LIGHTS 4
+#endif
+
 StaticShader::StaticShader() :ShaderProgram("static")
 {
 
@@ -17,12 +21,28 @@ void StaticShader::getAllUniformLocations()
 	this->location_transformationMatrix = this->getUniformLocation("transformationMatrix");
 	this->location_projectionMatrix = this->getUniformLocation("projectionMatrix");
 	this->location_viewMatrix = this->getUniformLocation("viewMatrix");
-	this->location_lightPosition = this->getUniformLocation("lightPosition");
-	this->location_lightColour = this->getUniformLocation("lightColour");
+
+	// Old lines before multiples lights added
+	/*this->location_lightPosition = this->getUniformLocation("lightPosition");
+	this->location_lightColour = this->getUniformLocation("lightColour");*/
+
 	this->location_shineDamper = this->getUniformLocation("shineDamper");
 	this->location_reflectivity = this->getUniformLocation("reflectivity");
 	this->location_useFakeLighting = this->getUniformLocation("useFakeLighting");
 	this->location_skyColour = this->getUniformLocation("skyColour");
+
+	// Multiple lights loading
+	this->location_lightPosition = std::vector<int>(MAX_LIGHTS);
+	this->location_lightColour = std::vector<int>(MAX_LIGHTS);
+	for(int i = 0 ; i < MAX_LIGHTS ; i++)
+	{
+		std::string str1 = "lightPosition[" + std::to_string(i);
+		std::string str2 = "lightColour[" + std::to_string(i);
+		str1 += "]";
+		str2 += "]";
+		this->location_lightPosition[i] = this->getUniformLocation(str1.c_str());
+		this->location_lightColour[i] = this->getUniformLocation(str2.c_str());
+	}
 }
 
 void StaticShader::loadSkyColour(float r, float g, float b)
@@ -40,10 +60,21 @@ void StaticShader::loadTransformationMatrix(glm::mat4 matrix)
 	this->loadMatrix(location_transformationMatrix, matrix);
 }
 
-void StaticShader::loadLight(Light* light)
+void StaticShader::loadLights(std::vector<Light*> *lights)
 {
-	this->loadVector(location_lightPosition, light->getPosition());
-	this->loadVector(location_lightColour, light->getColour());
+	for(int i=0 ; i < MAX_LIGHTS ; i++)
+	{
+		if(i<lights->size())
+		{
+			this->loadVector(location_lightPosition[i], lights->at(i)->getPosition());
+			this->loadVector(location_lightColour[i], lights->at(i)->getColour());
+		}
+		else 
+		{
+			this->loadVector(location_lightPosition[i], glm::vec3(0, 0, 0));
+			this->loadVector(location_lightColour[i], glm::vec3(0, 0, 0));
+		}
+	}
 }
 
 void StaticShader::loadShineVariables(GLfloat damper, GLfloat reflectivity)

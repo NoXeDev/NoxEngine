@@ -31,7 +31,7 @@ private:
 
 public:
 	MasterRenderer();
-	void render(Light *sun, Camera *camera);
+	void render(std::vector<Light*> *lights, Camera *camera);
 	void cleanUp();
 	void processEntity(ModelEntity *entity);
 	void processTerrain(Terrain* terrain);
