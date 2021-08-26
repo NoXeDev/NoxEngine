@@ -46,7 +46,7 @@ void cmain(API* engineAPI)
 	std::unique_ptr<Terrain> terrain(new Terrain(0, 0, engineAPI->loader, texturePack.get(), blendMap.get(), "res/materials/heightmap.png"));
 
 
-	std::unique_ptr<Player> player(new Player(glm::vec3(200, terrain->getHeightOfTerrain(500, 400), 200), glm::vec3(0, 0, 0)));
+	std::unique_ptr<Player> player(new Player(glm::vec3(200, terrain->getHeightOfTerrain(200, 200), 200), glm::vec3(0, 0, 0)));
 	myworld->player = player.get();
 	std::unique_ptr<ModelEntity> entity2(new ModelEntity(myworld->internalWorldApi, texturedModel.get(), glm::vec3(500, terrain->getHeightOfTerrain(500, 395), 395), glm::vec3(0, 0, 0), 1));
 	std::unique_ptr<ModelEntity> characterEntity(new ModelEntity(myworld->internalWorldApi, characterTextured.get(), glm::vec3(550, 30, 450), glm::vec3(0, 0, 0), 1));
@@ -57,9 +57,9 @@ void cmain(API* engineAPI)
 	//std::unique_ptr<Entity> grassEntity(new Entity(grassTexturedModel.get(), glm::vec3(200, 0, 200), 0, 0, 0, 1));
 
 	/// LIGHT SECTION ///
-	std::unique_ptr<Light> light(new Light(myworld->internalWorldApi, glm::vec3(0, 10000, -7000), glm::vec3(0, 0, 0), glm::vec3(1,1,1)));
-	std::unique_ptr<Light> light2(new Light(myworld->internalWorldApi, glm::vec3(0, 10000, -2000), glm::vec3(0, 0, 0), glm::vec3(10,0,0)));
-	std::unique_ptr<Light> light3(new Light(myworld->internalWorldApi, glm::vec3(200, 10, 200), glm::vec3(0, 0, 0), glm::vec3(0,0,10)));
+	std::unique_ptr<Light> light(new Light(myworld->internalWorldApi, glm::vec3(0, 10000, -7000), glm::vec3(0, 0, 0), glm::vec3(0.4,0.4,0.4)));
+	std::unique_ptr<Light> light2(new Light(myworld->internalWorldApi, glm::vec3(300, terrain->getHeightOfTerrain(300, 200)+5, 200), glm::vec3(0, 0, 0), glm::vec3(2,0,0), glm::vec3(1, 0.01, 0.002)));
+	std::unique_ptr<Light> light3(new Light(myworld->internalWorldApi, glm::vec3(200, terrain->getHeightOfTerrain(200, 200)+5, 200), glm::vec3(0, 0, 0), glm::vec3(0,2,2), glm::vec3(1, 0.01, 0.002)));
 	////////////////////
 
     std::vector<ModelEntity*> worldModels = {entity.get(), entity2.get(), characterEntity.get()};

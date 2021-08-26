@@ -34,14 +34,18 @@ void StaticShader::getAllUniformLocations()
 	// Multiple lights loading
 	this->location_lightPosition = std::vector<int>(MAX_LIGHTS);
 	this->location_lightColour = std::vector<int>(MAX_LIGHTS);
+	this->location_attenuation = std::vector<float>(MAX_LIGHTS);
 	for(int i = 0 ; i < MAX_LIGHTS ; i++)
 	{
 		std::string str1 = "lightPosition[" + std::to_string(i);
 		std::string str2 = "lightColour[" + std::to_string(i);
+		std::string str3 = "attenuation[" + std::to_string(i);
 		str1 += "]";
 		str2 += "]";
+		str3 += "]";
 		this->location_lightPosition[i] = this->getUniformLocation(str1.c_str());
 		this->location_lightColour[i] = this->getUniformLocation(str2.c_str());
+		this->location_attenuation[i] = this->getUniformLocation(str3.c_str());
 	}
 }
 
@@ -68,11 +72,13 @@ void StaticShader::loadLights(std::vector<Light*> *lights)
 		{
 			this->loadVector(location_lightPosition[i], lights->at(i)->getPosition());
 			this->loadVector(location_lightColour[i], lights->at(i)->getColour());
+			this->loadVector(location_attenuation[i], lights->at(i)->getAttenuation());
 		}
 		else 
 		{
 			this->loadVector(location_lightPosition[i], glm::vec3(0, 0, 0));
 			this->loadVector(location_lightColour[i], glm::vec3(0, 0, 0));
+			this->loadVector(location_attenuation[i], glm::vec3(1, 0, 0));
 		}
 	}
 }

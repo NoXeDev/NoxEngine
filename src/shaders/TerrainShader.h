@@ -25,6 +25,7 @@ private:
 	int location_viewMatrix;
 	std::vector<int> location_lightPosition;
 	std::vector<int> location_lightColour;
+	std::vector<float> location_attenuation;
 	int location_shineDamper;
 	int location_reflectivity;
 	int location_skyColour;
