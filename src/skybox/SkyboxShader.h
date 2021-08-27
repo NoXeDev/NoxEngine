@@ -3,6 +3,8 @@
 #include "../entities/Camera.h"
 #include "../utils/Maths.h"
 
+#include <gtc/matrix_transform.hpp>
+
 class SkyboxShader : public ShaderProgram
 {
     public:
@@ -17,4 +19,7 @@ class SkyboxShader : public ShaderProgram
         int location_projectionMatrix;
 	    int location_viewMatrix;
         int location_fogColour;
+
+        float rotation = 0;
+        const float ROTATE_SPEED = 1.0f;
 };
