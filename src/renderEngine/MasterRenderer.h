@@ -8,6 +8,7 @@
 #include "../entities/Camera.h"
 #include "../shaders/TerrainShader.h"
 #include "../renderEngine/TerrainRenderer.h"
+#include "../skybox/SkyboxRenderer.h"
 
 #include <fstream>
 #include <unordered_map>
@@ -28,9 +29,10 @@ private:
 	std::vector<Terrain*> terrains;
 	void createProjectionMatrix();
 	glm::mat4 projectionMatrix;
+	SkyboxRenderer *skyboxRenderer;
 
 public:
-	MasterRenderer();
+	MasterRenderer(Loader *loader);
 	void render(std::vector<Light*> *lights, Camera *camera);
 	void cleanUp();
 	void processEntity(ModelEntity *entity);

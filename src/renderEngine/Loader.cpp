@@ -26,12 +26,58 @@ RawModel* Loader::loadToVAO(
 	return new RawModel(vaoID, indices->size());
 }
 
-RawModel* Loader::loadToVAO(std::vector<GLfloat> *positions)
+RawModel* Loader::loadToVAO(std::vector<GLfloat> *positions, int dimensions)
 {
 	GLint vaoID = createVAO();
-	this->storeDataInAttributeList(0, 2, positions);
+	this->storeDataInAttributeList(0, dimensions, positions);
 	unbindVAO();
-	return new RawModel(vaoID, positions->size()/2);
+	return new RawModel(vaoID, positions->size()/dimensions);
+}
+
+TextureData* Loader::decodeTextureFile(const char *filename)
+{
+	int width, height;
+	unsigned char *texture = SOIL_load_image(filename, &width, &height, 0, SOIL_LOAD_RGBA);
+	if (texture == nullptr) {
+		std::ostringstream ss;
+		ss << "Texture loading fatal error : " << SOIL_last_result() << filename;
+		errorHandler::fatal(ss.str());
+	}
+
+	// Creating texture data struct
+	TextureData *res = new TextureData();
+	res->width = width;
+	res->height = height;
+	res->buffer = texture;
+
+	return res;
+}
+
+int Loader::loadCubeMap(std::vector<const char*> textureFiles)
+{
+	GLuint textureID;
+	glGenTextures(1, &textureID);
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_CUBE_MAP, textureID);
+
+	for(int i = 0 ; i < textureFiles.size() ; i++)
+	{
+		ostringstream ss;
+		ss << "res/materials/cubemap/" << textureFiles.at(i) << ".png";
+		TextureData *data = decodeTextureFile(ss.str().c_str());
+
+		glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGBA, data->width, data->height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data->buffer);
+		SOIL_free_image_data(data->buffer);
+	}
+
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+
+	this->textures.push_back(textureID);
+
+	return textureID;
 }
 
 int Loader::loadTexture(const char* filename)

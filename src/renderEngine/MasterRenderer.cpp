@@ -6,7 +6,7 @@ const float FAR_PLANE = 1000;
 
 const glm::vec3 SKYRGB = glm::vec3(0.5f, 0.5f, 0.5f);
 
-MasterRenderer::MasterRenderer()
+MasterRenderer::MasterRenderer(Loader *loader)
 {
 	enableCulling();
 	this->shader->create();
@@ -14,6 +14,7 @@ MasterRenderer::MasterRenderer()
 	this->createProjectionMatrix();
 	this->renderer = new EntityRenderer(this->shader, this->projectionMatrix);
 	this->terrainRenderer = new TerrainRenderer(this->terrainShader, this->projectionMatrix);
+	this->skyboxRenderer = new SkyboxRenderer(loader, this->projectionMatrix);
 }
 
 void MasterRenderer::enableCulling()
@@ -49,7 +50,7 @@ void MasterRenderer::render(std::vector<Light*> *lights, Camera* camera)
 	this->terrainRenderer->render(this->terrains);
 
 	this->terrainShader->stop();
-
+	this->skyboxRenderer->render(camera);
 	this->terrains.clear();
 	this->entities.clear();
 

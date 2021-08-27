@@ -34,7 +34,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PWSTR pCmdLine
 	// create loading stuff and registering into API
 	std::unique_ptr<Loader> loader(new Loader());
 	EngineCleaner.loader = loader.get();
-	std::unique_ptr<MasterRenderer> renderer(new MasterRenderer());
+	std::unique_ptr<MasterRenderer> renderer(new MasterRenderer(loader.get()));
 	EngineCleaner.renderer = renderer.get();
 	std::unique_ptr<GuiRenderer> guiRenderer(new GuiRenderer(loader.get()));
 	EngineCleaner.gui = guiRenderer.get();
