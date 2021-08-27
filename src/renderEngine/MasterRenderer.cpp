@@ -50,7 +50,7 @@ void MasterRenderer::render(std::vector<Light*> *lights, Camera* camera)
 	this->terrainRenderer->render(this->terrains);
 
 	this->terrainShader->stop();
-	this->skyboxRenderer->render(camera);
+	this->skyboxRenderer->render(camera, glm::vec3(SKYRGB.x, SKYRGB.y, SKYRGB.z));
 	this->terrains.clear();
 	this->entities.clear();
 

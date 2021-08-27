@@ -9,10 +9,15 @@ void SkyboxShader::bindAttributes()
 
 void SkyboxShader::getAllUniformLocations()
 {
-    location_projectionMatrix = this->getUniformLocation("projectionMatrix");
-	location_viewMatrix = this->getUniformLocation("viewMatrix");
+    this->location_projectionMatrix = this->getUniformLocation("projectionMatrix");
+	this->location_viewMatrix = this->getUniformLocation("viewMatrix");
+    this->location_fogColour = this->getUniformLocation("fogColour");
 }
 
+void SkyboxShader::loadFogColour(glm::vec3 colour)
+{
+    this->loadVector(this->location_fogColour, colour);
+}
 
 void SkyboxShader::loadProjectionMatrix(glm::mat4 matrix)
 {

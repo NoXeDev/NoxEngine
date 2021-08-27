@@ -11,10 +11,11 @@ SkyboxRenderer::SkyboxRenderer(Loader *loader, glm::mat4 projectionMatrix)
     this->shader->stop();
 }
 
-void SkyboxRenderer::render(Camera *camera)
+void SkyboxRenderer::render(Camera *camera, glm::vec3 colour)
 {
     this->shader->start();
     this->shader->loadViewMatrix(camera);
+    this->shader->loadFogColour(colour);
     glBindVertexArray(this->cube->getVaoID());
     glEnableVertexAttribArray(0);
     glActiveTexture(GL_TEXTURE0);
