@@ -5,6 +5,9 @@
 
 NoxEngine is a basic, open source, render engine make with openGl.
 
+NoxEngine is my really first c++ project, and is now discontinued, I will keep my learn on c++ and opengl. 
+It was a beautiful project.
+
 How it work ?
 =====
 
